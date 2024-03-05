@@ -4,10 +4,10 @@ import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/constants.dart';
 
 class AppDefaults {
-  static const double radius = 15;
+  static const double radius = 4;
   static const double margin = 15;
   static const double padding = 15;
-  static const double inputRadius = 8;
+  static const double inputRadius = 4;
 
   static BorderRadius borderRadius = BorderRadius.circular(radius);
 

@@ -30,7 +30,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     }
   }
 
-  _gotoAuthPage() => Get.toNamed('/login');
+  _gotoAuthPage() => Get.offAllNamed('/login');
 
   @override
   void initState() {

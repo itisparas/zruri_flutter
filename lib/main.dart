@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
       title: title,
       theme: AppTheme.defaultTheme,
       initialRoute: AppRoutes.initialRoute,
+      unknownRoute: AppRoutes.unknownGetPage,
       getPages: AppRoutes.getPages,
       debugShowCheckedModeBanner: false,
     );
