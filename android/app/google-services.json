@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "321467844839",
+    "project_id": "zruri-app",
+    "storage_bucket": "zruri-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321467844839:android:88f549c1b35137ca54fa42",
+        "android_client_info": {
+          "package_name": "com.example.zruri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321467844839:android:105f50438a58b8f454fa42",
+        "android_client_info": {
+          "package_name": "com.example.zruri_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
