@@ -112,18 +112,19 @@ class IntroLoginPage extends StatelessWidget {
                 child: ElevatedButton(
                   child: const Text('Continue'),
                   onPressed: () async {
+                    log('+${c.selectedCountry.value.phoneCode}-${phoneNumberController.value.text.toString()}');
                     await FirebaseAuth.instance.verifyPhoneNumber(
                       phoneNumber:
-                          '+${c.selectedCountry.value.phoneCode}${phoneNumberController.value.toString()}',
+                          '+${c.selectedCountry.value.phoneCode}${phoneNumberController.value.text.toString()}',
                       verificationCompleted:
                           (PhoneAuthCredential credential) {},
                       verificationFailed: (FirebaseAuthException ex) {
                         log(ex.toString());
                       },
                       codeSent: (String verificationId, int? resendToken) {
-                        Get.to('/otp-verification', arguments: {
+                        Get.toNamed('/otp-verification', arguments: {
                           'phoneNumber':
-                              '+${c.selectedCountry.value.phoneCode}-${phoneNumberController.value.toString()}',
+                              '+${c.selectedCountry.value.phoneCode}-${phoneNumberController.value.text.toString()}',
                           'verificationId': verificationId,
                         });
                       },

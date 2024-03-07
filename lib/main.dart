@@ -7,12 +7,14 @@ import 'package:zruri_flutter/core/routes/app_routes.dart';
 import 'package:zruri_flutter/core/themes/app_theme.dart';
 import 'package:zruri_flutter/firebase_options.dart';
 import 'package:zruri_flutter/core/utils/constants.dart';
+import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  Get.put(AuthController());
   runApp(const MyApp());
 }
 
