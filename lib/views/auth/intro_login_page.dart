@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -59,7 +62,7 @@ class IntroLoginPage extends StatelessWidget {
               const SizedBox(height: 20),
               TextFormField(
                 maxLength: 10,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.phone,
                 cursorColor: Theme.of(context).primaryColor,
                 controller: phoneNumberController,
                 style: Theme.of(context).textTheme.titleMedium,
@@ -108,8 +111,24 @@ class IntroLoginPage extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   child: const Text('Continue'),
-                  onPressed: () {
-                    Get.toNamed('/otp-verification');
+                  onPressed: () async {
+                    await FirebaseAuth.instance.verifyPhoneNumber(
+                      phoneNumber:
+                          '+${c.selectedCountry.value.phoneCode}${phoneNumberController.value.toString()}',
+                      verificationCompleted:
+                          (PhoneAuthCredential credential) {},
+                      verificationFailed: (FirebaseAuthException ex) {
+                        log(ex.toString());
+                      },
+                      codeSent: (String verificationId, int? resendToken) {
+                        Get.to('/otp-verification', arguments: {
+                          'phoneNumber':
+                              '+${c.selectedCountry.value.phoneCode}-${phoneNumberController.value.toString()}',
+                          'verificationId': verificationId,
+                        });
+                      },
+                      codeAutoRetrievalTimeout: (String verificationId) {},
+                    );
                   },
                 ),
               )

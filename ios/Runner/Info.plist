@@ -43,6 +43,17 @@
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>app-1-321467844839-ios-0a6dd153b18c14cf54fa42</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-321467844839-ios-0a6dd153b18c14cf54fa42</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 </dict>

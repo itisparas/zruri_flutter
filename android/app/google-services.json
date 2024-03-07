@@ -12,7 +12,20 @@
           "package_name": "com.example.zruri"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "321467844839-n8puoukg3l2qp0lej9qpk96qi7vfi7e3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zruri",
+            "certificate_hash": "5cb9fb4fdb5cd0602dc94e90ef9df6031d202056"
+          }
+        },
+        {
+          "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4"
@@ -20,18 +33,35 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "321467844839-h2tr1mououdmuhlndfqaq89hqqhsh506.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.zruri"
+              }
+            }
+          ]
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:321467844839:android:105f50438a58b8f454fa42",
+        "mobilesdk_app_id": "1:321467844839:android:91bb622214ce43e054fa42",
         "android_client_info": {
           "package_name": "com.example.zruri_flutter"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4"
@@ -39,7 +69,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "321467844839-h2tr1mououdmuhlndfqaq89hqqhsh506.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.zruri"
+              }
+            }
+          ]
         }
       }
     }

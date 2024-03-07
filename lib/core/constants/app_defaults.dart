@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/constants.dart';
@@ -10,6 +11,22 @@ class AppDefaults {
   static const double inputRadius = 4;
 
   static BorderRadius borderRadius = BorderRadius.circular(radius);
+
+  static double otpPinFieldWidth = Get.width / 7;
+  static double otpPinFieldHeight = otpPinFieldWidth;
+  static BoxDecoration otpPinFieldDefaultDecoration = BoxDecoration(
+    border: Border.all(
+      color: AppColors.primary,
+    ),
+    borderRadius: borderRadius,
+  );
+  static BoxDecoration otpPinFieldFocusedDecoration = BoxDecoration(
+    border: Border.all(
+      color: AppColors.primary,
+      width: 2,
+    ),
+    borderRadius: borderRadius,
+  );
 
   static BorderRadius bottomSheetBorderRadius = const BorderRadius.only(
     topLeft: Radius.circular(radius),

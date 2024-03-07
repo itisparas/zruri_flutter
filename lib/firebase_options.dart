@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4',
-    appId: '1:321467844839:android:105f50438a58b8f454fa42',
+    appId: '1:321467844839:android:91bb622214ce43e054fa42',
     messagingSenderId: '321467844839',
     projectId: 'zruri-app',
     storageBucket: 'zruri-app.appspot.com',
@@ -59,10 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCuD1HVI6OYwRbBcXy-BNsSu3dQUFYRZWs',
-    appId: '1:321467844839:ios:577be746747e471b54fa42',
+    appId: '1:321467844839:ios:0a6dd153b18c14cf54fa42',
     messagingSenderId: '321467844839',
     projectId: 'zruri-app',
     storageBucket: 'zruri-app.appspot.com',
+    androidClientId: '321467844839-n8puoukg3l2qp0lej9qpk96qi7vfi7e3.apps.googleusercontent.com',
+    iosClientId: '321467844839-oo377sulqraucl4uu4uevkb7667h0qh6.apps.googleusercontent.com',
     iosBundleId: 'com.example.zruriFlutter',
   );
 }
