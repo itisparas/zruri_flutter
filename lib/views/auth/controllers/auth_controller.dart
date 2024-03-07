@@ -20,7 +20,7 @@ class AuthController extends GetxController {
     if (user == null) {
       Get.offAllNamed('/onboarding');
     } else {
-      Get.offAllNamed('/home');
+      Get.offAllNamed('/entrypoint');
     }
   }
 }

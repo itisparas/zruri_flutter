@@ -9,10 +9,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: ElevatedButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-            },
-            child: const Text('Sign out')),
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+          },
+          child: const Text('Sign out'),
+        ),
       ),
     );
   }
