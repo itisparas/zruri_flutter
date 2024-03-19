@@ -159,8 +159,10 @@ class Profile extends GetView<ScreenController> {
                       SizedBox(
                         width: double.infinity,
                         child: OutlinedButton(
-                          onPressed: () {},
-                          child: const Text('Sign out'),
+                          onPressed: () {
+                            authController.signOut();
+                          },
+                          child: const Text('Logout'),
                         ),
                       ),
                       const SizedBox(
