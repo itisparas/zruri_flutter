@@ -8,9 +8,14 @@ class AppTheme {
       useMaterial3: true,
       colorSchemeSeed: AppColors.primary,
       fontFamily: AppDefaults.fontFamily,
+      dividerTheme: const DividerThemeData(
+        color: AppColors.gray,
+      ),
       textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: AppColors.placeholder),
-          bodyMedium: TextStyle(color: AppColors.placeholder)),
+        bodyLarge: TextStyle(color: AppColors.placeholder),
+        bodyMedium: TextStyle(color: AppColors.placeholder),
+        titleMedium: TextStyle(fontSize: 18),
+      ),
       scaffoldBackgroundColor: Colors.white,
       brightness: Brightness.light,
       appBarTheme: AppBarTheme(

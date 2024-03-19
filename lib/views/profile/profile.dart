@@ -1,13 +1,178 @@
+import 'package:circular_profile_avatar/circular_profile_avatar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
+import 'package:zruri_flutter/core/constants/app_defaults.dart';
+import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
+import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({super.key});
+class Profile extends GetView<ScreenController> {
+  final TextEditingController displayNameController = TextEditingController(
+    text: 'Zruri user',
+  );
+  final TextEditingController phoneNumberController = TextEditingController();
+
+  Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    AuthController authController = Get.find();
+
+    FirebaseAuth.instance.authStateChanges().listen(
+      (event) {
+        if (event != null) {
+          displayNameController.setText(event.displayName ?? 'Zruri user');
+          phoneNumberController.setText(event.phoneNumber ?? '');
+        }
+      },
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ),
       body: SafeArea(
-        child: Text('Profile page.'),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(AppDefaults.padding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppDefaults.padding),
+                  child: Text(
+                    'Basic information',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppDefaults.padding),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(right: AppDefaults.padding),
+                        child: CircularProfileAvatar(
+                          'https://i.pravatar.cc/300?img=10',
+                          radius: 50,
+                          cacheImage: true,
+                        ),
+                      ),
+                      SizedBox(
+                        width: Get.width - AppDefaults.padding * 3 - 100,
+                        child: TextFormField(
+                          controller: displayNameController,
+                          style: Theme.of(context).textTheme.titleMedium,
+                          onEditingComplete: () async {
+                            authController.firebaseUser.value
+                                ?.updateDisplayName(displayNameController.text)
+                                .then((value) {
+                              Get.snackbar(
+                                'Yayyy!',
+                                'User name has been updated.',
+                                duration: const Duration(seconds: 5),
+                                backgroundColor: Colors.black,
+                                colorText: Colors.white,
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                            }).onError((error, stackTrace) {
+                              Get.snackbar(
+                                'Errr!',
+                                'Error while updating user name. Please try again or contact us.}',
+                                duration: const Duration(seconds: 5),
+                                backgroundColor: Colors.black,
+                                colorText: Colors.white,
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                              FirebaseCrashlytics.instance.recordFlutterError(
+                                FlutterErrorDetails(
+                                  exception: FirebaseAuthException,
+                                  stack: stackTrace,
+                                ),
+                                fatal: false,
+                              );
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(),
+
+                // Contact information section START
+                Padding(
+                  padding: const EdgeInsets.only(top: AppDefaults.padding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: AppDefaults.padding),
+                        child: Text(
+                          'Contact information',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: phoneNumberController,
+                        readOnly: true,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        decoration: const InputDecoration(
+                          labelText: 'Phone number',
+                          helperMaxLines: 1,
+                          helperText: 'Boom! Your phone number is verified.',
+                        ),
+                      ),
+                      const SizedBox(
+                        height: AppDefaults.margin,
+                      ),
+                      const Divider(),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: AppDefaults.padding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(bottom: AppDefaults.padding),
+                        child: Text(
+                          'Additional information',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      const Text(
+                        'User information like joining date and number of ad posts will be displayed here before launch of the application.',
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed: () {},
+                          child: const Text('Sign out'),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

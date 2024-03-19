@@ -1,84 +1,48 @@
 {
   "project_info": {
-    "project_number": "321467844839",
-    "project_id": "zruri-app",
-    "storage_bucket": "zruri-app.appspot.com"
+    "project_number": "1090724911560",
+    "project_id": "zruriapp",
+    "storage_bucket": "zruriapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:321467844839:android:88f549c1b35137ca54fa42",
-        "android_client_info": {
-          "package_name": "com.example.zruri"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "321467844839-n8puoukg3l2qp0lej9qpk96qi7vfi7e3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.zruri",
-            "certificate_hash": "5cb9fb4fdb5cd0602dc94e90ef9df6031d202056"
-          }
-        },
-        {
-          "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "321467844839-h2tr1mououdmuhlndfqaq89hqqhsh506.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.zruri"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:321467844839:android:91bb622214ce43e054fa42",
+        "mobilesdk_app_id": "1:1090724911560:android:22695a5b32432b6d6548fd",
         "android_client_info": {
           "package_name": "com.example.zruri_flutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
+          "client_id": "1090724911560-gf5k73bhv94fie2f5bv2mt8hchpk1p1e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zruri_flutter",
+            "certificate_hash": "c97d12111ac2c3d4faff1f7cd22c9c72bde0c9e5"
+          }
+        },
+        {
+          "client_id": "1090724911560-me1q2ei7o7v82g9codb7ei6462ti771l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4"
+          "current_key": "AIzaSyDfG7U1gH4elCi-ZwErA1k3OS-bQ0qViKU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "321467844839-4hatf2hiaovpgm82hqgj1q8v9p4c0hfv.apps.googleusercontent.com",
+              "client_id": "1090724911560-me1q2ei7o7v82g9codb7ei6462ti771l.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "321467844839-h2tr1mououdmuhlndfqaq89hqqhsh506.apps.googleusercontent.com",
+              "client_id": "1090724911560-7m6n7u4k9o3oqf7klj88u23cdaa80hcl.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.zruri"
+                "bundle_id": "com.example.zruriFlutter"
               }
             }
           ]

@@ -95,6 +95,7 @@ class OtpVerificationPage extends StatelessWidget {
                                   length: 6,
                                   controller: pinFieldController,
                                   focusNode: focusNode,
+                                  autofocus: true,
                                   androidSmsAutofillMethod:
                                       AndroidSmsAutofillMethod
                                           .smsUserConsentApi,

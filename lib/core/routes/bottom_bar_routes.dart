@@ -11,6 +11,6 @@ class BottomBarRoutes {
     const CategoriesPage(),
     const PostAdPage(),
     const MyAdsPage(),
-    const Profile()
+    Profile()
   ];
 }

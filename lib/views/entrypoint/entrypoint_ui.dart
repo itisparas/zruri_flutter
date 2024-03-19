@@ -30,12 +30,17 @@ class EntrypointUI extends StatelessWidget {
           child: BottomBarRoutes.pages[c.currentIndex.value],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          c.onChange(2);
-        },
-        backgroundColor: AppColors.primary,
-        child: const Icon(Icons.add),
+      floatingActionButton: Obx(
+        () => c.isKeyboardVisible.value
+            ? const SizedBox()
+            : FloatingActionButton(
+                onPressed: () {
+                  c.onChange(2);
+                },
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                child: const Icon(Icons.add),
+              ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AppBottomNavBar(),

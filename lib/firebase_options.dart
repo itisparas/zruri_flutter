@@ -50,21 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC1IDIpRVFiOcdth8XL0ID-51vniZbLPP4',
-    appId: '1:321467844839:android:91bb622214ce43e054fa42',
-    messagingSenderId: '321467844839',
-    projectId: 'zruri-app',
-    storageBucket: 'zruri-app.appspot.com',
+    apiKey: 'AIzaSyDfG7U1gH4elCi-ZwErA1k3OS-bQ0qViKU',
+    appId: '1:1090724911560:android:22695a5b32432b6d6548fd',
+    messagingSenderId: '1090724911560',
+    projectId: 'zruriapp',
+    storageBucket: 'zruriapp.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCuD1HVI6OYwRbBcXy-BNsSu3dQUFYRZWs',
-    appId: '1:321467844839:ios:0a6dd153b18c14cf54fa42',
-    messagingSenderId: '321467844839',
-    projectId: 'zruri-app',
-    storageBucket: 'zruri-app.appspot.com',
-    androidClientId: '321467844839-n8puoukg3l2qp0lej9qpk96qi7vfi7e3.apps.googleusercontent.com',
-    iosClientId: '321467844839-oo377sulqraucl4uu4uevkb7667h0qh6.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBt3W0fvBwJoPvn1ViiXyDJcK3pa1P7gFc',
+    appId: '1:1090724911560:ios:fdebddc6fee2da0f6548fd',
+    messagingSenderId: '1090724911560',
+    projectId: 'zruriapp',
+    storageBucket: 'zruriapp.appspot.com',
+    androidClientId: '1090724911560-gf5k73bhv94fie2f5bv2mt8hchpk1p1e.apps.googleusercontent.com',
+    iosClientId: '1090724911560-7m6n7u4k9o3oqf7klj88u23cdaa80hcl.apps.googleusercontent.com',
     iosBundleId: 'com.example.zruriFlutter',
   );
 }

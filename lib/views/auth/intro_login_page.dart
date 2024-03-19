@@ -70,7 +70,7 @@ class IntroLoginPage extends StatelessWidget {
                     hintText: 'Enter phone number',
                     counterText: '',
                     prefixIcon: Container(
-                      padding: const EdgeInsets.fromLTRB(10, 11, 10, 10),
+                      padding: const EdgeInsets.all(10),
                       child: InkWell(
                         onTap: () {
                           showCountryPicker(
@@ -112,13 +112,23 @@ class IntroLoginPage extends StatelessWidget {
                 child: ElevatedButton(
                   child: const Text('Continue'),
                   onPressed: () async {
-                    log('+${c.selectedCountry.value.phoneCode}-${phoneNumberController.value.text.toString()}');
                     await FirebaseAuth.instance.verifyPhoneNumber(
                       phoneNumber:
                           '+${c.selectedCountry.value.phoneCode}${phoneNumberController.value.text.toString()}',
                       verificationCompleted:
-                          (PhoneAuthCredential credential) {},
+                          (PhoneAuthCredential credential) async {
+                        await FirebaseAuth.instance
+                            .signInWithCredential(credential);
+                      },
                       verificationFailed: (FirebaseAuthException ex) {
+                        Get.snackbar(
+                          'Errr!',
+                          'Error while sending verification code, please try again.',
+                          duration: const Duration(seconds: 5),
+                          backgroundColor: Colors.black,
+                          colorText: Colors.white,
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
                         log(ex.toString());
                       },
                       codeSent: (String verificationId, int? resendToken) {
