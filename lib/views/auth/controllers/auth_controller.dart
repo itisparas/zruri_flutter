@@ -3,6 +3,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
+import 'package:zruri_flutter/core/constants/app_defaults.dart';
+import 'package:zruri_flutter/core/constants/app_messages.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -34,35 +36,133 @@ class AuthController extends GetxController {
     }
   }
 
-  signOut() async {
-    await FirebaseAuth.instance
-        .signOut()
-        .then(
-          (value) => Get.snackbar(
-            'Success!',
-            "You've been successfully logged out. We'll miss you, hope to see you again back soon.",
-            duration: const Duration(seconds: 5),
-            backgroundColor: Colors.black,
-            colorText: Colors.white,
-            snackPosition: SnackPosition.BOTTOM,
-          ),
-        )
-        .onError((error, stackTrace) {
+  updateUserDisplayName(String displayName) async {
+    try {
+      await FirebaseAuth.instance.currentUser?.updateDisplayName(displayName);
+      Get.snackbar(
+        AppMessages.enUs['snackbar']['success.title'],
+        AppMessages.enUs['snackbar']['auth']['success']['updateDisplayName'],
+        snackPosition: AppDefaults.snackPosition,
+        backgroundColor: AppDefaults.snackbarBackgroundColor,
+        colorText: AppDefaults.snackbarColorText,
+        isDismissible: AppDefaults.isSnackbarDismissible,
+        duration: AppDefaults.snackbarDuration,
+      );
+    } on FirebaseAuthException catch (e) {
       FirebaseCrashlytics.instance.recordFlutterError(
         FlutterErrorDetails(
-          exception: FirebaseAuthException,
-          stack: stackTrace,
+          exception: e,
         ),
         fatal: false,
       );
-      return Get.snackbar(
-        'Errr!',
-        'There was some issue while logging out.',
-        duration: const Duration(seconds: 5),
-        backgroundColor: Colors.black,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+      Get.snackbar(
+        AppMessages.enUs['snackbar']['error.title'],
+        AppMessages.enUs['snackbar']['auth']['error']['updateDisplayName'],
+        snackPosition: AppDefaults.snackPosition,
+        backgroundColor: AppDefaults.snackbarBackgroundColor,
+        colorText: AppDefaults.snackbarColorText,
+        isDismissible: AppDefaults.isSnackbarDismissible,
+        duration: AppDefaults.snackbarDuration,
       );
-    });
+    }
+  }
+
+  // Handle sign in of user to send OTP
+  void sendOtp({required String phoneNumber}) async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+$phoneNumber',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      },
+      verificationFailed: (FirebaseAuthException ex) {
+        Get.snackbar(
+          AppMessages.enUs['snackbar']['error.title'],
+          AppMessages.enUs['snackbar']['auth']['error']['otpSendFailed'],
+          snackPosition: AppDefaults.snackPosition,
+          backgroundColor: AppDefaults.snackbarBackgroundColor,
+          colorText: AppDefaults.snackbarColorText,
+          isDismissible: AppDefaults.isSnackbarDismissible,
+          duration: AppDefaults.snackbarDuration,
+        );
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        Get.toNamed(
+          '/otp-verification',
+          arguments: {
+            'phoneNumber': '+$phoneNumber',
+            'verificationId': verificationId,
+          },
+        );
+        Get.snackbar(
+          AppMessages.enUs['snackbar']['success.title'],
+          AppMessages.enUs['snackbar']['auth']['success']['otpSent'],
+          snackPosition: AppDefaults.snackPosition,
+          backgroundColor: AppDefaults.snackbarBackgroundColor,
+          colorText: AppDefaults.snackbarColorText,
+          isDismissible: AppDefaults.isSnackbarDismissible,
+          duration: AppDefaults.snackbarDuration,
+        );
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  // Handle on otp submit
+  void handleOtpSubmit(String otp) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: Get.arguments['verificationId'], smsCode: otp);
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      Get.snackbar(
+        AppMessages.enUs['snackbar']['success.title'],
+        AppMessages.enUs['snackbar']['auth']['success']['login'],
+        snackPosition: AppDefaults.snackPosition,
+        backgroundColor: AppDefaults.snackbarBackgroundColor,
+        colorText: AppDefaults.snackbarColorText,
+        isDismissible: AppDefaults.isSnackbarDismissible,
+        duration: AppDefaults.snackbarDuration,
+      );
+    } catch (e) {
+      Get.snackbar(
+        AppMessages.enUs['snackbar']['error.title'],
+        AppMessages.enUs['snackbar']['auth']['error']['incorrectOtp'],
+        snackPosition: AppDefaults.snackPosition,
+        backgroundColor: AppDefaults.snackbarBackgroundColor,
+        colorText: AppDefaults.snackbarColorText,
+        isDismissible: AppDefaults.isSnackbarDismissible,
+        duration: AppDefaults.snackbarDuration,
+      );
+    }
+  }
+
+  signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Get.snackbar(
+        AppMessages.enUs['snackbar']['success.title'],
+        AppMessages.enUs['snackbar']['auth']['success']['logout'],
+        snackPosition: AppDefaults.snackPosition,
+        backgroundColor: AppDefaults.snackbarBackgroundColor,
+        colorText: AppDefaults.snackbarColorText,
+        isDismissible: AppDefaults.isSnackbarDismissible,
+        duration: AppDefaults.snackbarDuration,
+      );
+    } on FirebaseAuthException catch (e) {
+      FirebaseCrashlytics.instance.recordFlutterError(
+        FlutterErrorDetails(
+          exception: e,
+        ),
+        fatal: false,
+      );
+      Get.snackbar(
+        AppMessages.enUs['snackbar']['error.title'],
+        AppMessages.enUs['snackbar']['auth']['error']['logout'],
+        snackPosition: AppDefaults.snackPosition,
+        backgroundColor: AppDefaults.snackbarBackgroundColor,
+        colorText: AppDefaults.snackbarColorText,
+        isDismissible: AppDefaults.isSnackbarDismissible,
+        duration: AppDefaults.snackbarDuration,
+      );
+    }
   }
 }

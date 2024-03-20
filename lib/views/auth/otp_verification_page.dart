@@ -1,17 +1,17 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/themes/app_pin_theme.dart';
+import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 class OtpVerificationPage extends StatelessWidget {
   final pinFieldController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
+
+  final authController = Get.put(AuthController());
 
   OtpVerificationPage({
     super.key,
@@ -30,25 +30,6 @@ class OtpVerificationPage extends StatelessWidget {
     final PinTheme focusedPinTheme = AppPinTheme.focusedPinTheme.copyWith(
       textStyle: pinTextStyle,
     );
-
-    // Handle on otp submit
-    void handleOtpSubmit(String otp) async {
-      try {
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(
-            verificationId: Get.arguments['verificationId'], smsCode: otp);
-        await FirebaseAuth.instance.signInWithCredential(credential);
-      } catch (e) {
-        log('Error signing in with OTP: ${e.toString()}');
-        Get.snackbar(
-          'Errr!',
-          'Invalid verification code.',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.black,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 5),
-        );
-      }
-    }
 
     // Build actual component.
     return Scaffold(
@@ -105,7 +86,8 @@ class OtpVerificationPage extends StatelessWidget {
                                   showCursor: true,
                                   pinputAutovalidateMode:
                                       PinputAutovalidateMode.onSubmit,
-                                  onCompleted: (pin) => handleOtpSubmit(pin),
+                                  onCompleted: (pin) =>
+                                      authController.handleOtpSubmit(pin),
                                 ),
                               ),
                             ),
@@ -117,8 +99,9 @@ class OtpVerificationPage extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            handleOtpSubmit(
-                                pinFieldController.value.text.toString());
+                            authController.handleOtpSubmit(
+                              pinFieldController.value.text.toString(),
+                            );
                           },
                           child: const Text('Continue'),
                         ),

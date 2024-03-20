@@ -13,12 +13,6 @@ class HomePage extends GetView<AuthController> {
         child: Column(
           children: [
             Text(controller.firebaseUser.toString()),
-            ElevatedButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              child: const Text('Sign out'),
-            ),
           ],
         ),
       ),

@@ -50,6 +50,13 @@ class AppDefaults {
 
   static String? fontFamily = GoogleFonts.ibmPlexSans().fontFamily;
 
+  // Constants for the GetX snackbar
+  static SnackPosition snackPosition = SnackPosition.BOTTOM;
+  static Color snackbarBackgroundColor = Colors.black;
+  static Color snackbarColorText = Colors.white;
+  static Duration snackbarDuration = const Duration(seconds: 5);
+  static bool isSnackbarDismissible = false;
+
   // Constants for defining outline of inputs
   static const OutlineInputBorder outlineInputBorder = OutlineInputBorder(
     borderSide: BorderSide(width: 0.1),

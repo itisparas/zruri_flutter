@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -70,34 +72,9 @@ class Profile extends GetView<ScreenController> {
                           controller: displayNameController,
                           style: Theme.of(context).textTheme.titleMedium,
                           onEditingComplete: () async {
-                            authController.firebaseUser.value
-                                ?.updateDisplayName(displayNameController.text)
-                                .then((value) {
-                              Get.snackbar(
-                                'Yayyy!',
-                                'User name has been updated.',
-                                duration: const Duration(seconds: 5),
-                                backgroundColor: Colors.black,
-                                colorText: Colors.white,
-                                snackPosition: SnackPosition.BOTTOM,
-                              );
-                            }).onError((error, stackTrace) {
-                              Get.snackbar(
-                                'Errr!',
-                                'Error while updating user name. Please try again or contact us.}',
-                                duration: const Duration(seconds: 5),
-                                backgroundColor: Colors.black,
-                                colorText: Colors.white,
-                                snackPosition: SnackPosition.BOTTOM,
-                              );
-                              FirebaseCrashlytics.instance.recordFlutterError(
-                                FlutterErrorDetails(
-                                  exception: FirebaseAuthException,
-                                  stack: stackTrace,
-                                ),
-                                fatal: false,
-                              );
-                            });
+                            await authController.updateUserDisplayName(
+                              displayNameController.text,
+                            );
                           },
                         ),
                       ),

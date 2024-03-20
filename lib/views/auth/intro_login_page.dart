@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/utils/constants.dart';
+import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 class SelectedCountryController extends GetxController {
   Rx<Country> selectedCountry = Country(
@@ -29,6 +30,8 @@ class IntroLoginPage extends StatelessWidget {
   final SelectedCountryController c = Get.put(SelectedCountryController());
 
   final TextEditingController phoneNumberController = TextEditingController();
+
+  final authController = Get.put(AuthController());
 
   IntroLoginPage({super.key});
 
@@ -112,33 +115,10 @@ class IntroLoginPage extends StatelessWidget {
                 child: ElevatedButton(
                   child: const Text('Continue'),
                   onPressed: () async {
-                    await FirebaseAuth.instance.verifyPhoneNumber(
-                      phoneNumber:
-                          '+${c.selectedCountry.value.phoneCode}${phoneNumberController.value.text.toString()}',
-                      verificationCompleted:
-                          (PhoneAuthCredential credential) async {
-                        await FirebaseAuth.instance
-                            .signInWithCredential(credential);
-                      },
-                      verificationFailed: (FirebaseAuthException ex) {
-                        Get.snackbar(
-                          'Errr!',
-                          'Error while sending verification code, please try again.',
-                          duration: const Duration(seconds: 5),
-                          backgroundColor: Colors.black,
-                          colorText: Colors.white,
-                          snackPosition: SnackPosition.BOTTOM,
-                        );
-                        log(ex.toString());
-                      },
-                      codeSent: (String verificationId, int? resendToken) {
-                        Get.toNamed('/otp-verification', arguments: {
-                          'phoneNumber':
-                              '+${c.selectedCountry.value.phoneCode}-${phoneNumberController.value.text.toString()}',
-                          'verificationId': verificationId,
-                        });
-                      },
-                      codeAutoRetrievalTimeout: (String verificationId) {},
+                    var phoneNumber =
+                        "${c.selectedCountry.value.phoneCode}${phoneNumberController.value.text}";
+                    authController.sendOtp(
+                      phoneNumber: phoneNumber,
                     );
                   },
                 ),
