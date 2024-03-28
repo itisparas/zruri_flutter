@@ -6,7 +6,7 @@ import 'package:zruri_flutter/views/entrypoint/components/bottom_app_bar_item.da
 import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
 class AppBottomNavBar extends StatelessWidget {
-  ScreenController c = Get.put(ScreenController());
+  final ScreenController c = Get.put(ScreenController());
 
   AppBottomNavBar({
     super.key,

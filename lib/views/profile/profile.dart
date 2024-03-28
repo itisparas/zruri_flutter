@@ -1,16 +1,12 @@
-import 'dart:developer';
-
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
-import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
-class Profile extends GetView<ScreenController> {
+class Profile extends StatelessWidget {
   final TextEditingController displayNameController = TextEditingController(
     text: 'Zruri user',
   );

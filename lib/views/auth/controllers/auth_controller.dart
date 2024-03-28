@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
+import 'package:zruri_flutter/core/routes/app_route_names.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -26,13 +27,13 @@ class AuthController extends GetxController {
   _setInitialScreen(User? user) async {
     if (user == null) {
       isLoggedIn.value = false;
-      Get.offAllNamed('/onboarding');
+      Get.offAllNamed(AppRouteNames.onboarding);
     } else {
       isLoggedIn.value = true;
 
       phoneNumberParsed.value = PhoneNumber.parse(user.phoneNumber ?? '');
 
-      Get.offAndToNamed('/entrypoint');
+      Get.offAllNamed(AppRouteNames.entrypoint);
     }
   }
 

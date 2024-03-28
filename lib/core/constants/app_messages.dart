@@ -1,6 +1,9 @@
 class AppMessages {
   static const Map<String, dynamic> enUs = {
-    'app.title': "Flutter Demo",
+    'app.title': "Zruri",
+    "prompt.location.title": "Hey buddy! \n Where are you located?",
+    'prompt.location.description':
+        'To provide the relevant services/products we need to know your location.',
     'snackbar': {
       'error.title': 'Errr!',
       'success.title': 'Yayy!',

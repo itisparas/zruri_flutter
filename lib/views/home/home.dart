@@ -1,7 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zruri_flutter/core/constants/app_defaults.dart';
+import 'package:zruri_flutter/core/constants/constants.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
+import 'package:zruri_flutter/views/home/components/ad_space.dart';
 
 class HomePage extends GetView<AuthController> {
   const HomePage({super.key});
@@ -10,9 +15,85 @@ class HomePage extends GetView<AuthController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Text(controller.firebaseUser.toString()),
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              leading: Padding(
+                padding: const EdgeInsets.all(AppDefaults.padding / 2),
+                child: IconButton.filledTonal(
+                  onPressed: () {},
+                  icon: const Icon(Icons.menu),
+                ),
+              ),
+              floating: false,
+              title: GestureDetector(
+                onTap: () {
+                  log('message');
+                },
+                child: Container(
+                    padding: const EdgeInsets.all(AppDefaults.padding / 4),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(kToolbarHeight),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding:
+                              const EdgeInsets.all(AppDefaults.padding / 2),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.location_on_outlined),
+                        ),
+                        const Padding(
+                          padding:
+                              EdgeInsets.only(left: AppDefaults.padding / 2),
+                          child: Text(
+                            'Bathinda, PB',
+                            style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationStyle: TextDecorationStyle.dashed),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down_rounded,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                        const SizedBox(
+                          width: AppDefaults.padding / 2,
+                        ),
+                      ],
+                    )),
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(AppDefaults.padding / 2),
+                  child: IconButton.filledTonal(
+                    onPressed: () {},
+                    icon: const Icon(CupertinoIcons.search),
+                  ),
+                )
+              ],
+            ),
+            const SliverToBoxAdapter(child: AdSpace()),
+            const SliverToBoxAdapter(
+              child: Text('Trending'),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: Get.height,
+              ),
+            ),
+            const SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: AppDefaults.padding),
+              sliver: SliverToBoxAdapter(
+                child: Text('Trending Packs'),
+              ),
+            ),
           ],
         ),
       ),
