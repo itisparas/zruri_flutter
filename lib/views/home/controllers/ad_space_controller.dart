@@ -28,7 +28,7 @@ class AdSpaceController extends GetxController {
       adSpaces.value =
           querySnapshot.docs.map((snapshot) => snapshot.data()).toList();
     } catch (e) {
-      print('Error fetching adSpaces: $e');
+      throw Exception(e);
     }
   }
 }

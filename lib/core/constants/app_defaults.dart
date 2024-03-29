@@ -10,6 +10,9 @@ class AppDefaults {
   static const double padding = 15;
   static const double inputRadius = 4;
 
+  static const Duration adSpaceCarouselInterval = Duration(seconds: 7);
+  static const Duration adSpaceCarouselAnimation = Duration(milliseconds: 50);
+
   static BorderRadius borderRadius = BorderRadius.circular(radius);
 
   static double otpPinFieldWidth = Get.width / 7;
