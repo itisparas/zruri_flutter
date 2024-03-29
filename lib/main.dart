@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -8,8 +9,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:zruri_flutter/core/routes/app_routes.dart';
 import 'package:zruri_flutter/core/themes/app_theme.dart';
-import 'package:zruri_flutter/firebase_options.dart';
 import 'package:zruri_flutter/core/utils/constants.dart';
+import 'package:zruri_flutter/firebase_options.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 void main() async {
@@ -17,6 +18,10 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: false,
+  );
   await GetStorage.init();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   PlatformDispatcher.instance.onError = (error, stackTrace) {

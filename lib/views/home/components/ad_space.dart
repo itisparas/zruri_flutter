@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:zruri_flutter/views/home/controllers/ad_space_controller.dart';
 
-class AdSpace extends StatefulWidget {
+class AdSpace extends StatelessWidget {
   const AdSpace({super.key});
 
   @override
-  State<AdSpace> createState() => _AdSpaceState();
-}
-
-class _AdSpaceState extends State<AdSpace> {
-  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final AdSpaceController controller = Get.put(AdSpaceController());
+
+    return Obx(
+      () => Text('Ad Space Count: ${controller.adSpaces.length}'),
+    );
   }
 }

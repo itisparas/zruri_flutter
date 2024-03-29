@@ -79,7 +79,13 @@ class HomePage extends GetView<AuthController> {
                 )
               ],
             ),
-            const SliverToBoxAdapter(child: AdSpace()),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: Get.width,
+                width: Get.width,
+                child: AdSpace(),
+              ),
+            ),
             const SliverToBoxAdapter(
               child: Text('Trending'),
             ),

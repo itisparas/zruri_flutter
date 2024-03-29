@@ -8,7 +8,7 @@ import 'package:zruri_flutter/views/entrypoint/components/app_bottom_nav_bar.dar
 import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
 class EntrypointUI extends StatelessWidget {
-  ScreenController c = Get.put(ScreenController());
+  final ScreenController c = Get.put(ScreenController());
 
   EntrypointUI({super.key});
 
