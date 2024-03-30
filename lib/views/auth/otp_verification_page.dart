@@ -78,8 +78,7 @@ class OtpVerificationPage extends StatelessWidget {
                                   focusNode: focusNode,
                                   autofocus: true,
                                   androidSmsAutofillMethod:
-                                      AndroidSmsAutofillMethod
-                                          .smsUserConsentApi,
+                                      AndroidSmsAutofillMethod.none,
                                   listenForMultipleSmsOnAndroid: true,
                                   focusedPinTheme: focusedPinTheme,
                                   defaultPinTheme: defaultPinTheme,
