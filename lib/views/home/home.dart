@@ -8,6 +8,8 @@ import 'package:zruri_flutter/core/constants/constants.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 import 'package:zruri_flutter/views/home/components/ad_space.dart';
 import 'package:zruri_flutter/views/home/components/categories.dart';
+import 'package:zruri_flutter/views/home/components/footer.dart';
+import 'package:zruri_flutter/views/home/components/recommendations.dart';
 
 class HomePage extends GetView<AuthController> {
   const HomePage({super.key});
@@ -92,20 +94,18 @@ class HomePage extends GetView<AuthController> {
             SliverToBoxAdapter(
               child: SizedBox(
                 width: Get.width,
-                child: const Categories(),
+                child: Categories(),
               ),
             ),
             SliverToBoxAdapter(
               child: SizedBox(
-                height: Get.height,
+                width: Get.width,
+                child: const Recommendations(),
               ),
             ),
-            const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: AppDefaults.padding),
-              sliver: SliverToBoxAdapter(
-                child: Text('Trending Packs'),
-              ),
-            ),
+            const SliverToBoxAdapter(
+              child: Footer(),
+            )
           ],
         ),
       ),

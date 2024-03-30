@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zruri_flutter/views/home/components/carousel.dart';
+import 'package:zruri_flutter/core/components/carousel.dart';
 import 'package:zruri_flutter/views/home/controllers/ad_space_controller.dart';
 
 class AdSpace extends StatelessWidget {

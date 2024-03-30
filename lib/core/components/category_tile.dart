@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 
 class CategoryTile extends StatelessWidget {
@@ -16,19 +15,16 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.scaffoldBackground,
+    return Container(
+      color: Colors.transparent,
+      padding: const EdgeInsets.only(bottom: AppDefaults.padding / 2),
       child: InkWell(
         borderRadius: AppDefaults.borderRadius,
         onTap: onTap,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.scaffoldWithBoxBackground,
-                borderRadius: AppDefaults.borderRadius,
-              ),
+            SizedBox(
               width: AppDefaults.categoryTileWidth,
               child: AspectRatio(
                 aspectRatio: 1.25,

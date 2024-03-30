@@ -85,6 +85,7 @@ class AuthController extends GetxController {
           isDismissible: AppDefaults.isSnackbarDismissible,
           duration: AppDefaults.snackbarDuration,
         );
+        throw Exception(ex);
       },
       codeSent: (String verificationId, int? resendToken) {
         Get.toNamed(
@@ -133,6 +134,7 @@ class AuthController extends GetxController {
         isDismissible: AppDefaults.isSnackbarDismissible,
         duration: AppDefaults.snackbarDuration,
       );
+      throw Exception(e);
     }
   }
 

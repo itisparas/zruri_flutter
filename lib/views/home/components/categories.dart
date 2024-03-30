@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:zruri_flutter/core/components/category_tile.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
-import 'package:zruri_flutter/views/home/components/category_tile.dart';
+import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
 class Categories extends StatelessWidget {
-  const Categories({super.key});
+  final ScreenController controller = Get.find();
+
+  Categories({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Theme.of(context).colorScheme.primaryContainer.withAlpha(75),
       padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding / 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,12 +27,18 @@ class Categories extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  controller.onChange(1);
+                },
+                style: TextButton.styleFrom(
+                  splashFactory: NoSplash.splashFactory,
+                ),
                 child: const Text(
                   'view all',
                   style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      decorationStyle: TextDecorationStyle.dashed),
+                    decoration: TextDecoration.underline,
+                    decorationStyle: TextDecorationStyle.dashed,
+                  ),
                 ),
               )
             ],
