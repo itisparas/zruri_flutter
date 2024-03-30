@@ -10,6 +10,10 @@ class AppDefaults {
   static const double padding = 15;
   static const double inputRadius = 4;
 
+  // Home page specific variables
+  static const int categoryTilesCount = 4;
+  static double categoryTileWidth = Get.width * .2;
+
   static const Duration adSpaceCarouselInterval = Duration(seconds: 7);
   static const Duration adSpaceCarouselAnimation = Duration(milliseconds: 50);
 

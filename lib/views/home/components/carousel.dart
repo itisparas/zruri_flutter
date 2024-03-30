@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
-import 'package:zruri_flutter/models/ad_space_model.dart';
 import 'package:zruri_flutter/core/services/firebase_storage_service.dart';
+import 'package:zruri_flutter/models/ad_space_model.dart';
 
 class Carousel extends StatefulWidget {
   final List<AdSpaceModel> data;
@@ -35,11 +37,20 @@ class _CarouselState extends State<Carousel> {
                 },
                 child: CachedNetworkImage(
                   imageUrl: snapshot.data!,
+                  placeholder: (context, url) {
+                    return const SpinKitSpinningLines(
+                      color: AppColors.primary,
+                    );
+                  },
                   fit: BoxFit.cover,
                 ),
               );
             } else {
-              return const CircularProgressIndicator();
+              return const Center(
+                child: SpinKitSpinningLines(
+                  color: AppColors.primary,
+                ),
+              );
             }
           },
         );

@@ -12,7 +12,7 @@ class AdSpace extends StatelessWidget {
 
     return Scaffold(
       body: Obx(
-        () => Carousel(data: controller.adSpaces.value),
+        () => Carousel(data: controller.adSpaces.toList()),
       ),
     );
   }

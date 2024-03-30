@@ -7,6 +7,7 @@ import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/constants.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 import 'package:zruri_flutter/views/home/components/ad_space.dart';
+import 'package:zruri_flutter/views/home/components/categories.dart';
 
 class HomePage extends GetView<AuthController> {
   const HomePage({super.key});
@@ -26,48 +27,50 @@ class HomePage extends GetView<AuthController> {
                 ),
               ),
               floating: false,
-              title: GestureDetector(
-                onTap: () {
-                  log('message');
-                },
-                child: Container(
-                    padding: const EdgeInsets.all(AppDefaults.padding / 4),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(kToolbarHeight),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          padding:
-                              const EdgeInsets.all(AppDefaults.padding / 2),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
+              title: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    log('message');
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.all(AppDefaults.padding / 4),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(kToolbarHeight),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding:
+                                const EdgeInsets.all(AppDefaults.padding / 2),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.location_on_outlined),
                           ),
-                          child: const Icon(Icons.location_on_outlined),
-                        ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(left: AppDefaults.padding / 2),
-                          child: Text(
-                            'Bathinda, PB',
-                            style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationStyle: TextDecorationStyle.dashed),
+                          const Padding(
+                            padding:
+                                EdgeInsets.only(left: AppDefaults.padding / 2),
+                            child: Text(
+                              'Bathinda, PB',
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationStyle: TextDecorationStyle.dashed),
+                            ),
                           ),
-                        ),
-                        Icon(
-                          Icons.arrow_drop_down_rounded,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                        const SizedBox(
-                          width: AppDefaults.padding / 2,
-                        ),
-                      ],
-                    )),
+                          Icon(
+                            Icons.arrow_drop_down_rounded,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                          const SizedBox(
+                            width: AppDefaults.padding / 2,
+                          ),
+                        ],
+                      )),
+                ),
               ),
               actions: [
                 Padding(
@@ -83,11 +86,14 @@ class HomePage extends GetView<AuthController> {
               child: SizedBox(
                 height: Get.width,
                 width: Get.width,
-                child: AdSpace(),
+                child: const AdSpace(),
               ),
             ),
-            const SliverToBoxAdapter(
-              child: Text('Trending'),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                width: Get.width,
+                child: const Categories(),
+              ),
             ),
             SliverToBoxAdapter(
               child: SizedBox(
