@@ -1,6 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
@@ -12,6 +10,7 @@ class AuthController extends GetxController {
 
   Rx<User?> firebaseUser = null.obs;
   Rx<bool> isLoggedIn = false.obs;
+  Rx<String?> verificationId = ''.obs;
   Rx<PhoneNumber> phoneNumberParsed = PhoneNumber.parse('919123456789').obs;
 
   @override
@@ -50,12 +49,6 @@ class AuthController extends GetxController {
         duration: AppDefaults.snackbarDuration,
       );
     } on FirebaseAuthException catch (e) {
-      FirebaseCrashlytics.instance.recordFlutterError(
-        FlutterErrorDetails(
-          exception: e,
-        ),
-        fatal: false,
-      );
       Get.snackbar(
         AppMessages.enUs['snackbar']['error.title'],
         AppMessages.enUs['snackbar']['auth']['error']['updateDisplayName'],
@@ -65,6 +58,7 @@ class AuthController extends GetxController {
         isDismissible: AppDefaults.isSnackbarDismissible,
         duration: AppDefaults.snackbarDuration,
       );
+      throw Exception(e);
     }
   }
 
@@ -87,6 +81,8 @@ class AuthController extends GetxController {
         );
       },
       codeSent: (String verificationId, int? resendToken) {
+        this.verificationId.value = verificationId;
+
         Get.toNamed(
           '/otp-verification',
           arguments: {
@@ -112,7 +108,9 @@ class AuthController extends GetxController {
   void handleOtpSubmit(String otp) async {
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: Get.arguments['verificationId'], smsCode: otp);
+        verificationId: verificationId.value!,
+        smsCode: otp,
+      );
       await FirebaseAuth.instance.signInWithCredential(credential);
       Get.snackbar(
         AppMessages.enUs['snackbar']['success.title'],
@@ -133,6 +131,7 @@ class AuthController extends GetxController {
         isDismissible: AppDefaults.isSnackbarDismissible,
         duration: AppDefaults.snackbarDuration,
       );
+      throw Exception(e);
     }
   }
 
@@ -149,12 +148,6 @@ class AuthController extends GetxController {
         duration: AppDefaults.snackbarDuration,
       );
     } on FirebaseAuthException catch (e) {
-      FirebaseCrashlytics.instance.recordFlutterError(
-        FlutterErrorDetails(
-          exception: e,
-        ),
-        fatal: false,
-      );
       Get.snackbar(
         AppMessages.enUs['snackbar']['error.title'],
         AppMessages.enUs['snackbar']['auth']['error']['logout'],
@@ -164,6 +157,7 @@ class AuthController extends GetxController {
         isDismissible: AppDefaults.isSnackbarDismissible,
         duration: AppDefaults.snackbarDuration,
       );
+      throw Exception(e);
     }
   }
 }
