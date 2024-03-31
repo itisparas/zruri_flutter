@@ -9,12 +9,12 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: Get.width / 1.5,
+      height: Get.width / 2,
       child: Container(
           color: Theme.of(context).colorScheme.primaryContainer.withAlpha(75),
           alignment: Alignment.centerLeft,
           padding:
-              const EdgeInsets.symmetric(horizontal: AppDefaults.padding * 4),
+              const EdgeInsets.symmetric(horizontal: AppDefaults.padding * 2),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,7 +23,7 @@ class Footer extends StatelessWidget {
                 children: [
                   Text(
                     'Crafted with ',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Theme.of(context).hintColor,
                           fontWeight: FontWeight.bold,
                         ),
@@ -34,19 +34,19 @@ class Footer extends StatelessWidget {
                     color: Theme.of(context).colorScheme.error,
                   ),
                   Text(
-                    ' by',
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    ' for',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).hintColor,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(
-                height: 10,
+                height: 4,
               ),
               Text(
-                'Vyrbix',
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                'Zruri',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Theme.of(context).hintColor,
                     fontWeight: FontWeight.bold),
               )

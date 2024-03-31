@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zruri_flutter/core/components/listing_item.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 
 class Recommendations extends StatelessWidget {
@@ -6,18 +7,32 @@ class Recommendations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(AppDefaults.padding / 2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Fresh recommendations',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(AppDefaults.padding / 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'For you',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          ListingItem(
+            image: 'pexels-binyamin-mellish-186077.jpg',
+            price: '10,000',
+            title:
+                'Maruti Suzuki Wagon-R 2014 model first-owner perfect condition',
+            timeline: 'Today',
+            location: 'Gurugram, HR',
+          ),
+          ListingItem(
+            image: 'pexels-julia-kuzenkov-1974596.jpg',
+            price: '12,936',
+            title:
+                'Hyundai i20 Sports edition 2019 model first-owner recently bought',
+            timeline: 'last week',
+            location: 'Kharar, PB',
+          )
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 
 class CategoryTile extends StatelessWidget {
@@ -24,7 +25,10 @@ class CategoryTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
+            Container(
+              decoration: const BoxDecoration(
+                color: AppColors.scaffoldWithBoxBackground,
+              ),
               width: AppDefaults.categoryTileWidth,
               child: AspectRatio(
                 aspectRatio: 1.25,

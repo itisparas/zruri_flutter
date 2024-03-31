@@ -139,6 +139,12 @@ class Profile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
+                        height: 10,
+                      ),
+                      const Center(
+                        child: Text('Vyrbix 1.0.0'),
+                      ),
+                      const SizedBox(
                         height: 30,
                       ),
                     ],

@@ -12,8 +12,8 @@ class Categories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.primaryContainer.withAlpha(75),
+    return SizedBox(
+        child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding / 2),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,9 +86,12 @@ class Categories extends StatelessWidget {
                 onTap: () {},
               ),
             ],
-          )
+          ),
+          const SizedBox(
+            height: AppDefaults.margin / 2,
+          ),
         ],
       ),
-    );
+    ));
   }
 }

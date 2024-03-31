@@ -57,7 +57,7 @@ class HomePage extends GetView<AuthController> {
                             padding:
                                 EdgeInsets.only(left: AppDefaults.padding / 2),
                             child: Text(
-                              'Bathinda, PB',
+                              'Gurgaon, HR',
                               style: TextStyle(
                                   decoration: TextDecoration.underline,
                                   decorationStyle: TextDecorationStyle.dashed),
