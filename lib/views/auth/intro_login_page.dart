@@ -110,11 +110,17 @@ class IntroLoginPage extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  child: const Text('Continue'),
+                  child: Obx(
+                    () => Text(
+                      authController.isLoading.value
+                          ? 'Loading...'
+                          : 'Continue',
+                    ),
+                  ),
                   onPressed: () async {
                     var phoneNumber =
                         "${c.selectedCountry.value.phoneCode}${phoneNumberController.value.text}";
-                    authController.sendOtp(
+                    await authController.sendOtp(
                       phoneNumber: phoneNumber,
                     );
                   },

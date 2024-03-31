@@ -102,7 +102,13 @@ class OtpVerificationPage extends StatelessWidget {
                               pinFieldController.value.text.toString(),
                             );
                           },
-                          child: const Text('Continue'),
+                          child: Obx(
+                            () => Text(
+                              authController.isLoading.value
+                                  ? 'Loading...'
+                                  : 'Continue',
+                            ),
+                          ),
                         ),
                       ),
                     ],

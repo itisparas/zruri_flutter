@@ -8,6 +8,8 @@ import 'package:zruri_flutter/core/routes/app_route_names.dart';
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
 
+  RxBool isLoading = false.obs;
+
   Rx<User?> firebaseUser = null.obs;
   Rx<bool> isLoggedIn = false.obs;
   Rx<String?> verificationId = ''.obs;
@@ -63,65 +65,55 @@ class AuthController extends GetxController {
   }
 
   // Handle sign in of user to send OTP
-  void sendOtp({required String phoneNumber}) async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+$phoneNumber',
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        await FirebaseAuth.instance.signInWithCredential(credential);
-      },
-      verificationFailed: (FirebaseAuthException ex) {
-        Get.snackbar(
-          AppMessages.enUs['snackbar']['error.title'],
-          AppMessages.enUs['snackbar']['auth']['error']['otpSendFailed'],
-          snackPosition: AppDefaults.snackPosition,
-          backgroundColor: AppDefaults.snackbarBackgroundColor,
-          colorText: AppDefaults.snackbarColorText,
-          isDismissible: AppDefaults.isSnackbarDismissible,
-          duration: AppDefaults.snackbarDuration,
-        );
-        throw Exception(ex);
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        this.verificationId.value = verificationId;
+  Future<void> sendOtp({required String phoneNumber}) async {
+    isLoading.value = true;
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: '+$phoneNumber',
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException ex) {
+          Get.snackbar(
+            AppMessages.enUs['snackbar']['error.title'],
+            AppMessages.enUs['snackbar']['auth']['error']['otpSendFailed'],
+            snackPosition: AppDefaults.snackPosition,
+            backgroundColor: AppDefaults.snackbarBackgroundColor,
+            colorText: AppDefaults.snackbarColorText,
+            isDismissible: AppDefaults.isSnackbarDismissible,
+            duration: AppDefaults.snackbarDuration,
+          );
+          isLoading.value = false;
+          throw Exception(ex);
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          this.verificationId.value = verificationId;
 
-        Get.toNamed(
-          '/otp-verification',
-          arguments: {
-            'phoneNumber': '+$phoneNumber',
-            'verificationId': verificationId,
-          },
-        );
-        Get.snackbar(
-          AppMessages.enUs['snackbar']['success.title'],
-          AppMessages.enUs['snackbar']['auth']['success']['otpSent'],
-          snackPosition: AppDefaults.snackPosition,
-          backgroundColor: AppDefaults.snackbarBackgroundColor,
-          colorText: AppDefaults.snackbarColorText,
-          isDismissible: AppDefaults.isSnackbarDismissible,
-          duration: AppDefaults.snackbarDuration,
-        );
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
+          Get.toNamed(
+            '/otp-verification',
+            arguments: {
+              'phoneNumber': '+$phoneNumber',
+              'verificationId': verificationId,
+            },
+          );
+          isLoading.value = false;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 
   // Handle on otp submit
   void handleOtpSubmit(String otp) async {
+    isLoading.value = true;
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId.value!,
         smsCode: otp,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
-      Get.snackbar(
-        AppMessages.enUs['snackbar']['success.title'],
-        AppMessages.enUs['snackbar']['auth']['success']['login'],
-        snackPosition: AppDefaults.snackPosition,
-        backgroundColor: AppDefaults.snackbarBackgroundColor,
-        colorText: AppDefaults.snackbarColorText,
-        isDismissible: AppDefaults.isSnackbarDismissible,
-        duration: AppDefaults.snackbarDuration,
-      );
     } catch (e) {
       Get.snackbar(
         AppMessages.enUs['snackbar']['error.title'],
@@ -132,6 +124,7 @@ class AuthController extends GetxController {
         isDismissible: AppDefaults.isSnackbarDismissible,
         duration: AppDefaults.snackbarDuration,
       );
+      isLoading.value = false;
       throw Exception(e);
     }
   }
