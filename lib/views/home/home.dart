@@ -1,14 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/constants.dart';
+import 'package:zruri_flutter/core/routes/app_route_names.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 import 'package:zruri_flutter/views/home/components/ad_space.dart';
 import 'package:zruri_flutter/views/home/components/categories.dart';
-import 'package:zruri_flutter/views/home/components/footer.dart';
+import 'package:zruri_flutter/core/components/footer.dart';
 import 'package:zruri_flutter/views/home/components/recommendations.dart';
 
 class HomePage extends GetView<AuthController> {
@@ -32,7 +31,7 @@ class HomePage extends GetView<AuthController> {
               title: Center(
                 child: GestureDetector(
                   onTap: () {
-                    log('message');
+                    Get.toNamed(AppRouteNames.promptLocation);
                   },
                   child: Container(
                       padding: const EdgeInsets.all(AppDefaults.padding / 4),

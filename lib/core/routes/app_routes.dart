@@ -22,6 +22,7 @@ class AppRoutes {
     GetPage(
       name: AppRouteNames.promptLocation,
       page: () => const PromptLocation(),
+      transition: Transition.downToUp,
     ),
     GetPage(
       name: AppRouteNames.inputManualLocation,

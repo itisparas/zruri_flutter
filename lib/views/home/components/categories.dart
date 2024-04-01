@@ -14,7 +14,7 @@ class Categories extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding / 2),
+      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -53,8 +53,7 @@ class Categories extends StatelessWidget {
                 onTap: () {},
               ),
               SizedBox(
-                width: AppDefaults.categoryTileWidth /
-                    AppDefaults.categoryTilesCount,
+                width: AppDefaults.categoryTileGutterWidth,
               ),
               CategoryTile(
                 icon: const Icon(
@@ -64,8 +63,7 @@ class Categories extends StatelessWidget {
                 onTap: () {},
               ),
               SizedBox(
-                width: AppDefaults.categoryTileWidth /
-                    AppDefaults.categoryTilesCount,
+                width: AppDefaults.categoryTileGutterWidth,
               ),
               CategoryTile(
                 icon: const Icon(
@@ -75,8 +73,7 @@ class Categories extends StatelessWidget {
                 onTap: () {},
               ),
               SizedBox(
-                width: AppDefaults.categoryTileWidth /
-                    AppDefaults.categoryTilesCount,
+                width: AppDefaults.categoryTileGutterWidth,
               ),
               CategoryTile(
                 icon: const Icon(

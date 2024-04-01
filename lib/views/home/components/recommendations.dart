@@ -8,13 +8,16 @@ class Recommendations extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(AppDefaults.padding / 2),
+      padding: const EdgeInsets.all(AppDefaults.padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'For you',
             style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(
+            height: AppDefaults.padding / 4,
           ),
           ListingItem(
             image: 'pexels-binyamin-mellish-186077.jpg',
