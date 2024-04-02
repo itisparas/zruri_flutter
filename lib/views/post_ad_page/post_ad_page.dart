@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri_flutter/controllers/categories_controller.dart';
-import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_icons.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
 import 'package:zruri_flutter/core/constants/constants.dart';
@@ -47,13 +46,12 @@ class PostAdPage extends StatelessWidget {
                 ),
               ),
             ),
-            Obx(() => categoriesController.loading.value
-                ? const SliverToBoxAdapter(
-                    child: CircularProgressIndicator(),
-                  )
-                : SliverPadding(
-                    padding: const EdgeInsets.all(AppDefaults.padding),
-                    sliver: SliverGrid(
+            Obx(
+              () => categoriesController.loading.value
+                  ? const SliverToBoxAdapter(
+                      child: CircularProgressIndicator(),
+                    )
+                  : SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -101,7 +99,7 @@ class PostAdPage extends StatelessWidget {
                         childCount: categoriesController.categories.length,
                       ),
                     ),
-                  )),
+            ),
           ],
         ),
       ),
