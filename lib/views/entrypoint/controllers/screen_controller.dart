@@ -35,7 +35,16 @@ class ScreenController extends GetxController {
     super.onClose();
   }
 
+  gotoPrevPage() {
+    if (box.read('prevPage') != null) {
+      onChange(box.read('prevPage') as int);
+    } else {
+      onChange(0);
+    }
+  }
+
   onChange(int index) {
+    box.write('prevPage', box.read('currentPage') as int? ?? 0);
     box.write('currentPage', index);
     currentIndex(index);
   }

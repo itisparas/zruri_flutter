@@ -1,6 +1,8 @@
 class AppMessages {
   static const Map<String, dynamic> enUs = {
     'app.title': "Zruri",
+    'postingpage.title': 'Post your ad',
+    'postingpage.choosecategory': 'Choose your category',
     "prompt.location.title": "Hey buddy! \n Where are you located?",
     'prompt.location.description':
         'To provide the relevant services/products we need to know your location.',

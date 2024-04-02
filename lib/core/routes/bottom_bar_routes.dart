@@ -9,7 +9,7 @@ class BottomBarRoutes {
   static List<Widget> pages = [
     const HomePage(),
     const CategoriesPage(),
-    const PostAdPage(),
+    PostAdPage(),
     const MyAdsPage(),
     Profile()
   ];
