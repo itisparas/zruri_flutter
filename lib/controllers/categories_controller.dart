@@ -5,13 +5,13 @@ import 'package:zruri_flutter/models/categories_model.dart';
 class CategoriesController extends GetxController {
   final GetCategoriesService _categoryService = Get.put(GetCategoriesService());
 
-  var categories = <dynamic>[].obs;
+  var categories = <CategoriesModel>[].obs;
   var loading = true.obs;
 
   @override
   void onInit() {
-    super.onInit();
     _loadCategories();
+    super.onInit();
   }
 
   Future<void> _loadCategories() async {

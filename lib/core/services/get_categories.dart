@@ -9,9 +9,12 @@ class GetCategoriesService extends GetxService {
     try {
       QuerySnapshot querySnapshot =
           await _firestore.collection('categories').get();
-      return querySnapshot.docs
-          .map((doc) => CategoriesModel.fromDocumentSnapshot(doc))
-          .toList();
+
+      List<CategoriesModel> categories = querySnapshot.docs.map((doc) {
+        return CategoriesModel.fromDocumentSnapshot(doc);
+      }).toList();
+
+      return categories;
     } catch (e) {
       throw Exception(e);
     }

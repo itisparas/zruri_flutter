@@ -8,6 +8,7 @@ import 'package:zruri_flutter/views/home/home.dart';
 import 'package:zruri_flutter/views/location_page/input_manual_location.dart';
 import 'package:zruri_flutter/views/location_page/prompt_location.dart';
 import 'package:zruri_flutter/views/onboarding/onboarding_page.dart';
+import 'package:zruri_flutter/views/post_ad_page/details_page_2.dart';
 
 class AppRoutes {
   static const String initialRoute = '/onboarding';
@@ -19,6 +20,10 @@ class AppRoutes {
     GetPage(name: '/otp-verification', page: () => OtpVerificationPage()),
     GetPage(name: '/entrypoint', page: () => EntrypointUI()),
     GetPage(name: '/home', page: () => const HomePage()),
+    GetPage(
+      name: AppRouteNames.detailsPage,
+      page: () => DetailsPage2(),
+    ),
     GetPage(
       name: AppRouteNames.promptLocation,
       page: () => const PromptLocation(),
