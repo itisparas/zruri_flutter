@@ -65,7 +65,9 @@ class ListingItem extends StatelessWidget {
                     );
                   } else {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: AppColors.primary,
+                      ),
                     );
                   }
                 },
