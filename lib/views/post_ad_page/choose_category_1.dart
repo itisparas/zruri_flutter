@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri_flutter/controllers/categories_controller.dart';
+import 'package:zruri_flutter/core/constants/app_colors.dart';
+import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_icons.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
-import 'package:zruri_flutter/core/constants/constants.dart';
 import 'package:zruri_flutter/core/routes/app_route_names.dart';
 import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
@@ -20,91 +21,114 @@ class ChooseCategory1 extends StatelessWidget {
         Get.put(CategoriesController());
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              leading: IconButton(
-                onPressed: () {
-                  screenController.gotoPrevPage();
-                },
-                icon: const Icon(
-                  Icons.arrow_back_ios,
+        child: Stack(
+          children: [
+            CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  leading: IconButton(
+                    onPressed: () {
+                      screenController.gotoPrevPage();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                    ),
+                  ),
+                  title: Text(
+                    AppMessages.enUs['postingpage.title'],
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                 ),
-              ),
-              title: Text(
-                AppMessages.enUs['postingpage.title'],
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppDefaults.padding,
-                  vertical: AppDefaults.padding / 2,
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppDefaults.padding,
+                      vertical: AppDefaults.padding / 2,
+                    ),
+                    child: Text(
+                      AppMessages.enUs['postingpage.choosecategory'],
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
                 ),
-                child: Text(
-                  AppMessages.enUs['postingpage.choosecategory'],
-                  style: Theme.of(context).textTheme.titleMedium,
+                Obx(
+                  () => categoriesController.loading.value
+                      ? const SliverToBoxAdapter(
+                          child: SizedBox(),
+                        )
+                      : SliverGrid(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => Padding(
+                              padding:
+                                  const EdgeInsets.all(AppDefaults.padding),
+                              child: IconButton(
+                                onPressed: () {
+                                  Get.offAllNamed(
+                                    '${AppRouteNames.detailsPageMainRoute}${categoriesController.categories[index].name}',
+                                  );
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                    AppColors.scaffoldWithBoxBackground,
+                                  ),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: AppDefaults.borderRadius,
+                                    ),
+                                  ),
+                                ),
+                                icon: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    appIcons.categoriesIcon.containsKey(
+                                            categoriesController
+                                                .categories[index].name)
+                                        ? appIcons.categoriesIcon[
+                                            categoriesController
+                                                .categories[index].name]
+                                        : Text(categoriesController
+                                            .categories[index].name),
+                                    const SizedBox(
+                                      height: AppDefaults.padding / 2,
+                                    ),
+                                    Text(
+                                      categoriesController
+                                          .categories[index].name
+                                          .toString()
+                                          .replaceAll(RegExp(r'[^\w\s]+'), ' ')
+                                          .capitalizeFirst!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            childCount: categoriesController.categories.length,
+                          ),
+                        ),
                 ),
-              ),
+              ],
             ),
             Obx(
               () => categoriesController.loading.value
-                  ? const SliverToBoxAdapter(
-                      child: CircularProgressIndicator(),
-                    )
-                  : SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => Padding(
-                          padding: const EdgeInsets.all(AppDefaults.padding),
-                          child: IconButton(
-                            onPressed: () {
-                              Get.offAllNamed(
-                                '${AppRouteNames.detailsPageMainRoute}${categoriesController.categories[index].name}',
-                              );
-                            },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                AppColors.scaffoldWithBoxBackground,
-                              ),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: AppDefaults.borderRadius,
-                                ),
-                              ),
-                            ),
-                            icon: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                appIcons.categoriesIcon.containsKey(
-                                        categoriesController
-                                            .categories[index].name)
-                                    ? appIcons.categoriesIcon[
-                                        categoriesController
-                                            .categories[index].name]
-                                    : Text(categoriesController
-                                        .categories[index].name),
-                                const SizedBox(
-                                  height: AppDefaults.padding / 2,
-                                ),
-                                Text(
-                                  categoriesController.categories[index].name
-                                      .toString()
-                                      .replaceAll(RegExp(r'[^\w\s]+'), ' ')
-                                      .capitalizeFirst!,
-                                  style: Theme.of(context).textTheme.titleSmall,
-                                ),
-                              ],
-                            ),
-                          ),
+                  ? const Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
                         ),
-                        childCount: categoriesController.categories.length,
                       ),
-                    ),
+                    )
+                  : const SizedBox.shrink(),
             ),
           ],
         ),
