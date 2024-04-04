@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri_flutter/controllers/categories_controller.dart';
@@ -19,16 +17,12 @@ class DetailsPage2 extends StatelessWidget {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      log('Validated Form');
       _formKey.currentState!.save();
-      // log the value of field 'title' in the form.
-      log(_formKey.currentState.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    log(categoriesController.categories.toList().toString());
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
