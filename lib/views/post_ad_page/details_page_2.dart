@@ -106,49 +106,65 @@ class DetailsPage2 extends StatelessWidget {
                           );
                         },
                       ),
-                      Obx(
-                        () => imageUploadController.uploading.value
-                            ? const CircularProgressIndicator(
-                                color: AppColors.primary,
-                              )
-                            : IconButton.outlined(
-                                onPressed: imageUploadController.uploading.value
-                                    ? null
-                                    : () async {
-                                        final List<XFile> images =
-                                            await ImagePicker()
-                                                .pickMultiImage();
-                                        final List<File> imageFiles = <File>[];
-                                        for (XFile image in images) {
-                                          imageFiles.add(File(image.path));
-                                        }
-                                        await imageUploadController
-                                            .uploadImages(
-                                          files: imageFiles,
-                                          dirName: 'ads',
-                                          userSpecific: true,
-                                        );
-                                      },
-                                icon: const Icon(Icons.add),
-                                style: ButtonStyle(
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: AppDefaults.borderRadius,
+                      Row(
+                        children: [
+                          Obx(
+                            () => imageUploadController.uploading.value
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.primary,
+                                  )
+                                : IconButton.outlined(
+                                    onPressed: imageUploadController
+                                            .uploading.value
+                                        ? null
+                                        : () async {
+                                            final List<XFile> images =
+                                                await ImagePicker()
+                                                    .pickMultiImage();
+                                            final List<File> imageFiles =
+                                                <File>[];
+                                            for (XFile image in images) {
+                                              imageFiles.add(File(image.path));
+                                            }
+                                            await imageUploadController
+                                                .uploadImages(
+                                              files: imageFiles,
+                                              dirName: 'ads',
+                                              userSpecific: true,
+                                            );
+                                          },
+                                    icon: const Icon(Icons.add),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              AppDefaults.borderRadius,
+                                        ),
+                                      ),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        AppColors.scaffoldWithBoxBackground,
+                                      ),
                                     ),
                                   ),
-                                  backgroundColor: MaterialStateProperty.all(
-                                    AppColors.scaffoldWithBoxBackground,
-                                  ),
-                                ),
-                              ),
+                          ),
+                          const SizedBox(
+                            width: AppDefaults.margin,
+                          ),
+                          Obx(
+                            () => imageUploadController.images.isEmpty
+                                ? const Text('No image selected.')
+                                : Container(),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: AppDefaults.margin,
                       ),
                       Expanded(
                         child: Obx(
                           () => imageUploadController.images.isEmpty
-                              ? const Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Text('No image selected.'),
-                                )
+                              ? Container()
                               : GridView.builder(
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
