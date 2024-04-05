@@ -9,6 +9,7 @@ class AppMessages {
     'snackbar': {
       'error.title': 'Errr!',
       'success.title': 'Yayy!',
+      'error.imageupload': 'oh no! image upload failed.\nPlease try again.',
       'auth': {
         'error': {
           'otpSendFailed':

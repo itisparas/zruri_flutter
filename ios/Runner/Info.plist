@@ -56,5 +56,9 @@
 	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To enhance your ad with visuals, this app requires access to your photo library. By granting permission, you can easily upload images of the products or services you're advertising. Please note, the photos you select will be publicly displayed alongside your ad to provide a clear and appealing presentation to potential buyers. Your privacy is important to us, and your photos will only be used for the purposes of ad creation and display.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To enrich your advertisements with fresh and appealing visuals, our app requires access to your camera. Granting this permission enables you to directly capture and upload photographs of the products or services you're promoting, ensuring your ads are as engaging and informative as possible. Rest assured, photos taken for ad purposes will be shared publicly within your advertisement, helping you attract the right audience. We prioritize your privacy and assure you that camera access is solely for ad creation and enhancement.</string>
 </dict>
 </plist>

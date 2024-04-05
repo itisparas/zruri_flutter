@@ -3,6 +3,8 @@ import 'package:zruri_flutter/core/services/get_categories.dart';
 import 'package:zruri_flutter/models/categories_model.dart';
 
 class CategoriesController extends GetxController {
+  static CategoriesController instance = Get.find();
+
   final GetCategoriesService _categoryService = Get.put(GetCategoriesService());
 
   var categories = <CategoriesModel>[].obs;
