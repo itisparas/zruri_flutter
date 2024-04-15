@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
+import 'package:zruri_flutter/core/routes/app_route_names.dart';
 
 class PostAdSuccess extends StatelessWidget {
   const PostAdSuccess({super.key});
@@ -13,7 +14,9 @@ class PostAdSuccess extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed(AppRouteNames.entrypoint);
+            },
             icon: const Icon(Icons.close),
           ),
         ],
