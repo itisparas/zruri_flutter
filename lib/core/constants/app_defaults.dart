@@ -20,16 +20,12 @@ class AppDefaults {
       AppDefaults.categoryTilesCount;
 
   // Post ad page specific variables
-  static const int imageTilesCount = 4;
-  static double imageTilesGutterWidth = (AppDefaults.margin / 4);
-  static double imageTilesWidth = (Get.width -
-          2 * AppDefaults.padding -
-          (AppDefaults.imageTilesCount - 1) *
-              AppDefaults.imageTilesGutterWidth) /
-      AppDefaults.imageTilesCount;
+  static const double imageTileWidth = 110;
 
   static const Duration adSpaceCarouselInterval = Duration(seconds: 7);
   static const Duration adSpaceCarouselAnimation = Duration(milliseconds: 50);
+
+  static const Duration animatedTextFadeDuration = Duration(milliseconds: 100);
 
   static BorderRadius borderRadius = BorderRadius.circular(radius);
 

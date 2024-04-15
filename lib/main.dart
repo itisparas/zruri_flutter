@@ -41,6 +41,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).unfocus();
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
     return GetMaterialApp(
       title: title,
       theme: AppTheme.defaultTheme,

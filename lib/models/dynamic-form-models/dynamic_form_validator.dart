@@ -1,15 +1,15 @@
 import 'package:zruri_flutter/models/dynamic-form-models/dynamic_form_validator_types.dart';
 
 class DynamicFormValidator {
-  ValidatorTypeValues type;
-  String errorMessage;
-  int textLength;
+  ValidatorTypeValues type = ValidatorTypeValues.novalidate;
+  String errorMessage = '';
+  int textLength = 255;
 
-  DynamicFormValidator({
-    required this.type,
-    required this.errorMessage,
-    this.textLength = 0,
-  });
+  DynamicFormValidator(
+    this.type,
+    this.errorMessage,
+    this.textLength,
+  );
 
   DynamicFormValidator.fromJson(dynamic json)
       : type = validatorTypeMap[json['type']] ?? ValidatorTypeValues.novalidate,

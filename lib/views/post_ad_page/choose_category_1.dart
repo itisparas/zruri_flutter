@@ -68,7 +68,7 @@ class ChooseCategory1 extends StatelessWidget {
                               child: IconButton(
                                 onPressed: () {
                                   Get.offAllNamed(
-                                    '${AppRouteNames.detailsPageMainRoute}${categoriesController.categories[index].name}',
+                                    '${AppRouteNames.postAdFormPageMainRoute}${categoriesController.categories[index].name}',
                                   );
                                 },
                                 style: ButtonStyle(

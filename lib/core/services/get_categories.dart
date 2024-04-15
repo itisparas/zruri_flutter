@@ -7,8 +7,9 @@ class GetCategoriesService extends GetxService {
 
   Future<List<CategoriesModel>> getCategories() async {
     try {
-      QuerySnapshot querySnapshot =
-          await _firestore.collection('categories').get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('categories')
+          .get(const GetOptions(source: Source.server));
 
       List<CategoriesModel> categories = querySnapshot.docs.map((doc) {
         return CategoriesModel.fromDocumentSnapshot(doc);

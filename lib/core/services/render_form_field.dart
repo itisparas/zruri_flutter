@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:zruri_flutter/models/dynamic-form-models/dynamic_form_field_types.dart';
 import 'package:zruri_flutter/models/dynamic-form-models/dynamic_form_model.dart';
 import 'package:zruri_flutter/models/dynamic-form-models/dynamic_form_validator_types.dart';
 
 class RenderFormField {
-  TextFormField getTextFormFieldWidget(DynamicModel formField) {
+  Widget renderFormField(DynamicModel formField) {
+    if (formField.formType == FormTypeValues.text ||
+        formField.formType == FormTypeValues.number ||
+        formField.formType == FormTypeValues.multiline) {
+      return _getTextFormFieldWidget(formField);
+    } else {
+      return Container();
+    }
+  }
+
+  TextFormField _getTextFormFieldWidget(DynamicModel formField) {
     return TextFormField(
       decoration: InputDecoration(
         isDense: true,
         hintText: formField.fieldPlaceholder,
       ),
       maxLines: formField.maxLines,
-      keyboardType: TextInputType.text,
+      keyboardType: formField.formType == FormTypeValues.text
+          ? TextInputType.text
+          : formField.formType == FormTypeValues.multiline
+              ? TextInputType.multiline
+              : TextInputType.number,
       validator: (value) {
         if (formField.isRequired &&
             formField.validators.any(
-                (element) => element.type == ValidatorTypeValues.notEmpty) &&
+              (element) {
+                return element.type == ValidatorTypeValues.notempty;
+              },
+            ) &&
             (value == null || value.isEmpty)) {
           return formField.validators
               .firstWhere(
-                  (element) => element.type == ValidatorTypeValues.notEmpty)
+                  (element) => element.type == ValidatorTypeValues.notempty)
               .errorMessage;
         }
         if (formField.validators

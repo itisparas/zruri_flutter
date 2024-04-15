@@ -10,6 +10,8 @@ class AppMessages {
       'error.title': 'Errr!',
       'success.title': 'Yayy!',
       'error.imageupload': 'oh no! image upload failed.\nPlease try again.',
+      'error.imagenotuploaded': 'oh no! please upload atleast one image.',
+      'error.invalidform': 'oh no! please re-validate the form.',
       'auth': {
         'error': {
           'otpSendFailed':

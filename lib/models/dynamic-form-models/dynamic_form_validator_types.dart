@@ -1,6 +1,6 @@
 enum ValidatorTypeValues {
   novalidate,
-  notEmpty,
+  notempty,
   textLength,
   phoneNumber,
   age,
@@ -9,7 +9,7 @@ enum ValidatorTypeValues {
 
 final Map<String, ValidatorTypeValues> validatorTypeMap = {
   'novalidate': ValidatorTypeValues.novalidate,
-  'notempty': ValidatorTypeValues.notEmpty,
+  'notempty': ValidatorTypeValues.notempty,
   'textlength': ValidatorTypeValues.textLength,
   'phonenumber': ValidatorTypeValues.phoneNumber,
   'age': ValidatorTypeValues.age,

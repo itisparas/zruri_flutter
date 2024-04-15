@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:uuid/uuid.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
 import 'package:zruri_flutter/core/services/firebase_storage_service.dart';
@@ -12,34 +11,39 @@ class ImageUploadController extends GetxController {
 
   static AuthController authController = Get.find();
 
-  RxList<String> images = <String>[].obs;
-
   RxBool uploading = false.obs;
+
+  RxInt currentUploadingIndex = 0.obs;
 
   FirebaseStorageService storageService = FirebaseStorageService();
 
-  void addImage(String filePath) => images.add(filePath);
-
-  Future<void> uploadImages({
+  Future<List<String>> uploadAdImages({
     required List<File> files,
-    String dirName = '',
-    bool userSpecific = false,
+    required String adId,
   }) async {
+    currentUploadingIndex.value = 0;
     uploading.value = true;
+
+    List<String> filepaths = [];
+
     try {
-      for (File image in files) {
-        String fileName = const Uuid().v6();
-        String userUid =
-            userSpecific ? '${authController.firebaseUser.value?.uid}/' : '';
+      for (int i = 0; i < files.length; i++) {
+        String userUid = '${authController.firebaseUser.value?.uid}/';
+        // Construct the file path for the Firebase storage bucket
         String filePath =
-            '$dirName/$userUid$fileName.${image.path.split('.').last}';
-        addImage(
-          await storageService.uploadImage(
-            file: image,
-            filePath: filePath,
-          ),
-        );
+            'ads/$userUid$adId-${i + 1}.${files[i].path.split('.').last}';
+        await storageService
+            .uploadImage(
+              file: files[i],
+              filePath: filePath,
+            )
+            .then(
+              (value) => currentUploadingIndex.value++,
+              onError: (e) => throw Exception(e),
+            );
+        filepaths.add(filePath);
       }
+      return filepaths;
     } catch (e) {
       Get.snackbar(
         AppMessages.enUs['snackbar']['error.title'],
