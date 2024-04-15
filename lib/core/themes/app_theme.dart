@@ -12,8 +12,6 @@ class AppTheme {
         color: AppColors.gray,
       ),
       textTheme: const TextTheme(
-        bodyLarge: TextStyle(color: AppColors.placeholder),
-        bodyMedium: TextStyle(color: AppColors.placeholder),
         titleMedium: TextStyle(fontSize: 18),
       ),
       scaffoldBackgroundColor: Colors.white,

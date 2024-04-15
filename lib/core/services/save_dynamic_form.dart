@@ -7,10 +7,12 @@ import 'package:zruri_flutter/controllers/image_upload.dart';
 import 'package:zruri_flutter/core/routes/app_route_names.dart';
 import 'package:zruri_flutter/models/dynamic-form-models/dynamic_form_field_types.dart';
 import 'package:zruri_flutter/models/dynamic-form-models/dynamic_form_model.dart';
+import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 class SaveDynamicForm extends GetxController {
   final ImageUploadController imageUploadController =
       Get.put(ImageUploadController());
+  final AuthController authController = Get.find<AuthController>();
 
   RxList<DynamicModel> formFields = <DynamicModel>[].obs;
   RxList<File> images = <File>[].obs;
@@ -28,6 +30,8 @@ class SaveDynamicForm extends GetxController {
 
     formData['filepaths'] =
         await imageUploadController.uploadAdImages(files: images, adId: adId);
+    formData['user'] = authController.firebaseUser.value?.uid;
+    formData['createdAt'] = FieldValue.serverTimestamp();
 
     for (var element in formFields) {
       if (element.formType == FormTypeValues.multiline) {
