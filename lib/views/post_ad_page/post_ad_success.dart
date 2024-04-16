@@ -110,7 +110,10 @@ class PostAdSuccess extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(
+                        '${AppRouteNames.adPageMainRoute}${Get.parameters['adId']}');
+                  },
                   child: const Text('Preview your ad'),
                 ),
               ),

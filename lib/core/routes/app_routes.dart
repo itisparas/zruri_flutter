@@ -5,6 +5,7 @@ import 'package:zruri_flutter/views/auth/intro_login_page.dart';
 import 'package:zruri_flutter/views/auth/otp_verification_page.dart';
 import 'package:zruri_flutter/views/entrypoint/entrypoint_ui.dart';
 import 'package:zruri_flutter/views/home/home.dart';
+import 'package:zruri_flutter/views/listings/ad_page.dart';
 import 'package:zruri_flutter/views/location_page/input_manual_location.dart';
 import 'package:zruri_flutter/views/location_page/prompt_location.dart';
 import 'package:zruri_flutter/views/onboarding/onboarding_page.dart';
@@ -21,7 +22,14 @@ class AppRoutes {
     GetPage(name: '/otp-verification', page: () => OtpVerificationPage()),
     GetPage(name: '/entrypoint', page: () => EntrypointUI()),
     GetPage(name: '/home', page: () => const HomePage()),
-    GetPage(name: '/post-ad-success', page: () => const PostAdSuccess()),
+    GetPage(
+      name: AppRouteNames.postAdSuccessPage,
+      page: () => const PostAdSuccess(),
+    ),
+    GetPage(
+      name: AppRouteNames.adPage,
+      page: () => AdPage(),
+    ),
     GetPage(
       name: AppRouteNames.postAdFormPage,
       page: () => PostAdFormPage(),

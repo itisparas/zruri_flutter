@@ -18,10 +18,9 @@ class Carousel extends StatefulWidget {
 }
 
 class _CarouselState extends State<Carousel> {
-  final FirebaseStorageService storageService = FirebaseStorageService();
-
   @override
   Widget build(BuildContext context) {
+    final FirebaseStorageService storageService = FirebaseStorageService();
     return CarouselSlider(
       items: widget.data.map((adSpace) {
         return FutureBuilder<String?>(
