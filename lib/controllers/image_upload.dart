@@ -28,7 +28,7 @@ class ImageUploadController extends GetxController {
 
     try {
       for (int i = 0; i < files.length; i++) {
-        String userUid = '${authController.firebaseUser.value?.uid}/';
+        String userUid = '${authController.firebaseUser.value?.user.uid}/';
         // Construct the file path for the Firebase storage bucket
         String filePath =
             'ads/$userUid$adId-${i + 1}.${files[i].path.split('.').last}';

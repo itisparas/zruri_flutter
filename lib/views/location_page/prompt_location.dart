@@ -1,50 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
 import 'package:zruri_flutter/core/routes/app_route_names.dart';
+import 'package:zruri_flutter/views/location_page/controllers/location_controller.dart';
 
-class PromptLocation extends StatefulWidget {
+class PromptLocation extends StatelessWidget {
   const PromptLocation({super.key});
 
   @override
-  State<PromptLocation> createState() => _PromptLocationState();
-}
-
-class _PromptLocationState extends State<PromptLocation> {
-  final bool _loading = false;
-
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!serviceEnabled) {
-      return Future.error('Location permission not enabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error("Location permissions are denied.");
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are denied forever, we cannot request for location permission.');
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    LocationController promptLocationController = Get.put(LocationController());
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -69,7 +37,7 @@ class _PromptLocationState extends State<PromptLocation> {
               child: Text(
                 AppMessages.enUs['prompt.location.description'],
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelLarge,
+                // style: Theme.of(context).textTheme.bodyLarge,
                 overflow: TextOverflow.clip,
               ),
             ),
@@ -82,34 +50,45 @@ class _PromptLocationState extends State<PromptLocation> {
                 left: AppDefaults.padding,
                 right: AppDefaults.padding,
               ),
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.location_on_sharp),
-                      label: const Text('Nearby deals'),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: TextButton(
-                      onPressed: () {
-                        Get.offAndToNamed(AppRouteNames.inputManualLocation);
-                      },
-                      child: const Text(
-                        'Set location manually',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                        ),
+              child: Obx(
+                () => promptLocationController.loading.value
+                    ? const CircularProgressIndicator(
+                        color: AppColors.primary,
+                      )
+                    : Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                await promptLocationController.updateLocation(
+                                  determinePosition: true,
+                                );
+                              },
+                              icon: const Icon(Icons.location_on_sharp),
+                              label: const Text('Nearby deals'),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton(
+                              onPressed: () {
+                                Get.offAndToNamed(
+                                    AppRouteNames.inputManualLocation);
+                              },
+                              child: const Text(
+                                'Set location manually',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  )
-                ],
               ),
             ),
           ],

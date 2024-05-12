@@ -67,7 +67,7 @@ class ChooseCategory1 extends StatelessWidget {
                                   const EdgeInsets.all(AppDefaults.padding),
                               child: IconButton(
                                 onPressed: () {
-                                  Get.offAllNamed(
+                                  Get.toNamed(
                                     '${AppRouteNames.postAdFormPageMainRoute}${categoriesController.categories[index].name}',
                                   );
                                 },

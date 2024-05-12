@@ -1,4 +1,5 @@
 class AppRouteNames {
+  static const landing = '/landing';
   static const onboarding = '/onboarding';
   static const entrypoint = '/entrypoint';
   static const promptLocation = '/prompt-location';

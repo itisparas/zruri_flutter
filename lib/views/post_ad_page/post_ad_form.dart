@@ -8,7 +8,6 @@ import 'package:zruri_flutter/controllers/categories_controller.dart';
 import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
-import 'package:zruri_flutter/core/routes/app_route_names.dart';
 import 'package:zruri_flutter/core/services/render_form_field.dart';
 import 'package:zruri_flutter/core/services/save_dynamic_form.dart';
 import 'package:zruri_flutter/models/categories_model.dart';
@@ -33,16 +32,6 @@ class PostAdFormPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            onPressed: () {
-              screenController.onChange(2);
-              Get.offNamed(AppRouteNames.entrypoint);
-            },
-            icon: const Icon(Icons.close),
-          ),
-        ],
         title: Text(
           AppMessages.enUs['postingpage.title'],
           style: Theme.of(context).textTheme.titleMedium,

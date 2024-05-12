@@ -15,6 +15,7 @@ class HomePage extends GetView<AuthController> {
 
   @override
   Widget build(BuildContext context) {
+    AuthController authController = Get.find<AuthController>();
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -28,12 +29,13 @@ class HomePage extends GetView<AuthController> {
                 ),
               ),
               floating: false,
-              title: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(AppRouteNames.promptLocation);
-                  },
-                  child: Container(
+              title: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRouteNames.promptLocation);
+                    },
+                    child: Container(
                       padding: const EdgeInsets.all(AppDefaults.padding / 4),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer,
@@ -41,7 +43,6 @@ class HomePage extends GetView<AuthController> {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
                             padding:
@@ -52,14 +53,18 @@ class HomePage extends GetView<AuthController> {
                             ),
                             child: const Icon(Icons.location_on_outlined),
                           ),
-                          const Padding(
-                            padding:
-                                EdgeInsets.only(left: AppDefaults.padding / 2),
+                          const SizedBox(
+                            width: AppDefaults.padding / 2,
+                          ),
+                          Expanded(
                             child: Text(
-                              'Gurgaon, HR',
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  decorationStyle: TextDecorationStyle.dashed),
+                              authController.firebaseUser.value!.address,
+                              overflow: TextOverflow.fade,
+                              maxLines: 1,
+                              style: const TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationStyle: TextDecorationStyle.dashed,
+                              ),
                             ),
                           ),
                           Icon(
@@ -70,9 +75,60 @@ class HomePage extends GetView<AuthController> {
                             width: AppDefaults.padding / 2,
                           ),
                         ],
-                      )),
-                ),
+                      ),
+                    ),
+                  );
+                },
               ),
+              // title: Center(
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       Get.toNamed(AppRouteNames.promptLocation);
+              //     },
+              //     child: Container(
+              //         padding: const EdgeInsets.all(AppDefaults.padding / 4),
+              //         decoration: BoxDecoration(
+              //           color: Theme.of(context).colorScheme.primaryContainer,
+              //           borderRadius: BorderRadius.circular(kToolbarHeight),
+              //         ),
+              //         child: Flex(
+              //           mainAxisAlignment: MainAxisAlignment.center,
+              //           mainAxisSize: MainAxisSize.min,
+              //           direction: Axis.horizontal,
+              //           children: [
+              //             Container(
+              //               padding:
+              //                   const EdgeInsets.all(AppDefaults.padding / 2),
+              //               decoration: const BoxDecoration(
+              //                 color: Colors.white,
+              //                 shape: BoxShape.circle,
+              //               ),
+              //               child: const Icon(Icons.location_on_outlined),
+              //             ),
+              //             Container(
+              //               padding: const EdgeInsets.only(
+              //                 left: AppDefaults.padding / 2,
+              //               ),
+              //               child: Text(
+              //                 authController.firebaseUser.value!.address,
+              //                 overflow: TextOverflow.fade,
+              //                 style: const TextStyle(
+              //                   decoration: TextDecoration.underline,
+              //                   decorationStyle: TextDecorationStyle.dashed,
+              //                 ),
+              //               ),
+              //             ),
+              //             Icon(
+              //               Icons.arrow_drop_down_rounded,
+              //               color: Theme.of(context).colorScheme.secondary,
+              //             ),
+              //             const SizedBox(
+              //               width: AppDefaults.padding / 2,
+              //             ),
+              //           ],
+              //         )),
+              //   ),
+              // ),
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(AppDefaults.padding / 2),

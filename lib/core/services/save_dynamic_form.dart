@@ -30,7 +30,7 @@ class SaveDynamicForm extends GetxController {
 
     formData['filepaths'] =
         await imageUploadController.uploadAdImages(files: images, adId: adId);
-    formData['user'] = authController.firebaseUser.value?.uid;
+    formData['user'] = authController.firebaseUser.value?.user.uid;
     formData['createdAt'] = FieldValue.serverTimestamp();
 
     for (var element in formFields) {

@@ -53,6 +53,13 @@ android {
     }
 
     signingConfigs {
+        debug {
+            storeFile rootProject.file('zruri-flutter.jks')
+            storePassword 'android'
+            keyAlias 'zruri_flutter'
+            keyPassword 'android'
+        }
+
         release {
             storeFile rootProject.file('zruri-flutter.jks')
             storePassword 'android'

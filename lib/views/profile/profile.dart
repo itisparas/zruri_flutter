@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
@@ -57,7 +58,12 @@ class Profile extends StatelessWidget {
                         padding:
                             const EdgeInsets.only(right: AppDefaults.padding),
                         child: CircularProfileAvatar(
-                          'https://i.pravatar.cc/300?img=10',
+                          'https://i.pravatar.cc/300',
+                          placeHolder: (context, url) => const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.primary,
+                            ),
+                          ),
                           radius: 50,
                           cacheImage: true,
                         ),
@@ -67,6 +73,7 @@ class Profile extends StatelessWidget {
                         child: TextFormField(
                           controller: displayNameController,
                           style: Theme.of(context).textTheme.titleMedium,
+                          decoration: const InputDecoration(isDense: true),
                           onEditingComplete: () async {
                             await authController.updateUserDisplayName(
                               displayNameController.text,
@@ -101,6 +108,7 @@ class Profile extends StatelessWidget {
                           labelText: 'Phone number',
                           helperMaxLines: 1,
                           helperText: 'Boom! Your phone number is verified.',
+                          isDense: true,
                         ),
                       ),
                       const SizedBox(
