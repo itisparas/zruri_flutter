@@ -29,7 +29,7 @@ class Categories extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   // controller.onChange(1);
-                  Get.toNamed('/post-ad-success/L71PzocQ7xwEDQOJHVvT');
+                  Get.toNamed('/post-ad-success/B7eLB2ETAaAjRoSnxkDJ');
                 },
                 style: TextButton.styleFrom(
                   splashFactory: NoSplash.splashFactory,

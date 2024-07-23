@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zruri_flutter/core/constants/app_colors.dart';
@@ -218,7 +219,63 @@ class AdPage extends StatelessWidget {
                             borderRadius:
                                 BorderRadius.circular(AppDefaults.radius),
                           ),
-                          child: const Text('data'),
+                          child: Obx(
+                            () => adController.loadingUser.value
+                                ? const SpinKitThreeBounce(
+                                    color: AppColors.primary,
+                                    size: 20,
+                                  )
+                                : Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor:
+                                            Theme.of(context).disabledColor,
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            adController.advertiserDetails
+                                                    .value?['displayname'] ??
+                                                'User name',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          Text(
+                                              'member since ${DateFormat.yMMM().format(
+                                                    adController
+                                                        .advertiserDetails
+                                                        .value!['createdAt']
+                                                        .toDate(),
+                                                  ).toString()}'),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      IconButton(
+                                        color: AppColors.primary,
+                                        style: const ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStatePropertyAll(
+                                            Colors.white,
+                                          ),
+                                        ),
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.call),
+                                      ),
+                                    ],
+                                  ),
+                          ),
                         ),
                       ),
                     )

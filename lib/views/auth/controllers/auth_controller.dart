@@ -25,9 +25,11 @@ class AuthController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    firebaseUser = Rx<AuthUser?>(
-      AuthUser.fromFirebaseUser(FirebaseAuth.instance.currentUser!),
-    );
+    firebaseUser = FirebaseAuth.instance.currentUser != null
+        ? Rx<AuthUser?>(
+            AuthUser.fromFirebaseUser(FirebaseAuth.instance.currentUser!),
+          )
+        : null.obs;
 
     FirebaseAuth.instance.userChanges().listen((User? user) {
       firebaseUser.value =
