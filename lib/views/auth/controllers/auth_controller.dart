@@ -110,6 +110,11 @@ class AuthController extends GetxController {
   updateUserDisplayName(String displayName) async {
     try {
       await FirebaseAuth.instance.currentUser?.updateDisplayName(displayName);
+      await _usersCollection.doc(FirebaseAuth.instance.currentUser?.uid).update(
+        {
+          'displayname': FirebaseAuth.instance.currentUser?.displayName,
+        },
+      );
       Get.snackbar(
         AppMessages.enUs['snackbar']['success.title'],
         AppMessages.enUs['snackbar']['auth']['success']['updateDisplayName'],

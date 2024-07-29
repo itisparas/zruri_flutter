@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/services/firebase_storage_service.dart';
+import 'package:zruri_flutter/core/utils/constants.dart';
 import 'package:zruri_flutter/views/listings/controllers/ad_controller.dart';
 
 class AdPage extends StatelessWidget {
@@ -139,7 +140,7 @@ class AdPage extends StatelessWidget {
                           horizontal: AppDefaults.padding,
                         ),
                         child: Text(
-                          adController.adDetails.value?['price'],
+                          currency + adController.adDetails.value?['price'],
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
