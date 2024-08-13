@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:zruri_flutter/controllers/my_ads_controller.dart';
 import 'package:zruri_flutter/core/components/my_ad_item.dart';
 import 'package:zruri_flutter/core/constants/constants.dart';
 import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
-import 'package:zruri_flutter/views/my_ads_page/controllers/my_ads_controller.dart';
 
 class MyAdsPage extends StatelessWidget {
   const MyAdsPage({super.key});

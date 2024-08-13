@@ -5,11 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:zruri_flutter/controllers/my_ads_controller.dart';
 import 'package:zruri_flutter/core/components/skeleton.dart';
 import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
 import 'package:zruri_flutter/core/services/firebase_storage_service.dart';
+import 'package:zruri_flutter/core/services/my_ads_service.dart';
 
 class MyAdItem extends StatelessWidget {
   final FirebaseStorageService storageService = FirebaseStorageService();
@@ -30,6 +32,9 @@ class MyAdItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MyAdsService myAdsService = MyAdsService();
+    MyAdsController myAdsController = Get.find<MyAdsController>();
+
     return SizedBox(
       width: Get.width,
       child: GestureDetector(
@@ -137,11 +142,16 @@ class MyAdItem extends StatelessWidget {
                                     ['confirm.delete']['description']),
                                 actions: <Widget>[
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
                                     child: const Text('Cancel'),
                                   ),
                                   OutlinedButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      await myAdsService.deleteAd(id);
+                                      myAdsController.onInit();
+                                      Navigator.pop(context, 'OK');
+                                    },
                                     child: const Text('Confirm'),
                                   ),
                                 ],

@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:zruri_flutter/core/services/get_my_ads.dart';
+import 'package:zruri_flutter/core/services/my_ads_service.dart';
 import 'package:zruri_flutter/models/my_ads_model.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 class MyAdsController extends GetxController {
-  final GetMyAdsService _myAdsService = Get.put(GetMyAdsService());
+  final MyAdsService _myAdsService = Get.put(MyAdsService());
 
   var myAds = <MyAdsModel>[].obs;
   var loading = true.obs;
