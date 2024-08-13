@@ -6,6 +6,12 @@ class AppMessages {
     "prompt.location.title": "Hey buddy! \n Where are you located?",
     'prompt.location.description':
         'To provide the relevant services/products we need to know your location.',
+    'modal': {
+      'confirm.delete': {
+        'title': 'Confirm delete?',
+        'description': 'Are you sure you want to delete your\'s ad post?'
+      },
+    },
     'snackbar': {
       'error.title': 'Errr!',
       'success.title': 'Yayy!',

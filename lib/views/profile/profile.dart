@@ -6,6 +6,7 @@ import 'package:pinput/pinput.dart';
 import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
+import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
 class Profile extends StatelessWidget {
   final TextEditingController displayNameController = TextEditingController(
@@ -18,6 +19,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AuthController authController = Get.find();
+    ScreenController screenController = Get.find();
 
     FirebaseAuth.instance.authStateChanges().listen(
       (event) {
@@ -33,6 +35,12 @@ class Profile extends StatelessWidget {
         title: Text(
           'Profile',
           style: Theme.of(context).textTheme.titleMedium,
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            screenController.gotoPrevPage();
+          },
         ),
       ),
       body: SafeArea(

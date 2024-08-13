@@ -44,7 +44,6 @@ class SaveDynamicForm extends GetxController {
               '${AppRouteNames.postAdSuccessPageMainRoute}$adId'),
           onError: (e) => throw Exception(e),
         );
-    log(formData.toString());
     isLoading.value = false;
   }
 }
