@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -123,7 +121,34 @@ class MyAdItem extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            log('message');
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext buildContext) =>
+                                  AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: AppDefaults.borderRadius,
+                                ),
+                                title: Text(AppMessages.enUs['modal']
+                                    ['confirm.deactivate']['title']),
+                                content: Text(AppMessages.enUs['modal']
+                                    ['confirm.deactivate']['description']),
+                                actions: <Widget>[
+                                  ElevatedButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  OutlinedButton(
+                                    onPressed: () async {
+                                      await myAdsService.deactivateAd(id);
+                                      myAdsController.onInit();
+                                      Navigator.pop(context, 'OK');
+                                    },
+                                    child: const Text('Confirm'),
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                           icon: const Icon(Icons.visibility_off),
                         ),

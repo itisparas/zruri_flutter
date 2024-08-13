@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zruri_flutter/controllers/my_ads_controller.dart';
@@ -34,37 +35,42 @@ class MyAdsPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(
-                  () => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: myAdsController.myAds
-                        .map(
-                          (element) => MyAdItem(
-                            image: element.imageUrl,
-                            price: element.price.toString(),
-                            title: element.title,
-                            timeline: DateFormat.yMMMd()
-                                .format(
-                                  element.createdAt.toDate(),
-                                )
-                                .toString(),
-                            id: element.id,
-                          ),
-                        )
-                        .toList(),
-                    // children: [
-                    //   ListingItem(
-                    //     image: 'pexels-binyamin-mellish-186077.jpg',
-                    //     price: '10,000',
-                    //     title:
-                    //         'Maruti Suzuki Wagon-R 2014 model first-owner perfect condition',
-                    //     timeline: 'Today',
-                    //     location: 'Gurugram, HR',
-                    //   ),
-                    //   Text(myAdsController.myAds.toString()),
-                    // ],
-                  ),
-                ),
+                Obx(() => myAdsController.myAds.isNotEmpty
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: myAdsController.myAds
+                            .map(
+                              (element) => MyAdItem(
+                                image: element.imageUrl,
+                                price: element.price.toString(),
+                                title: element.title,
+                                timeline: DateFormat.yMMMd()
+                                    .format(
+                                      element.createdAt.toDate(),
+                                    )
+                                    .toString(),
+                                id: element.id,
+                              ),
+                            )
+                            .toList(),
+                      )
+                    : Center(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: Get.height * 0.4,
+                              child: SvgPicture.asset('assets/svg/no-data.svg'),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              'No ads published',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ],
+                        ),
+                      )),
               ],
             ),
           ),

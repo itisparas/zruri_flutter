@@ -11,6 +11,10 @@ class AppMessages {
         'title': 'Confirm delete?',
         'description': 'Are you sure you want to delete your\'s ad post?'
       },
+      'confirm.deactivate': {
+        'title': 'Deactivate ad?',
+        'description': 'Are you sure you want to deactivate your\'s ad post?'
+      }
     },
     'snackbar': {
       'error.title': 'Errr!',

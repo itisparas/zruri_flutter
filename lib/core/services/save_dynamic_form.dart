@@ -32,6 +32,8 @@ class SaveDynamicForm extends GetxController {
         await imageUploadController.uploadAdImages(files: images, adId: adId);
     formData['user'] = authController.firebaseUser.value?.user.uid;
     formData['createdAt'] = FieldValue.serverTimestamp();
+    formData['active'] = true;
+    formData['soft_delete'] = false;
 
     for (var element in formFields) {
       if (element.formType == FormTypeValues.multiline) {

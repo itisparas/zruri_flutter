@@ -5,6 +5,12 @@ import 'package:zruri_flutter/models/my_ads_model.dart';
 class MyAdsService extends GetxService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<void> deactivateAd(String id) async {
+    await _firestore.collection('ads').doc(id).update({'active': false}).then(
+        (value) => true,
+        onError: (e) => throw Exception(e));
+  }
+
   Future<void> deleteAd(String id) async {
     await _firestore
         .collection('ads')
@@ -19,6 +25,7 @@ class MyAdsService extends GetxService {
           .collection('ads')
           .where('user', isEqualTo: userId)
           .where('soft_delete', isNotEqualTo: true)
+          .where('active', isEqualTo: true)
           .get(const GetOptions(source: Source.server));
 
       List<MyAdsModel> myAds = querySnapshot.docs.map((doc) {
