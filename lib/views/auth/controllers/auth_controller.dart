@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -70,6 +68,7 @@ class AuthController extends GetxController {
       if (data != null &&
           data.containsKey('location') &&
           data['location'] != null) {
+        firebaseUser.value?.location = data['location'];
         firebaseUser.value?.address = data['location']['formattedAddress'];
         return true;
       } else {
@@ -103,7 +102,6 @@ class AuthController extends GetxController {
         .doc(firebaseUser.value?.user.uid)
         .update({'location': location}).then(
       (value) {
-        log('message');
         return Get.offAllNamed(AppRouteNames.entrypoint);
       },
       onError: (e) => throw Exception(e),
