@@ -18,6 +18,7 @@ class MyAdItem extends StatelessWidget {
   final String title;
   final String timeline;
   final String id;
+  final bool active;
 
   MyAdItem({
     super.key,
@@ -26,6 +27,7 @@ class MyAdItem extends StatelessWidget {
     required this.title,
     required this.timeline,
     required this.id,
+    required this.active,
   });
 
   @override
@@ -105,53 +107,53 @@ class MyAdItem extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                           ),
+                          Text('Rs. $price'),
                           const SizedBox(
                             height: AppDefaults.margin / 2,
                           ),
-                          Text('Rs. $price'),
+                          Text(
+                            active ? 'Live' : 'Deactivated',
+                            style: TextStyle(
+                              color: active
+                                  ? AppColors.success
+                                  : Theme.of(context).colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
                         ],
                       ),
                     ),
                     Column(
                       children: [
-                        IconButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                              Theme.of(context).colorScheme.primaryContainer,
-                            ),
-                          ),
-                          onPressed: () {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext buildContext) =>
-                                  AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: AppDefaults.borderRadius,
+                        active
+                            ? IconButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
+                                  ),
                                 ),
-                                title: Text(AppMessages.enUs['modal']
-                                    ['confirm.deactivate']['title']),
-                                content: Text(AppMessages.enUs['modal']
-                                    ['confirm.deactivate']['description']),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('Cancel'),
+                                onPressed: () async {
+                                  await myAdsService.deactivateAd(id);
+                                  myAdsController.onInit();
+                                },
+                                icon: const Icon(Icons.visibility_off),
+                              )
+                            : IconButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStatePropertyAll(
+                                    Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
                                   ),
-                                  OutlinedButton(
-                                    onPressed: () async {
-                                      await myAdsService.deactivateAd(id);
-                                      myAdsController.onInit();
-                                      Navigator.pop(context, 'OK');
-                                    },
-                                    child: const Text('Confirm'),
-                                  ),
-                                ],
+                                ),
+                                onPressed: () async {
+                                  await myAdsService.activateAd(id);
+                                  myAdsController.onInit();
+                                },
+                                icon: const Icon(Icons.visibility),
                               ),
-                            );
-                          },
-                          icon: const Icon(Icons.visibility_off),
-                        ),
                         IconButton.filledTonal(
                           onPressed: () {
                             showDialog<String>(

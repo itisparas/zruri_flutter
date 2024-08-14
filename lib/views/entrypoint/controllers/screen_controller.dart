@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:zruri_flutter/controllers/my_ads_controller.dart';
 
 class ScreenController extends GetxController {
   Rx<int> currentIndex = 0.obs;
@@ -44,6 +45,7 @@ class ScreenController extends GetxController {
   }
 
   onChange(int index) {
+    Get.delete<MyAdsController>();
     box.write('prevPage', box.read('currentPage') as int? ?? 0);
     box.write('currentPage', index);
     currentIndex(index);

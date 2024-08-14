@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:zruri_flutter/core/services/my_ads_service.dart';
 import 'package:zruri_flutter/models/my_ads_model.dart';
@@ -12,14 +14,15 @@ class MyAdsController extends GetxController {
   @override
   void onInit() {
     AuthController authController = Get.find<AuthController>();
-    _loadMyAds(authController.firebaseUser.value?.user.uid);
+    loadMyAds(authController.firebaseUser.value?.user.uid);
     super.onInit();
   }
 
-  Future<void> _loadMyAds(userId) async {
+  Future<void> loadMyAds(userId) async {
     try {
       loading.value = true;
       List<MyAdsModel> myAdsList = await _myAdsService.getMyAds(userId);
+      log(myAdsList.toString());
       myAds.value = myAdsList;
     } catch (e) {
       throw Exception(e);

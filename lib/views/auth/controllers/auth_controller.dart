@@ -14,7 +14,7 @@ class AuthController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  Rx<AuthUser?> firebaseUser = null.obs;
+  Rx<AuthUser?> firebaseUser = Rx<AuthUser?>(null);
   Rx<bool> isLoggedIn = false.obs;
   Rx<String?> verificationId = ''.obs;
   Rx<PhoneNumber> phoneNumberParsed = PhoneNumber.parse('919123456789').obs;
@@ -32,8 +32,11 @@ class AuthController extends GetxController {
         : null.obs;
 
     FirebaseAuth.instance.userChanges().listen((User? user) {
-      firebaseUser.value =
-          user != null ? AuthUser.fromFirebaseUser(user) : null;
+      if (user != null) {
+        firebaseUser.value = AuthUser.fromFirebaseUser(user);
+      } else {
+        firebaseUser.value = null;
+      }
     });
 
     ever(firebaseUser, _setInitialScreen);

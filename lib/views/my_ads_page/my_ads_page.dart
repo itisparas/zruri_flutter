@@ -27,6 +27,12 @@ class MyAdsPage extends StatelessWidget {
             screenController.gotoPrevPage();
           },
         ),
+        actions: [
+          IconButton(
+            onPressed: () async => myAdsController.onInit(),
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -41,16 +47,16 @@ class MyAdsPage extends StatelessWidget {
                         children: myAdsController.myAds
                             .map(
                               (element) => MyAdItem(
-                                image: element.imageUrl,
-                                price: element.price.toString(),
-                                title: element.title,
-                                timeline: DateFormat.yMMMd()
-                                    .format(
-                                      element.createdAt.toDate(),
-                                    )
-                                    .toString(),
-                                id: element.id,
-                              ),
+                                  image: element.imageUrl,
+                                  price: element.price.toString(),
+                                  title: element.title,
+                                  timeline: DateFormat.yMMMd()
+                                      .format(
+                                        element.createdAt.toDate(),
+                                      )
+                                      .toString(),
+                                  id: element.id,
+                                  active: element.active),
                             )
                             .toList(),
                       )
