@@ -13,7 +13,7 @@ import 'package:zruri_flutter/core/services/my_ads_service.dart';
 
 class MyAdItem extends StatelessWidget {
   final FirebaseStorageService storageService = FirebaseStorageService();
-  bool search_result = false;
+  final bool searchResult;
   final String image;
   final String price;
   final String title;
@@ -29,7 +29,7 @@ class MyAdItem extends StatelessWidget {
     required this.timeline,
     required this.id,
     required this.active,
-    this.search_result = false,
+    required this.searchResult,
   });
 
   @override
@@ -126,7 +126,7 @@ class MyAdItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    !search_result
+                    !searchResult
                         ? Column(
                             children: [
                               active

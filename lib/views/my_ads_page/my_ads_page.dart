@@ -47,16 +47,18 @@ class MyAdsPage extends StatelessWidget {
                         children: myAdsController.myAds
                             .map(
                               (element) => MyAdItem(
-                                  image: element.imageUrl,
-                                  price: element.price.toString(),
-                                  title: element.title,
-                                  timeline: DateFormat.yMMMd()
-                                      .format(
-                                        element.createdAt.toDate(),
-                                      )
-                                      .toString(),
-                                  id: element.id,
-                                  active: element.active),
+                                image: element.imageUrl,
+                                price: element.price.toString(),
+                                title: element.title,
+                                timeline: DateFormat.yMMMd()
+                                    .format(
+                                      element.createdAt.toDate(),
+                                    )
+                                    .toString(),
+                                id: element.id,
+                                active: element.active,
+                                searchResult: false,
+                              ),
                             )
                             .toList(),
                       )

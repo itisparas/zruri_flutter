@@ -39,7 +39,6 @@ class SearchPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final document = searchController.searchResults[index];
                   return MyAdItem(
-                    search_result: true,
                     image: document['filepaths'][0],
                     price: document['price'],
                     title: document['title'],
@@ -50,6 +49,7 @@ class SearchPage extends StatelessWidget {
                         .toString(),
                     id: document.id,
                     active: document['active'],
+                    searchResult: true,
                   );
                 },
               );
