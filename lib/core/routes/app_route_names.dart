@@ -16,6 +16,6 @@ class AppRouteNames {
   static const listings = '$listingPage/:genre/:genre_info';
 
   categoryListing(String categoryName) {
-    return '$listingPage/category/$categoryName';
+    return '$listingPage/category_id/$categoryName';
   }
 }

@@ -14,7 +14,7 @@ class ListingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ListingController listingController =
-        Get.put<ListingController>(ListingController());
+        Get.put<ListingController>(ListingController(genre, genreInfo));
 
     return Scaffold(
       body: SafeArea(

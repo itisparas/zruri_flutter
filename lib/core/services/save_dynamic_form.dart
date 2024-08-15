@@ -38,6 +38,12 @@ class SaveDynamicForm extends GetxController {
     formData['category_id'] = categoryId;
 
     formData['location'] = authController.firebaseUser.value?.location.toMap();
+    formData['location_latitude'] =
+        authController.firebaseUser.value?.location.latitude;
+    formData['location_longitude'] =
+        authController.firebaseUser.value?.location.longitude;
+    formData['location_locality'] =
+        authController.firebaseUser.value?.location.locality;
 
     for (var element in formFields) {
       if (element.formType == FormTypeValues.multiline) {
