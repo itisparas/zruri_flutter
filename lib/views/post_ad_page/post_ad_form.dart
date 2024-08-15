@@ -76,8 +76,9 @@ class PostAdFormPage extends StatelessWidget {
                               // For example, you can call a function to submit the form data to a server
                               // or save it locally
                               _formKey.currentState!.save();
-                              saveDynamicForm
-                                  .postAdForm(Get.parameters['category']);
+                              saveDynamicForm.postAdForm(
+                                  Get.parameters['category'],
+                                  Get.parameters['category_id']);
                             } else if (!_formKey.currentState!.validate()) {
                               Get.snackbar(
                                 AppMessages.enUs['snackbar']['error.title'],

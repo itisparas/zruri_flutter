@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -20,10 +22,38 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>app-1-1090724911560-ios-fdebddc6fee2da0f6548fd</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-1090724911560-ios-fdebddc6fee2da0f6548fd</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>sms</string>
+		<string>tel</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>To enrich your advertisements with fresh and appealing visuals, our app requires access to your camera. Granting this permission enables you to directly capture and upload photographs of the products or services you're promoting, ensuring your ads are as engaging and informative as possible. Rest assured, photos taken for ad purposes will be shared publicly within your advertisement, helping you attract the right audience. We prioritize your privacy and assure you that camera access is solely for ad creation and enhancement.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We use your location to provide relevant listings, search results, and to help you find nearby sellers and products on our platform.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To enhance your ad with visuals, this app requires access to your photo library. By granting permission, you can easily upload images of the products or services you're advertising. Please note, the photos you select will be publicly displayed alongside your ad to provide a clear and appealing presentation to potential buyers. Your privacy is important to us, and your photos will only be used for the purposes of ad creation and display.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -38,32 +68,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>app-1-1090724911560-ios-fdebddc6fee2da0f6548fd</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>app-1-1090724911560-ios-fdebddc6fee2da0f6548fd</string>
-			</array>
-		</dict>
-	</array>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To enhance your ad with visuals, this app requires access to your photo library. By granting permission, you can easily upload images of the products or services you&apos;re advertising. Please note, the photos you select will be publicly displayed alongside your ad to provide a clear and appealing presentation to potential buyers. Your privacy is important to us, and your photos will only be used for the purposes of ad creation and display.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>To enrich your advertisements with fresh and appealing visuals, our app requires access to your camera. Granting this permission enables you to directly capture and upload photographs of the products or services you&apos;re promoting, ensuring your ads are as engaging and informative as possible. Rest assured, photos taken for ad purposes will be shared publicly within your advertisement, helping you attract the right audience. We prioritize your privacy and assure you that camera access is solely for ad creation and enhancement.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We use your location to provide relevant listings, search results, and to help you find nearby sellers and products on our platform.</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>sms</string>
-		<string>tel</string>
 	</array>
 </dict>
 </plist>

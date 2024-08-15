@@ -21,7 +21,7 @@ class SaveDynamicForm extends GetxController {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> postAdForm(String? categoryName) async {
+  Future<void> postAdForm(String? categoryName, String? categoryId) async {
     isLoading.value = true;
     log('postAdForm() triggered.');
     Map<String, dynamic> formData = {};
@@ -35,6 +35,7 @@ class SaveDynamicForm extends GetxController {
     formData['active'] = true;
     formData['soft_delete'] = false;
     formData['category_name'] = categoryName;
+    formData['category_id'] = categoryId;
     formData['location'] = authController.firebaseUser.value?.location;
 
     for (var element in formFields) {

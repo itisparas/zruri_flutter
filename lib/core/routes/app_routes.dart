@@ -7,6 +7,7 @@ import 'package:zruri_flutter/views/entrypoint/entrypoint_ui.dart';
 import 'package:zruri_flutter/views/home/home.dart';
 import 'package:zruri_flutter/views/landing_page/landing_page.dart';
 import 'package:zruri_flutter/views/listings/ad_page.dart';
+import 'package:zruri_flutter/views/listings/listing_page.dart';
 import 'package:zruri_flutter/views/location_page/input_manual_location.dart';
 import 'package:zruri_flutter/views/location_page/prompt_location.dart';
 import 'package:zruri_flutter/views/onboarding/onboarding_page.dart';
@@ -25,22 +26,14 @@ class AppRoutes {
     GetPage(name: '/otp-verification', page: () => OtpVerificationPage()),
     GetPage(name: '/entrypoint', page: () => EntrypointUI()),
     GetPage(name: '/home', page: () => const HomePage()),
-    GetPage(
-      name: AppRouteNames.searchPage,
-      page: () => const SearchPage(),
-    ),
+    GetPage(name: AppRouteNames.listings, page: () => ListingPage()),
+    GetPage(name: AppRouteNames.searchPage, page: () => const SearchPage()),
     GetPage(
       name: AppRouteNames.postAdSuccessPage,
       page: () => const PostAdSuccess(),
     ),
-    GetPage(
-      name: AppRouteNames.adPage,
-      page: () => const AdPage(),
-    ),
-    GetPage(
-      name: AppRouteNames.postAdFormPage,
-      page: () => PostAdFormPage(),
-    ),
+    GetPage(name: AppRouteNames.adPage, page: () => const AdPage()),
+    GetPage(name: AppRouteNames.postAdFormPage, page: () => PostAdFormPage()),
     GetPage(
       name: AppRouteNames.promptLocation,
       page: () => const PromptLocation(),
