@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:zruri_flutter/core/constants/app_colors.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/services/firebase_storage_service.dart';
@@ -154,11 +157,13 @@ class AdPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const SizedBox(
+                            SizedBox(
                               child: Row(
                                 children: [
-                                  Icon(Icons.location_on_outlined),
-                                  Text('Gurugram, HR'),
+                                  const Icon(Icons.location_on_outlined),
+                                  Text(adController.adDetails.value?['location']
+                                          ?['formattedAddress'] ??
+                                      'Not available'),
                                 ],
                               ),
                             ),
@@ -245,7 +250,7 @@ class AdPage extends StatelessWidget {
                                           Text(
                                             adController.advertiserDetails
                                                     .value?['displayname'] ??
-                                                'User name',
+                                                'Zruri user',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyLarge
@@ -271,7 +276,10 @@ class AdPage extends StatelessWidget {
                                             Colors.white,
                                           ),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          await _launchCaller(
+                                              'tel:${adController.advertiserDetails.value?['phonenumber']}');
+                                        },
                                         icon: const Icon(Icons.call),
                                       ),
                                     ],
@@ -285,5 +293,13 @@ class AdPage extends StatelessWidget {
               ),
       ),
     );
+  }
+
+  _launchCaller(url) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    } else {
+      log('cannot launch url');
+    }
   }
 }

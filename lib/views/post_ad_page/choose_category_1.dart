@@ -9,14 +9,13 @@ import 'package:zruri_flutter/core/routes/app_route_names.dart';
 import 'package:zruri_flutter/views/entrypoint/controllers/screen_controller.dart';
 
 class ChooseCategory1 extends StatelessWidget {
-  final ScreenController screenController = Get.find();
-
   final AppIcons appIcons = AppIcons();
 
   ChooseCategory1({super.key});
 
   @override
   Widget build(BuildContext context) {
+    ScreenController screenController = Get.find<ScreenController>();
     final CategoriesController categoriesController =
         Get.put(CategoriesController());
     return Scaffold(

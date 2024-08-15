@@ -60,5 +60,10 @@
 	<string>To enrich your advertisements with fresh and appealing visuals, our app requires access to your camera. Granting this permission enables you to directly capture and upload photographs of the products or services you&apos;re promoting, ensuring your ads are as engaging and informative as possible. Rest assured, photos taken for ad purposes will be shared publicly within your advertisement, helping you attract the right audience. We prioritize your privacy and assure you that camera access is solely for ad creation and enhancement.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to provide relevant listings, search results, and to help you find nearby sellers and products on our platform.</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>sms</string>
+		<string>tel</string>
+	</array>
 </dict>
 </plist>
