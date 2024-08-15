@@ -15,9 +15,11 @@ class ChooseCategory1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenController screenController = Get.find<ScreenController>();
+    ScreenController screenController =
+        Get.put<ScreenController>(ScreenController());
     final CategoriesController categoriesController =
         Get.put(CategoriesController());
+
     return Scaffold(
       body: SafeArea(
         child: Stack(

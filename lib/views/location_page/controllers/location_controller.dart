@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
 import 'package:zruri_flutter/core/services/location_service.dart';
+import 'package:zruri_flutter/models/location_details.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 class LocationController extends GetxController {
@@ -37,7 +38,7 @@ class LocationController extends GetxController {
       '$latitude,$longitude',
       language: 'en',
     );
-    Map<String, dynamic> location = {
+    Map<String, dynamic> locationMap = {
       'latitude': latitude,
       'longitude': longitude,
       'formattedAddress': description == ''
@@ -67,6 +68,8 @@ class LocationController extends GetxController {
               (element) => element.types.any((element) => element == 'country'))
           .formattedAddress,
     };
+    Location location = Location.fromMap(locationMap);
+
     await authController.updateUserLocation(location);
     loading.value = false;
   }

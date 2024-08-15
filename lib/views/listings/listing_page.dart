@@ -55,15 +55,12 @@ class ListingPage extends StatelessWidget {
                           return SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) {
-                                print(index.toString());
                                 if (index < listingController.ads.length) {
                                   final ad = listingController.ads[index];
                                   return MyAdItem(
                                       image: ad.imageUrl,
                                       price: ad.price,
-                                      title: ad.title +
-                                          listingController.hasMoreData.value
-                                              .toString(),
+                                      title: ad.title,
                                       timeline: DateFormat.yMMMd()
                                           .format(
                                             ad.createdAt.toDate(),
@@ -74,7 +71,6 @@ class ListingPage extends StatelessWidget {
                                       searchResult: true);
                                 } else if (listingController
                                     .hasMoreData.value) {
-                                  print('triggering load more ads');
                                   WidgetsBinding.instance
                                       .addPostFrameCallback((_) {
                                     // Trigger state changes here, after the build is complete

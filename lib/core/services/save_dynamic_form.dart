@@ -36,7 +36,8 @@ class SaveDynamicForm extends GetxController {
     formData['soft_delete'] = false;
     formData['category_name'] = categoryName;
     formData['category_id'] = categoryId;
-    formData['location'] = authController.firebaseUser.value?.location;
+
+    formData['location'] = authController.firebaseUser.value?.location.toMap();
 
     for (var element in formFields) {
       if (element.formType == FormTypeValues.multiline) {

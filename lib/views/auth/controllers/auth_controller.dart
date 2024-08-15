@@ -6,6 +6,7 @@ import 'package:zruri_flutter/core/constants/app_defaults.dart';
 import 'package:zruri_flutter/core/constants/app_messages.dart';
 import 'package:zruri_flutter/core/routes/app_route_names.dart';
 import 'package:zruri_flutter/models/auth_user_model.dart';
+import 'package:zruri_flutter/models/location_details.dart';
 
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
@@ -68,8 +69,10 @@ class AuthController extends GetxController {
       if (data != null &&
           data.containsKey('location') &&
           data['location'] != null) {
-        firebaseUser.value?.location = data['location'];
-        firebaseUser.value?.address = data['location']['formattedAddress'];
+        // Convert the map to a Location object
+        Location location = Location.fromMap(data['location']);
+        firebaseUser.value?.location = location;
+        firebaseUser.value?.address = location.formattedAddress;
         return true;
       } else {
         return false;
@@ -96,11 +99,13 @@ class AuthController extends GetxController {
     });
   }
 
-  Future<void> updateUserLocation(Map<String, dynamic> location) async {
-    firebaseUser.value?.address = location['formattedAddress'];
+  Future<void> updateUserLocation(Location location) async {
+    firebaseUser.value?.location = location;
+    firebaseUser.value?.address = location.formattedAddress;
+    print(location.latitude.runtimeType);
     await _usersCollection
         .doc(firebaseUser.value?.user.uid)
-        .update({'location': location}).then(
+        .update({'location': location.toMap()}).then(
       (value) {
         return Get.offAllNamed(AppRouteNames.entrypoint);
       },

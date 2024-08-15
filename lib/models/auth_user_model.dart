@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:zruri_flutter/models/location_details.dart';
 
 class AuthUser {
   final User user;
-  dynamic location;
+  Location location;
   String address;
   final bool isLoggedIn;
 
@@ -18,7 +19,15 @@ class AuthUser {
       user: user,
       address: address ?? '',
       isLoggedIn: isLoggedIn ?? false,
-      location: location ?? {},
+      location: location ??
+          Location(
+            latitude: 37.33233141,
+            longitude: -122.0312186,
+            formattedAddress: '4 Infinite Loop, Cupertino, CA 95014, USA',
+            locality: 'Cupertino, CA, USA',
+            administrativeArea: 'Cupertino, CA, USA',
+            country: 'United States',
+          ),
     );
   }
 }
