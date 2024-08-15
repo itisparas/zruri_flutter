@@ -13,6 +13,7 @@ import 'package:zruri_flutter/core/services/my_ads_service.dart';
 
 class MyAdItem extends StatelessWidget {
   final FirebaseStorageService storageService = FirebaseStorageService();
+  bool search_result = false;
   final String image;
   final String price;
   final String title;
@@ -28,12 +29,14 @@ class MyAdItem extends StatelessWidget {
     required this.timeline,
     required this.id,
     required this.active,
+    this.search_result = false,
   });
 
   @override
   Widget build(BuildContext context) {
     MyAdsService myAdsService = MyAdsService();
-    MyAdsController myAdsController = Get.find<MyAdsController>();
+    MyAdsController myAdsController =
+        Get.put<MyAdsController>(MyAdsController());
 
     return SizedBox(
       width: Get.width,
@@ -123,80 +126,84 @@ class MyAdItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Column(
-                      children: [
-                        active
-                            ? IconButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                    Theme.of(context)
-                                        .colorScheme
-                                        .primaryContainer,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  await myAdsService.deactivateAd(id);
-                                  myAdsController.onInit();
+                    !search_result
+                        ? Column(
+                            children: [
+                              active
+                                  ? IconButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .primaryContainer,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        await myAdsService.deactivateAd(id);
+                                        myAdsController.onInit();
+                                      },
+                                      icon: const Icon(Icons.visibility_off),
+                                    )
+                                  : IconButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                          Theme.of(context)
+                                              .colorScheme
+                                              .primaryContainer,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        await myAdsService.activateAd(id);
+                                        myAdsController.onInit();
+                                      },
+                                      icon: const Icon(Icons.visibility),
+                                    ),
+                              IconButton.filledTonal(
+                                onPressed: () {
+                                  showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext buildContext) =>
+                                        AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: AppDefaults.borderRadius,
+                                      ),
+                                      title: Text(AppMessages.enUs['modal']
+                                          ['confirm.delete']['title']),
+                                      content: Text(AppMessages.enUs['modal']
+                                          ['confirm.delete']['description']),
+                                      actions: <Widget>[
+                                        ElevatedButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Cancel'),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        OutlinedButton(
+                                          onPressed: () async {
+                                            await myAdsService.deleteAd(id);
+                                            myAdsController.onInit();
+                                            Navigator.pop(context, 'OK');
+                                          },
+                                          child: const Text('Confirm'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 },
-                                icon: const Icon(Icons.visibility_off),
-                              )
-                            : IconButton(
+                                icon: const Icon(CupertinoIcons.delete),
                                 style: ButtonStyle(
+                                  foregroundColor: MaterialStatePropertyAll(
+                                    Theme.of(context).colorScheme.error,
+                                  ),
                                   backgroundColor: MaterialStatePropertyAll(
-                                    Theme.of(context)
-                                        .colorScheme
-                                        .primaryContainer,
+                                    Theme.of(context).colorScheme.onPrimary,
                                   ),
                                 ),
-                                onPressed: () async {
-                                  await myAdsService.activateAd(id);
-                                  myAdsController.onInit();
-                                },
-                                icon: const Icon(Icons.visibility),
                               ),
-                        IconButton.filledTonal(
-                          onPressed: () {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext buildContext) =>
-                                  AlertDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: AppDefaults.borderRadius,
-                                ),
-                                title: Text(AppMessages.enUs['modal']
-                                    ['confirm.delete']['title']),
-                                content: Text(AppMessages.enUs['modal']
-                                    ['confirm.delete']['description']),
-                                actions: <Widget>[
-                                  ElevatedButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  OutlinedButton(
-                                    onPressed: () async {
-                                      await myAdsService.deleteAd(id);
-                                      myAdsController.onInit();
-                                      Navigator.pop(context, 'OK');
-                                    },
-                                    child: const Text('Confirm'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                          icon: const Icon(CupertinoIcons.delete),
-                          style: ButtonStyle(
-                            foregroundColor: MaterialStatePropertyAll(
-                              Theme.of(context).colorScheme.error,
-                            ),
-                            backgroundColor: MaterialStatePropertyAll(
-                              Theme.of(context).colorScheme.onPrimary,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
               ],
