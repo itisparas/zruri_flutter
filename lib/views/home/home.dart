@@ -137,7 +137,7 @@ class HomePage extends GetView<AuthController> {
                 Padding(
                   padding: const EdgeInsets.all(AppDefaults.padding / 2),
                   child: IconButton.filledTonal(
-                    onPressed: () {},
+                    onPressed: () => Get.toNamed(AppRouteNames.searchPage),
                     icon: const Icon(CupertinoIcons.search),
                   ),
                 )

@@ -10,4 +10,5 @@ class AppRouteNames {
   static const postAdSuccessPage = '$postAdSuccessPageMainRoute:adId';
   static const adPageMainRoute = '/ad/';
   static const adPage = '$adPageMainRoute:adId';
+  static const searchPage = '/search';
 }
