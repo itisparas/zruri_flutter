@@ -32,6 +32,7 @@ class ListingController extends GetxController {
 
     Query query = FirebaseFirestore.instance
         .collection('ads')
+        .orderBy('createdAt', descending: true)
         .where(
           Filter.and(
             Filter('location_locality',
