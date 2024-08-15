@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:zruri_flutter/models/my_ads_model.dart';
+import 'package:zruri_flutter/models/listing_ad_model.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
 class ListingController extends GetxController {
   final String genre;
   final String genreId;
 
-  RxList<MyAdsModel> ads = <MyAdsModel>[].obs;
+  RxList<ListingAdModel> ads = <ListingAdModel>[].obs;
   RxBool isLoading = false.obs;
   RxBool hasMoreData = true.obs;
+
+  RxString selectedSortOption = 'date_desc'.obs;
+  RxString selectedFilterOption = 'only_active'.obs;
 
   final int limit = 10; // Number of items to load per page
 
@@ -32,18 +35,28 @@ class ListingController extends GetxController {
 
     Query query = FirebaseFirestore.instance
         .collection('ads')
-        .orderBy('createdAt', descending: true)
-        .where(
-          Filter.and(
-            Filter('location_locality',
-                isEqualTo:
-                    authController.firebaseUser.value?.location.locality),
-            Filter(genre, isEqualTo: genreId),
-            Filter('active', isEqualTo: true),
-            Filter('soft_delete', isEqualTo: false),
-          ),
-        )
-        .limit(limit);
+        .where(genre, isEqualTo: genreId)
+        .where('location_locality',
+            isEqualTo: authController.firebaseUser.value?.location.locality)
+        .where('soft_delete', isEqualTo: false);
+
+    // Apply filtering
+    if (selectedFilterOption.value == 'only_active') {
+      query = query.where('active', isEqualTo: true);
+    }
+
+    // Apply sorting
+    if (selectedSortOption.value == 'price_asc') {
+      query = query.orderBy('price', descending: false);
+    } else if (selectedSortOption.value == 'price_desc') {
+      query = query.orderBy('price', descending: true);
+    } else if (selectedSortOption.value == 'date_desc') {
+      query = query.orderBy('createdAt', descending: true);
+    } else {
+      query = query.orderBy('createdAt', descending: false);
+    }
+
+    query = query.limit(limit);
 
     if (lastDocument != null) {
       query = query.startAfterDocument(lastDocument!);
@@ -53,7 +66,7 @@ class ListingController extends GetxController {
     if (querySnapshot.docs.isNotEmpty) {
       lastDocument = querySnapshot.docs.last;
       ads.addAll(querySnapshot.docs
-          .map((doc) => MyAdsModel.fromDocumentSnapshot(doc))
+          .map((doc) => ListingAdModel.fromDocumentSnapshot(doc))
           .toList());
     } else {
       hasMoreData.value = false;
@@ -64,5 +77,22 @@ class ListingController extends GetxController {
 
   void loadMoreAds() {
     if (hasMoreData.value && !isLoading.value) fetchAds();
+  }
+
+  void updateSortOption(String sortOption) {
+    selectedSortOption.value = sortOption;
+    resetAds();
+  }
+
+  void updateFilterOption(String filterOption) {
+    selectedFilterOption.value = filterOption;
+    resetAds();
+  }
+
+  void resetAds() {
+    ads.clear();
+    lastDocument = null;
+    hasMoreData.value = true;
+    fetchAds();
   }
 }

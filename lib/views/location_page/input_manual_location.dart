@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
@@ -50,7 +48,6 @@ class InputManualLocation extends StatelessWidget {
                 },
                 itemClick: (Prediction prediction) {
                   locationController.loading.value = true;
-                  print(jsonEncode(prediction).toString());
                   searchTextField.text = prediction.description!;
                 },
                 boxDecoration: BoxDecoration(
