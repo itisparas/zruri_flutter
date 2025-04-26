@@ -59,10 +59,10 @@ class CategoriesPage extends StatelessWidget {
                                   ),
                                 ),
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
+                                  backgroundColor: WidgetStateProperty.all(
                                     AppColors.scaffoldWithBoxBackground,
                                   ),
-                                  shape: MaterialStateProperty.all(
+                                  shape: WidgetStateProperty.all(
                                     RoundedRectangleBorder(
                                       borderRadius: AppDefaults.borderRadius,
                                     ),

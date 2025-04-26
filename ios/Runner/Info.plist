@@ -25,11 +25,13 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>app-1-1090724911560-ios-fdebddc6fee2da0f6548fd</string>
+			<string>app-1-917506181108-ios-b2c7afedb8d46bbcc61ba1</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>app-1-1090724911560-ios-fdebddc6fee2da0f6548fd</string>
+				<string>app-1-917506181108-ios-b2c7afedb8d46bbcc61ba1</string>
 			</array>
 		</dict>
 	</array>

@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1090724911560-7m6n7u4k9o3oqf7klj88u23cdaa80hcl.apps.googleusercontent.com</string>
+	<string>917506181108-3bhd02g0stvafsnqt0l5ve1jecmpmb1k.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1090724911560-7m6n7u4k9o3oqf7klj88u23cdaa80hcl</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>1090724911560-gf5k73bhv94fie2f5bv2mt8hchpk1p1e.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.917506181108-3bhd02g0stvafsnqt0l5ve1jecmpmb1k</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBt3W0fvBwJoPvn1ViiXyDJcK3pa1P7gFc</string>
+	<string>AIzaSyD147GbnP18a1BDY6tTo94iXluWk5BMrfg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1090724911560</string>
+	<string>917506181108</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.zruriFlutter</string>
 	<key>PROJECT_ID</key>
-	<string>zruriapp</string>
+	<string>app-zruri</string>
 	<key>STORAGE_BUCKET</key>
-	<string>zruriapp.appspot.com</string>
+	<string>app-zruri.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1090724911560:ios:fdebddc6fee2da0f6548fd</string>
+	<string>1:917506181108:ios:b2c7afedb8d46bbcc61ba1</string>
 </dict>
 </plist>

@@ -217,7 +217,7 @@ class PostAdFormPage extends StatelessWidget {
                 icon: const Icon(Icons.add),
                 label: const Text('Add image(s)'),
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
+                  padding: WidgetStateProperty.all(
                     const EdgeInsets.symmetric(
                       horizontal: AppDefaults.padding,
                     ),
@@ -245,7 +245,7 @@ class PostAdFormPage extends StatelessWidget {
                       icon: const Icon(Icons.close),
                       label: const Text('Clear'),
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
+                        padding: WidgetStateProperty.all(
                           const EdgeInsets.symmetric(
                               horizontal: AppDefaults.padding),
                         ),

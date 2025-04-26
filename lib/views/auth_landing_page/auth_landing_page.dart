@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri_flutter/views/auth/controllers/auth_controller.dart';
 
-class LandingPage extends StatelessWidget {
-  LandingPage({super.key});
+class AuthLandingPage extends StatelessWidget {
+  AuthLandingPage({super.key});
 
   final AuthController authController = Get.find<AuthController>();
 

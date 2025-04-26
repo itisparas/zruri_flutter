@@ -9,7 +9,8 @@ class FirebaseStorageService {
 
   Future<String?> getDownloadUrl({required String path}) async {
     try {
-      return await storageRef.child(path).getDownloadURL();
+      var downloadurl = await storageRef.child(path).getDownloadURL();
+      return downloadurl;
     } catch (e) {
       FirebaseCrashlytics.instance
           .recordFlutterFatalError(FlutterErrorDetails(exception: e));

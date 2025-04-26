@@ -13,7 +13,7 @@ class AuthController extends GetxController {
 
   RxBool isLoading = false.obs;
 
-  Rx<AuthUser?> firebaseUser = Rx<AuthUser?>(null);
+  final firebaseUser = Rx<AuthUser?>(null);
   Rx<bool> isLoggedIn = false.obs;
   Rx<String?> verificationId = ''.obs;
   Rx<PhoneNumber> phoneNumberParsed = PhoneNumber.parse('919123456789').obs;
@@ -24,11 +24,11 @@ class AuthController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    firebaseUser = FirebaseAuth.instance.currentUser != null
-        ? Rx<AuthUser?>(
-            AuthUser.fromFirebaseUser(FirebaseAuth.instance.currentUser!),
-          )
-        : null.obs;
+
+    FirebaseAuth.instance.userChanges().listen((User? user) {
+      firebaseUser.value =
+          user != null ? AuthUser.fromFirebaseUser(user) : null;
+    });
 
     FirebaseAuth.instance.userChanges().listen((User? user) {
       if (user != null) {
@@ -221,7 +221,7 @@ class AuthController extends GetxController {
         isDismissible: AppDefaults.isSnackbarDismissible,
         duration: AppDefaults.snackbarDuration,
       );
-      Get.offAll('/landing');
+      Get.offAll(AppRouteNames.authlanding);
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         AppMessages.enUs['snackbar']['error.title'],

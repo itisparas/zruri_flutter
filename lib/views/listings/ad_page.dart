@@ -21,7 +21,8 @@ class AdPage extends StatelessWidget {
     FirebaseStorageService storageService = FirebaseStorageService();
     AdController adController =
         Get.put(AdController(adId: Get.parameters['adId']!));
-    final CarouselController carouselController = CarouselController();
+    final CarouselSliderController carouselController =
+        CarouselSliderController();
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -157,25 +158,56 @@ class AdPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
+                            Expanded(
                               child: Row(
                                 children: [
                                   const Icon(Icons.location_on_outlined),
-                                  Text(adController.adDetails.value?['location']
-                                          ?['formattedAddress'] ??
-                                      'Not available'),
+                                  Expanded(
+                                    child: Text(
+                                      adController.adDetails.value?['location']
+                                              ?['formattedAddress'] ??
+                                          'Not available',
+                                      maxLines: 2,
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                            Text(DateFormat.yMMMd()
-                                .format(
-                                  adController.adDetails.value!['createdAt']
-                                      .toDate(),
-                                )
-                                .toString()),
                           ],
                         ),
                       ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDefaults.padding,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.gray,
+                              borderRadius:
+                                  BorderRadius.circular(AppDefaults.radius),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: AppDefaults.padding / 2,
+                              horizontal: AppDefaults.padding / 2,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Posted on ${DateFormat.yMMM().format(adController.adDetails.value?['createdAt'].toDate()).toString()}',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                Text(
+                                  '${adController.adDetails.value?['views'] ?? 1} views',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                              ],
+                            ),
+                          )),
                     ),
                     SliverToBoxAdapter(
                       child: Padding(
@@ -272,7 +304,7 @@ class AdPage extends StatelessWidget {
                                         color: AppColors.primary,
                                         style: const ButtonStyle(
                                           backgroundColor:
-                                              MaterialStatePropertyAll(
+                                              WidgetStatePropertyAll(
                                             Colors.white,
                                           ),
                                         ),

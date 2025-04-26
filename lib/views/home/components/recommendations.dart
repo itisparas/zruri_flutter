@@ -20,7 +20,7 @@ class Recommendations extends StatelessWidget {
             height: AppDefaults.padding / 4,
           ),
           ListingItem(
-            image: 'pexels-binyamin-mellish-186077.jpg',
+            image: '24-300x200.jpg',
             price: '10,000',
             title:
                 'Maruti Suzuki Wagon-R 2014 model first-owner perfect condition',
@@ -28,7 +28,7 @@ class Recommendations extends StatelessWidget {
             location: 'Gurugram, HR',
           ),
           ListingItem(
-            image: 'pexels-julia-kuzenkov-1974596.jpg',
+            image: '656-300x200.jpg',
             price: '12,936',
             title:
                 'Hyundai i20 Sports edition 2019 model first-owner recently bought',

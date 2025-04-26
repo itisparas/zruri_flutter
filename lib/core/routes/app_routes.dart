@@ -5,7 +5,7 @@ import 'package:zruri_flutter/views/auth/intro_login_page.dart';
 import 'package:zruri_flutter/views/auth/otp_verification_page.dart';
 import 'package:zruri_flutter/views/entrypoint/entrypoint_ui.dart';
 import 'package:zruri_flutter/views/home/home.dart';
-import 'package:zruri_flutter/views/landing_page/landing_page.dart';
+import 'package:zruri_flutter/views/auth_landing_page/auth_landing_page.dart';
 import 'package:zruri_flutter/views/listings/ad_page.dart';
 import 'package:zruri_flutter/views/listings/listing_page.dart';
 import 'package:zruri_flutter/views/location_page/input_manual_location.dart';
@@ -16,15 +16,15 @@ import 'package:zruri_flutter/views/post_ad_page/post_ad_success.dart';
 import 'package:zruri_flutter/views/search/search_page.dart';
 
 class AppRoutes {
-  static const String initialRoute = '/landing';
+  static const String initialRoute = AppRouteNames.authlanding;
   static GetPage unknownGetPage =
       GetPage(name: '/', page: () => const UnknownPage());
   static List<GetPage> getPages = [
-    GetPage(name: '/landing', page: () => LandingPage()),
+    GetPage(name: AppRouteNames.authlanding, page: () => AuthLandingPage()),
     GetPage(name: '/onboarding', page: () => const OnboardingPage()),
     GetPage(name: '/login', page: () => IntroLoginPage()),
     GetPage(name: '/otp-verification', page: () => OtpVerificationPage()),
-    GetPage(name: '/entrypoint', page: () => EntrypointUI()),
+    GetPage(name: AppRouteNames.entrypoint, page: () => EntrypointUI()),
     GetPage(name: '/home', page: () => const HomePage()),
     GetPage(name: AppRouteNames.listings, page: () => ListingPage()),
     GetPage(name: AppRouteNames.searchPage, page: () => const SearchPage()),

@@ -37,9 +37,17 @@ class AdController extends GetxController {
       adDetails = value.data().obs;
       loading.value = false;
       loadUser();
+      updateCounter();
     }, onError: (e) => throw Exception(e));
   }
 
+  updateCounter() async {
+    // Increment the ad view counter
+    await _firestore.collection('ads').doc(adId).update({
+      'views': FieldValue.increment(1),
+    });
+  }
+  
   loadUser() async {
     // Get the user details from Firestore
     // aggregate with ads collection to get the ad details

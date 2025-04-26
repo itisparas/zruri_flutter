@@ -132,8 +132,7 @@ class MyAdItem extends StatelessWidget {
                               active
                                   ? IconButton(
                                       style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(
+                                        backgroundColor: WidgetStatePropertyAll(
                                           Theme.of(context)
                                               .colorScheme
                                               .primaryContainer,
@@ -147,8 +146,7 @@ class MyAdItem extends StatelessWidget {
                                     )
                                   : IconButton(
                                       style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(
+                                        backgroundColor: WidgetStatePropertyAll(
                                           Theme.of(context)
                                               .colorScheme
                                               .primaryContainer,
@@ -193,10 +191,10 @@ class MyAdItem extends StatelessWidget {
                                 },
                                 icon: const Icon(CupertinoIcons.delete),
                                 style: ButtonStyle(
-                                  foregroundColor: MaterialStatePropertyAll(
+                                  foregroundColor: WidgetStatePropertyAll(
                                     Theme.of(context).colorScheme.error,
                                   ),
-                                  backgroundColor: MaterialStatePropertyAll(
+                                  backgroundColor: WidgetStatePropertyAll(
                                     Theme.of(context).colorScheme.onPrimary,
                                   ),
                                 ),

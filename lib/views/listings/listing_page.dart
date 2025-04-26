@@ -63,7 +63,7 @@ class ListingPage extends StatelessWidget {
                         child: Text(
                           'No ads found',
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontSize: 18,
                           ),
                         ),
@@ -104,9 +104,8 @@ class ListingPage extends StatelessWidget {
                                 child: Text(
                                   'No more ads',
                                   style: TextStyle(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                     fontSize: 16,
                                   ),
                                 ),
