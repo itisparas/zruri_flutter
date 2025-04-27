@@ -6,7 +6,7 @@ import 'package:zruri_flutter/core/components/listing_ad_item.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 
 class ListingPage extends StatelessWidget {
-  ListingController listingController = Get.put<ListingController>(
+  final ListingController listingController = Get.put<ListingController>(
       ListingController(
           Get.parameters['genre'] ?? '', Get.parameters['genre_info'] ?? ''));
 

@@ -159,7 +159,7 @@ class HomePage extends GetView<AuthController> {
             SliverToBoxAdapter(
               child: SizedBox(
                 width: Get.width,
-                child: const Recommendations(),
+                child: Recommendations(),
               ),
             ),
             const SliverToBoxAdapter(

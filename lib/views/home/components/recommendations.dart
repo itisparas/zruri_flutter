@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:zruri_flutter/controllers/recommendations_controller.dart';
 import 'package:zruri_flutter/core/components/listing_item.dart';
 import 'package:zruri_flutter/core/constants/app_defaults.dart';
 
 class Recommendations extends StatelessWidget {
-  const Recommendations({super.key});
+
+  Recommendations({super.key}) {
+    Get.lazyPut(() => RecommendationsController());
+  }
 
   @override
   Widget build(BuildContext context) {
+    RecommendationsController recommendationsController =
+        Get.find<RecommendationsController>();
+
     return Padding(
       padding: const EdgeInsets.all(AppDefaults.padding),
       child: Column(
@@ -19,22 +28,35 @@ class Recommendations extends StatelessWidget {
           const SizedBox(
             height: AppDefaults.padding / 4,
           ),
-          ListingItem(
-            image: '24-300x200.jpg',
-            price: '10,000',
-            title:
-                'Maruti Suzuki Wagon-R 2014 model first-owner perfect condition',
-            timeline: 'Today',
-            location: 'Gurugram, HR',
+          Obx(
+            () => recommendationsController.isLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : recommendationsController.recommendations.isEmpty
+                    ? const Center(
+                        child: Text('No recommendations available'),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount:
+                            recommendationsController.recommendations.length,
+                        itemBuilder: (context, index) {
+                          final ad =
+                              recommendationsController.recommendations[index];
+                          return ListingItem(
+                            image: ad.imageUrl,
+                            price: ad.price,
+                            title: ad.title,
+                            timeline: DateFormat.yMMMd()
+                                .format(ad.createdAt.toDate())
+                                .toString(),
+                            location: ad.location,
+                          );
+                        },
+                      ),
           ),
-          ListingItem(
-            image: '656-300x200.jpg',
-            price: '12,936',
-            title:
-                'Hyundai i20 Sports edition 2019 model first-owner recently bought',
-            timeline: 'last week',
-            location: 'Kharar, PB',
-          )
         ],
       ),
     );

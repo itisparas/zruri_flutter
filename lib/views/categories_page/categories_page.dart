@@ -17,7 +17,7 @@ class CategoriesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenController screenController = Get.find<ScreenController>();
     final CategoriesController categoriesController =
-        Get.put(CategoriesController());
+        Get.find<CategoriesController>();
     return Scaffold(
       body: SafeArea(
         child: Stack(

@@ -36,6 +36,9 @@ class SaveDynamicForm extends GetxController {
     formData['soft_delete'] = false;
     formData['category_name'] = categoryName;
     formData['category_id'] = categoryId;
+    formData['views'] = 0;
+    formData['ad_promoted'] = false;
+    formData['ad_slider'] = false;
 
     formData['location'] = authController.firebaseUser.value?.location.toMap();
     formData['location_latitude'] =

@@ -198,7 +198,7 @@ class AdPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'Posted on ${DateFormat.yMMM().format(adController.adDetails.value?['createdAt'].toDate()).toString()}',
+                                  'Posted on ${DateFormat.yMMMd().format(adController.adDetails.value?['createdAt'].toDate()).toString()}',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
