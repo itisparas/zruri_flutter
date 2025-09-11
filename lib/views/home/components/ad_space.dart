@@ -14,7 +14,11 @@ class AdSpace extends StatelessWidget {
     );
 
     return Scaffold(
-      body: Obx(() => Carousel(data: controller.adSpaces.toList())),
+      body: Obx(
+        () => controller.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+            : Carousel(data: controller.adSpaces.toList()),
+      ),
     );
   }
 }

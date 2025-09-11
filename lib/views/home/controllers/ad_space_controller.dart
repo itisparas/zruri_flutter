@@ -1,32 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
-import 'package:zruri/models/ad_space_model.dart';
+import 'package:zruri/models/listing_ad_model.dart';
+import 'package:zruri/views/auth/controllers/auth_controller.dart';
 
 class AdSpaceController extends GetxController {
-  final CollectionReference<AdSpaceModel> _adSpaceCollection = FirebaseFirestore
-      .instance
-      .collection('adspace')
-      .withConverter<AdSpaceModel>(
-        fromFirestore: (snapshots, _) =>
-            AdSpaceModel.fromJson(snapshots.data()!),
-        toFirestore: (adSpace, _) => adSpace.toJson(),
-      );
+  RxBool isLoading = false.obs;
+  RxList<ListingAdModel> adSpaces = <ListingAdModel>[].obs;
 
-  final adSpaces = <AdSpaceModel>[].obs;
+  AuthController authController = Get.find<AuthController>();
+
+  AdSpaceController();
 
   @override
   void onInit() {
-    super.onInit();
     _fetchAdSpaces();
+    super.onInit();
   }
 
   Future<void> _fetchAdSpaces() async {
     try {
-      final QuerySnapshot<AdSpaceModel> querySnapshot =
-          await _adSpaceCollection.get();
+      Query query = FirebaseFirestore.instance
+          .collection('ads')
+          .where('ad_slider', isEqualTo: true)
+          .where(
+            'location_locality',
+            isEqualTo: authController.firebaseUser.value?.location.locality,
+          )
+          .where('soft_delete', isEqualTo: false)
+          .orderBy('createdAt', descending: true)
+          .limit(5);
 
-      adSpaces.value =
-          querySnapshot.docs.map((snapshot) => snapshot.data()).toList();
+      final querySnapshot = await query.get();
+      if (querySnapshot.docs.isNotEmpty) {
+        adSpaces.addAll(
+          querySnapshot.docs
+              .map((doc) => ListingAdModel.fromDocumentSnapshot(doc))
+              .toList(),
+        );
+      }
+      isLoading.value = false;
     } catch (e) {
       throw Exception(e);
     }

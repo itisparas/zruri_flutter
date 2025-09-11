@@ -12,7 +12,7 @@ import 'package:zruri/models/location_details.dart';
 class AuthController extends GetxController {
   static AuthController instance = Get.find();
 
-  RxBool isLoading = false.obs;
+  RxBool isLoading = true.obs;
 
   final firebaseUser = Rx<AuthUser?>(null);
   Rx<bool> isLoggedIn = false.obs;
@@ -47,8 +47,9 @@ class AuthController extends GetxController {
 
   _setInitialScreen(AuthUser? user) async {
     if (user == null) {
-      isLoggedIn.value = false;
       Get.offAllNamed(AppRouteNames.onboarding);
+      isLoggedIn.value = false;
+      isLoading.value = false;
     } else {
       bool userExists = await this.userExists(user.user.uid);
 
@@ -59,9 +60,11 @@ class AuthController extends GetxController {
       if (userExists) {
         await updateLastLogin(user.user.uid);
         Get.offAllNamed(AppRouteNames.entrypoint);
+        isLoading.value = false;
       } else {
         await addNewUser(user.user);
         Get.offAllNamed(AppRouteNames.promptLocation);
+        isLoading.value = false;
       }
     }
   }

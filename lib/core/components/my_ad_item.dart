@@ -103,7 +103,7 @@ class MyAdItem extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          Text('Rs. $price'),
+                          Text('\$$price'),
                           const SizedBox(height: AppDefaults.margin / 2),
                           Text(
                             active ? 'Live' : 'Deactivated',

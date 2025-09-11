@@ -15,4 +15,10 @@ class AppColors {
   static const Color textInputBackground = Color(0xFFF2F2F2);
   static const Color separator = Color(0xFFFAFAFA);
   static const Color gray = Color(0xFFE1E1E1);
+  static Color grayLight = Colors.grey[100]!;
+  static Color border = Colors.grey[300]!;
+  static Color grayLightText = Colors.grey[700]!;
+
+  static Color whiteLight = Colors.white.withValues(alpha: 0.2);
+  static Color whiteBorder = Colors.white.withValues(alpha: 0.5);
 }

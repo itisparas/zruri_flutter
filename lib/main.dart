@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:ui';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -10,63 +12,135 @@ import 'package:flutter/foundation.dart'
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:zruri/core/routes/app_route_names.dart';
 import 'package:zruri/core/routes/app_routes.dart';
+import 'package:zruri/core/services/notification_service.dart';
 import 'package:zruri/core/themes/app_theme.dart';
 import 'package:zruri/core/utils/constants.dart';
 import 'package:zruri/firebase_options.dart';
+import 'package:uni_links/uni_links.dart';
 
 late final FirebaseApp app;
 late final FirebaseAuth auth;
-final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-// Configure Firebase Messaging
-Future<void> _setupFirebaseMessaging() async {
-  try {
-    // Request permission for notifications
-    final settings = await _firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
+// Stream subscription for deep links
+StreamSubscription? _linkSubscription;
+
+// Handle incoming deep links
+void _handleIncomingLinks() {
+  if (!kIsWeb) {
+    // Handle app links while the app is already started
+    _linkSubscription = uriLinkStream.listen(
+      (Uri? uri) {
+        if (uri != null) {
+          debugPrint('Got deep link: $uri');
+          _handleDeepLink(uri.toString());
+        }
+      },
+      onError: (Object err) {
+        debugPrint('Error handling deep link: $err');
+      },
     );
-
-    print('User granted permission: ${settings.authorizationStatus}');
-
-    // Get the token - this will automatically handle both Android and iOS
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      // For iOS, we need to ensure the APNS token is available
-      if (defaultTargetPlatform == TargetPlatform.iOS) {
-        // Request APNS token explicitly
-        final apnsToken = await _firebaseMessaging.getAPNSToken();
-        print('APNS Token: $apnsToken');
-      }
-
-      // Get the FCM token
-      String? token = await _firebaseMessaging.getToken();
-      print('FCM Token: $token');
-
-      // Handle token refresh
-      _firebaseMessaging.onTokenRefresh.listen((newToken) {
-        print('Refreshed FCM Token: $newToken');
-        // TODO: Update the token on your server
-      });
-    }
-
-    // Handle incoming messages when the app is in the foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
-  } catch (e) {
-    print('Error initializing Firebase Messaging: $e');
   }
+}
+
+// Handle the initial link if the app was launched from a deep link
+Future<void> _handleInitialLink() async {
+  if (!kIsWeb) {
+    try {
+      final initialUri = await getInitialUri();
+      if (initialUri != null) {
+        debugPrint('Initial deep link: $initialUri');
+        // Delay navigation slightly to ensure app is fully initialized
+        Future.delayed(const Duration(milliseconds: 500), () {
+          _handleDeepLink(initialUri.toString());
+        });
+      }
+    } on PlatformException catch (e) {
+      debugPrint('Failed to get initial link: $e');
+    } on FormatException catch (e) {
+      debugPrint('Malformed initial link: $e');
+    }
+  }
+}
+
+// Parse and navigate based on the deep link
+void _handleDeepLink(String link) {
+  final uri = Uri.parse(link);
+  debugPrint(
+    'Handling deep link - path: ${uri.path}, query: ${uri.queryParameters}',
+  );
+
+  // Handle different deep link patterns
+  // Example patterns:
+  // https://yourdomain.com/products/123
+  // https://yourdomain.com/profile?userId=456
+  // yourapp://products/123
+
+  if (uri.path.isEmpty || uri.path == '/') {
+    // Handle root path
+    Get.offAllNamed(AppRoutes.initialRoute);
+    return;
+  }
+
+  // Remove leading slash for GetX route matching
+  String path = uri.path.startsWith('/') ? uri.path : '/${uri.path}';
+
+  // Check if the route exists in your AppRoutes
+  // You might need to adjust this based on your route structure
+  if (_isValidRoute(path)) {
+    // Navigate with query parameters if any
+    if (uri.queryParameters.isNotEmpty) {
+      Get.toNamed(path, parameters: uri.queryParameters);
+    } else {
+      Get.toNamed(path);
+    }
+  } else {
+    // Handle specific deep link patterns
+    _handleCustomDeepLinkPatterns(uri);
+  }
+}
+
+// Check if a route is valid in your app
+bool _isValidRoute(String path) {
+  // Check against your defined routes in AppRoutes
+  // This is a simplified example - adjust based on your actual routes
+  final validRoutes = AppRoutes.getPages.map((page) => page.name).toList();
+  return validRoutes.contains(path);
+}
+
+// Handle custom deep link patterns that don't directly match routes
+void _handleCustomDeepLinkPatterns(Uri uri) {
+  final pathSegments = uri.pathSegments;
+
+  if (pathSegments.isEmpty) {
+    Get.offAllNamed(AppRoutes.initialRoute);
+    return;
+  }
+
+  // Example: Handle /products/123 -> Navigate to product details with ID
+  if (pathSegments.length >= 2 && pathSegments[0] == 'listing') {
+    final productId = pathSegments[1];
+    // Navigate to product details page with the product ID
+    // Adjust the route name based on your AppRoutes
+    Get.toNamed('${AppRouteNames.adPageMainRoute}$productId');
+    return;
+  }
+
+  // Example: Handle /profile?userId=456
+  if (pathSegments[0] == 'profile' &&
+      uri.queryParameters.containsKey('userId')) {
+    final userId = uri.queryParameters['userId'];
+    // Navigate to user profile with the user ID
+    Get.toNamed('/userProfile', parameters: {'userId': userId!});
+    return;
+  }
+
+  // Add more custom patterns as needed
+
+  // Fallback to home if no pattern matches
+  debugPrint('No matching route for deep link: ${uri.toString()}');
+  Get.offAllNamed(AppRoutes.initialRoute);
 }
 
 void main() async {
@@ -80,7 +154,9 @@ void main() async {
     auth = FirebaseAuth.instanceFor(app: app);
 
     // Initialize Firebase Messaging
-    await _setupFirebaseMessaging();
+    Get.put(NotificationService());
+    // Setup Firebase Messaging after Firebase is initialized
+    await Get.find<NotificationService>().setupFirebaseMessaging();
 
     // Initialize Crashlytics
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
@@ -107,12 +183,50 @@ void main() async {
     }
     FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
   }
+
   // Run the app
   runApp(MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    // Initialize deep linking
+    _handleInitialLink(); // Handle deep link if app was launched from one
+    _handleIncomingLinks(); // Listen for deep links while app is running
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _linkSubscription?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.inactive) {
+      FirebaseAnalytics.instance.logEvent(
+        name: 'app_inactive',
+        parameters: {'app_inactive': 'true'},
+      );
+    }
+
+    // Handle app lifecycle changes if needed for deep linking
+    if (state == AppLifecycleState.resumed) {
+      FirebaseAnalytics.instance.logAppOpen();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

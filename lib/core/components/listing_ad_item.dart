@@ -87,7 +87,7 @@ class ListingAdItem extends StatelessWidget {
                             style: Theme.of(context).textTheme.bodyLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
-                          Text('Rs. $price'),
+                          Text('\$$price'),
                           Text(
                             description,
                             maxLines: 2,
