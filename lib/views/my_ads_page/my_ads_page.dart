@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:zruri/controllers/my_ads_controller.dart';
 import 'package:zruri/core/components/my_ad_item.dart';
 import 'package:zruri/core/constants/constants.dart';
+import 'package:zruri/views/entrypoint/controllers/navigation_controller.dart';
 import 'package:zruri/views/entrypoint/controllers/screen_controller.dart';
 
 class MyAdsPage extends StatelessWidget {
@@ -12,7 +13,10 @@ class MyAdsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenController screenController = Get.find();
+    final NavigationController navigationController = Get.put(
+      NavigationController(),
+      permanent: true,
+    );
     MyAdsController myAdsController = Get.put(
       MyAdsController(),
       permanent: true,
@@ -24,7 +28,7 @@ class MyAdsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            screenController.gotoPrevPage();
+            navigationController.goBack();
           },
         ),
         actions: [

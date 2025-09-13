@@ -12,7 +12,6 @@ import 'package:zruri/core/services/render_form_field.dart';
 import 'package:zruri/core/services/save_dynamic_form.dart';
 import 'package:zruri/models/categories_model.dart';
 import 'package:zruri/models/dynamic-form-models/dynamic_form_model.dart';
-import 'package:zruri/views/entrypoint/controllers/screen_controller.dart';
 
 class PostAdFormPage extends StatelessWidget {
   PostAdFormPage({super.key}) {
@@ -20,7 +19,6 @@ class PostAdFormPage extends StatelessWidget {
     Get.lazyPut(() => SaveDynamicForm());
   }
 
-  final ScreenController screenController = Get.find<ScreenController>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -43,26 +41,27 @@ class PostAdFormPage extends StatelessWidget {
               ? Column(
                   children: [
                     Expanded(
-                      child: Obx(
-                        () {
-                          if (categoriesController.loading.value) {
-                            return const Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.primary,
-                              ),
-                            );
-                          }
-                          return CustomScrollView(
-                            physics: const ClampingScrollPhysics(),
-                            slivers: [
-                              _renderFormFields(categoriesController,
-                                  saveDynamicForm, formFields),
-                              _imagePicker(saveDynamicForm),
-                              _selectedImages(saveDynamicForm),
-                            ],
+                      child: Obx(() {
+                        if (categoriesController.loading.value) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.primary,
+                            ),
                           );
-                        },
-                      ),
+                        }
+                        return CustomScrollView(
+                          physics: const ClampingScrollPhysics(),
+                          slivers: [
+                            _renderFormFields(
+                              categoriesController,
+                              saveDynamicForm,
+                              formFields,
+                            ),
+                            _imagePicker(saveDynamicForm),
+                            _selectedImages(saveDynamicForm),
+                          ],
+                        );
+                      }),
                     ),
                     SizedBox(
                       width: Get.width,
@@ -77,13 +76,14 @@ class PostAdFormPage extends StatelessWidget {
                               // or save it locally
                               _formKey.currentState!.save();
                               saveDynamicForm.postAdForm(
-                                  Get.parameters['category'],
-                                  Get.parameters['category_id']);
+                                Get.parameters['category'],
+                                Get.parameters['category_id'],
+                              );
                             } else if (!_formKey.currentState!.validate()) {
                               Get.snackbar(
                                 AppMessages.enUs['snackbar']['error.title'],
-                                AppMessages.enUs['snackbar']
-                                    ['error.invalidform'],
+                                AppMessages
+                                    .enUs['snackbar']['error.invalidform'],
                                 snackPosition: AppDefaults.snackPosition,
                                 backgroundColor:
                                     AppDefaults.snackbarBackgroundColor,
@@ -95,8 +95,8 @@ class PostAdFormPage extends StatelessWidget {
                             } else {
                               Get.snackbar(
                                 AppMessages.enUs['snackbar']['error.title'],
-                                AppMessages.enUs['snackbar']
-                                    ['error.imagenotuploaded'],
+                                AppMessages
+                                    .enUs['snackbar']['error.imagenotuploaded'],
                                 snackPosition: AppDefaults.snackPosition,
                                 backgroundColor:
                                     AppDefaults.snackbarBackgroundColor,
@@ -119,20 +119,18 @@ class PostAdFormPage extends StatelessWidget {
                     child: Column(
                       children: [
                         const CircularProgressIndicator(
-                            color: AppColors.primary),
-                        const SizedBox(
-                          height: AppDefaults.margin / 2,
+                          color: AppColors.primary,
                         ),
+                        const SizedBox(height: AppDefaults.margin / 2),
                         DefaultTextStyle(
                           style: Theme.of(context).textTheme.titleMedium!,
                           child: AnimatedTextKit(
                             repeatForever: true,
                             animatedTexts: [
                               FadeAnimatedText(
-                                  'Uploaded ${saveDynamicForm.imageUploadController.currentUploadingIndex.value.toString()} of ${saveDynamicForm.images.length} images.'),
-                              FadeAnimatedText(
-                                'Publishing your ad.',
+                                'Uploaded ${saveDynamicForm.imageUploadController.currentUploadingIndex.value.toString()} of ${saveDynamicForm.images.length} images.',
                               ),
+                              FadeAnimatedText('Publishing your ad.'),
                               FadeAnimatedText('We\'re making things ready.'),
                               FadeAnimatedText('Great things, take time!'),
                             ],
@@ -147,8 +145,11 @@ class PostAdFormPage extends StatelessWidget {
     );
   }
 
-  dynamic _renderFormFields(CategoriesController categoriesController,
-      SaveDynamicForm saveDynamicForm, List<DynamicModel> formFields) {
+  dynamic _renderFormFields(
+    CategoriesController categoriesController,
+    SaveDynamicForm saveDynamicForm,
+    List<DynamicModel> formFields,
+  ) {
     final categoryName = Get.parameters['category'];
     final categoryDetails = categoriesController.categories.firstWhere(
       (element) => element.name == categoryName,
@@ -177,8 +178,9 @@ class PostAdFormPage extends StatelessWidget {
                   left: AppDefaults.padding,
                   right: AppDefaults.padding,
                 ),
-                child: RenderFormField()
-                    .renderFormField(controller.formFields[index]),
+                child: RenderFormField().renderFormField(
+                  controller.formFields[index],
+                ),
               ),
             ),
           );
@@ -207,8 +209,8 @@ class PostAdFormPage extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: () async {
                   isLoading.value = true;
-                  final List<XFile> images =
-                      await ImagePicker().pickMultiImage();
+                  final List<XFile> images = await ImagePicker()
+                      .pickMultiImage();
                   for (XFile file in images) {
                     saveDynamicForm.images.add(File(file.path));
                   }
@@ -218,21 +220,15 @@ class PostAdFormPage extends StatelessWidget {
                 label: const Text('Add image(s)'),
                 style: ButtonStyle(
                   padding: WidgetStateProperty.all(
-                    const EdgeInsets.symmetric(
-                      horizontal: AppDefaults.padding,
-                    ),
+                    const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              width: AppDefaults.margin,
-            ),
+            const SizedBox(width: AppDefaults.margin),
             Obx(
               () => isLoading.value
-                  ? const CircularProgressIndicator(
-                      color: AppColors.primary,
-                    )
+                  ? const CircularProgressIndicator(color: AppColors.primary)
                   : Container(),
             ),
             saveDynamicForm.images.isNotEmpty
@@ -247,7 +243,8 @@ class PostAdFormPage extends StatelessWidget {
                       style: ButtonStyle(
                         padding: WidgetStateProperty.all(
                           const EdgeInsets.symmetric(
-                              horizontal: AppDefaults.padding),
+                            horizontal: AppDefaults.padding,
+                          ),
                         ),
                       ),
                     ),

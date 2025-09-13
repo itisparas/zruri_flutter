@@ -49,17 +49,16 @@ class HomePage extends GetView<AuthController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding:
-                                const EdgeInsets.all(AppDefaults.padding / 2),
+                            padding: const EdgeInsets.all(
+                              AppDefaults.padding / 2,
+                            ),
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(Icons.location_on_outlined),
                           ),
-                          const SizedBox(
-                            width: AppDefaults.padding / 2,
-                          ),
+                          const SizedBox(width: AppDefaults.padding / 2),
                           Expanded(
                             child: Text(
                               authController.firebaseUser.value!.address,
@@ -75,9 +74,7 @@ class HomePage extends GetView<AuthController> {
                             Icons.arrow_drop_down_rounded,
                             color: Theme.of(context).colorScheme.secondary,
                           ),
-                          const SizedBox(
-                            width: AppDefaults.padding / 2,
-                          ),
+                          const SizedBox(width: AppDefaults.padding / 2),
                         ],
                       ),
                     ),
@@ -140,7 +137,7 @@ class HomePage extends GetView<AuthController> {
                     onPressed: () => Get.toNamed(AppRouteNames.searchPage),
                     icon: const Icon(CupertinoIcons.search),
                   ),
-                )
+                ),
               ],
             ),
             SliverToBoxAdapter(
@@ -151,20 +148,12 @@ class HomePage extends GetView<AuthController> {
               ),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(
-                width: Get.width,
-                child: Categories(),
-              ),
+              child: SizedBox(width: Get.width, child: Categories()),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(
-                width: Get.width,
-                child: Recommendations(),
-              ),
+              child: SizedBox(width: Get.width, child: Recommendations()),
             ),
-            const SliverToBoxAdapter(
-              child: Footer(),
-            )
+            const SliverToBoxAdapter(child: Footer()),
           ],
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:zruri/core/constants/app_defaults.dart';
 import 'package:zruri/core/constants/app_icons.dart';
 import 'package:zruri/core/constants/app_messages.dart';
 import 'package:zruri/core/routes/app_route_names.dart';
+import 'package:zruri/views/entrypoint/controllers/navigation_controller.dart';
 import 'package:zruri/views/entrypoint/controllers/screen_controller.dart';
 
 class ChooseCategory1 extends StatelessWidget {
@@ -15,8 +16,8 @@ class ChooseCategory1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScreenController screenController = Get.put<ScreenController>(
-      ScreenController(),
+    final NavigationController navigationController = Get.put(
+      NavigationController(),
       permanent: true,
     );
     final CategoriesController categoriesController = Get.put(
@@ -33,7 +34,7 @@ class ChooseCategory1 extends StatelessWidget {
                 SliverAppBar(
                   leading: IconButton(
                     onPressed: () {
-                      screenController.gotoPrevPage();
+                      navigationController.goBack();
                     },
                     icon: const Icon(Icons.arrow_back_ios),
                   ),

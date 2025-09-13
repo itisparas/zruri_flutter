@@ -145,6 +145,9 @@ void _handleCustomDeepLinkPatterns(Uri uri) {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // Normal portrait mode
+  ]);
 
   try {
     // Initialize Firebase

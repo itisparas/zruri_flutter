@@ -3,6 +3,7 @@ import 'package:zruri/core/routes/app_route_names.dart';
 import 'package:zruri/core/routes/unknown_page.dart';
 import 'package:zruri/views/auth/intro_login_page.dart';
 import 'package:zruri/views/auth/otp_verification_page.dart';
+import 'package:zruri/views/chat/chat_page.dart';
 import 'package:zruri/views/entrypoint/entrypoint_ui.dart';
 import 'package:zruri/views/home/home.dart';
 import 'package:zruri/views/auth_landing_page/auth_landing_page.dart';
@@ -37,7 +38,7 @@ class AppRoutes {
       name: AppRouteNames.postAdSuccessPage,
       page: () => const PostAdSuccess(),
     ),
-    GetPage(name: AppRouteNames.adPage, page: () => const AdPage()),
+    GetPage(name: AppRouteNames.adPage, page: () => AdPage()),
     GetPage(name: AppRouteNames.postAdFormPage, page: () => PostAdFormPage()),
     GetPage(
       name: AppRouteNames.promptLocation,
@@ -49,5 +50,6 @@ class AppRoutes {
       page: () => InputManualLocation(),
       transition: Transition.downToUp,
     ),
+    GetPage(name: AppRouteNames.chatPage, page: () => ChatPage()),
   ];
 }

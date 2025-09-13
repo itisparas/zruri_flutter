@@ -226,7 +226,7 @@ class AuthController extends GetxController {
         isDismissible: AppDefaults.isSnackbarDismissible,
         duration: AppDefaults.snackbarDuration,
       );
-      Get.offAll(AppRouteNames.authlanding);
+      Get.offAllNamed(AppRouteNames.authlanding);
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         AppMessages.enUs['snackbar']['error.title'],

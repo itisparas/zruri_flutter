@@ -1,3 +1,4 @@
+// lib/views/entrypoint/components/app_bottom_nav_bar.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri/core/constants/app_colors.dart';
@@ -21,7 +22,7 @@ class AppBottomNavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             BottomAppBarItem(
-              iconName: Icons.home_work_outlined,
+              iconName: Icons.home_outlined,
               name: 'Home',
               isActive: c.currentIndex.value == 0,
               onTap: () => c.onChange(0),
@@ -36,9 +37,18 @@ class AppBottomNavBar extends StatelessWidget {
               padding: EdgeInsets.all(AppDefaults.padding * 2),
               child: SizedBox(width: AppDefaults.margin),
             ),
+            // New Chat Tab
             BottomAppBarItem(
-              iconName: Icons.bookmark_added_outlined,
-              name: 'My ads',
+              iconName: Icons.chat_bubble_outline,
+              name: 'Chats',
+              isActive: c.currentIndex.value == 2,
+              onTap: () => c.onChange(2),
+              // Show unread count badge
+              badgeCount: c.unreadMessagesCount.value,
+            ),
+            BottomAppBarItem(
+              iconName: Icons.bookmark_outlined,
+              name: 'My Ads',
               isActive: c.currentIndex.value == 3,
               onTap: () => c.onChange(3),
             ),

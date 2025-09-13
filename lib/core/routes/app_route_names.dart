@@ -17,6 +17,7 @@ class AppRouteNames {
   static const searchPage = '/search';
   static const listingPage = '/listing';
   static const listings = '$listingPage/:genre/:genre_info';
+  static const chatPage = '/chat';
 
   categoryListing(String categoryName) {
     return '$listingPage/category_id/$categoryName';
