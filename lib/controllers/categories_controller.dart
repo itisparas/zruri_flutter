@@ -1,5 +1,7 @@
 // lib/controllers/categories_controller.dart
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zruri/core/constants/app_colors.dart';
 import 'package:zruri/core/services/get_categories.dart';
 import 'package:zruri/models/categories_model.dart';
 
@@ -21,6 +23,8 @@ class CategoriesController extends GetxController {
   final RxBool isGridView = true.obs;
   final RxString searchQuery = ''.obs;
   final RxString currentSortType = 'alphabetical'.obs;
+
+  final RxDouble formProgress = 0.0.obs;
 
   @override
   void onInit() {
@@ -55,6 +59,31 @@ class CategoriesController extends GetxController {
     } finally {
       loading.value = false;
     }
+  }
+
+  IconData getCategoryIcon(String categoryName) {
+    final iconMap = {
+      'Jobs & Employment': Icons.work_rounded,
+      'Real Estate - For Sale': Icons.home_rounded,
+      'Real Estate - For Rent': Icons.apartment_rounded,
+      'Vehicles - Cars': Icons.directions_car_rounded,
+      'Services': Icons.build_rounded,
+      // Add more mappings
+    };
+
+    return iconMap[categoryName] ?? Icons.category_rounded;
+  }
+
+  Color getCategoryColor(String categoryName) {
+    final colorMap = {
+      'Jobs & Employment': Colors.blue,
+      'Real Estate - For Sale': Colors.green,
+      'Real Estate - For Rent': Colors.orange,
+      'Vehicles - Cars': Colors.red,
+      'Services': Colors.purple,
+    };
+
+    return colorMap[categoryName] ?? AppColors.primary;
   }
 
   // Search functionality

@@ -9,6 +9,7 @@ import 'package:zruri/views/auth/controllers/auth_controller.dart';
 import 'package:zruri/views/entrypoint/controllers/screen_controller.dart';
 import 'package:zruri/views/home/components/ad_space.dart';
 import 'package:zruri/views/home/components/categories.dart';
+import 'package:zruri/views/home/components/categories_section.dart';
 import 'package:zruri/views/home/components/recommendations.dart';
 
 class HomePage extends GetView<AuthController> {
@@ -148,7 +149,7 @@ class HomePage extends GetView<AuthController> {
               ),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(width: Get.width, child: Categories()),
+              child: SizedBox(width: Get.width, child: CategoriesSection()),
             ),
             SliverToBoxAdapter(
               child: SizedBox(width: Get.width, child: Recommendations()),

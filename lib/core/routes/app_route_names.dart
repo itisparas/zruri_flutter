@@ -10,6 +10,7 @@ class AppRouteNames {
   static const postAdFormPageMainRoute = '/details-page/';
   static const postAdFormPage =
       '$postAdFormPageMainRoute:category/:category_id';
+  static const modernPostAdPage = '/modern-post-ad';
   static const postAdSuccessPageMainRoute = '/post-ad-success/';
   static const postAdSuccessPage = '$postAdSuccessPageMainRoute:adId';
   static const adPageMainRoute = '/ad/';

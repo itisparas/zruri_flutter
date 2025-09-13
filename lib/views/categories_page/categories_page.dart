@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri/controllers/categories_controller.dart';
 import 'package:zruri/core/constants/app_colors.dart';
-import 'package:zruri/core/constants/app_defaults.dart';
 import 'package:zruri/core/constants/app_icons.dart';
 import 'package:zruri/core/constants/app_messages.dart';
 import 'package:zruri/core/routes/app_route_names.dart';
