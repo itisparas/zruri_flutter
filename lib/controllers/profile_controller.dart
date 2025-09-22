@@ -60,9 +60,17 @@ class ProfileController extends GetxController {
       isLoading.value = true;
       await _authController.updateUserDisplayName(newName.trim());
       displayName.value = newName.trim();
-      Get.snackbar('Success', 'Display name updated successfully');
+      Get.snackbar(
+        'Success',
+        'Display name updated successfully',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update display name');
+      Get.snackbar(
+        'Error',
+        'Failed to update display name',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -72,8 +80,7 @@ class ProfileController extends GetxController {
   Future<void> updateProfilePicture() async {
     try {
       // Show image source selection
-      final ImageSource? source = await _showImageSourceDialog();
-      if (source == null) return;
+      final ImageSource source = ImageSource.gallery;
 
       final XFile? image = await _imagePicker.pickImage(
         source: source,
@@ -87,10 +94,18 @@ class ProfileController extends GetxController {
         final String downloadUrl = await _uploadProfileImage(File(image.path));
         await _updateUserProfileImage(downloadUrl);
         profileImageUrl.value = downloadUrl;
-        Get.snackbar('Success', 'Profile picture updated successfully');
+        Get.snackbar(
+          'Success',
+          'Profile picture updated successfully',
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update profile picture');
+      Get.snackbar(
+        'Error',
+        'Failed to update profile picture',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } finally {
       isUploadingImage.value = false;
     }

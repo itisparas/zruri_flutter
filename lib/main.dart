@@ -159,7 +159,7 @@ void main() async {
     // Initialize Firebase Messaging
     Get.put(NotificationService());
     // Setup Firebase Messaging after Firebase is initialized
-    await Get.find<NotificationService>().setupFirebaseMessaging();
+    Get.find<NotificationService>().setupFirebaseMessaging();
 
     // Initialize Crashlytics
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);

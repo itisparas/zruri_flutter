@@ -208,7 +208,7 @@ class ListingItem extends StatelessWidget {
   void _shareListingItem(BuildContext context) async {
     try {
       // Create a deep link to your listing
-      String shareUrl = 'https://app-zruri.web.app/listing/$id';
+      String shareUrl = 'https://zruri.dzrv.digital/listing/$id';
 
       // If you have custom deep links or use Firebase Dynamic Links
       // shareUrl = await _createDynamicLink();
@@ -264,7 +264,7 @@ View more details: $shareUrl
   // Future<String> _createDynamicLink(String id) async {
   //   try {
   //     final dynamicLinkParams = DynamicLinkParameters(
-  //       link: Uri.parse('https://app-zruri.web.app/'),
+  //       link: Uri.parse('https://zruri.dzrv.digital/'),
   //       uriPrefix: 'https://yourapp.page.link',
   //       androidParameters: const AndroidParameters(
   //         packageName: 'com.yourapp.zruri',

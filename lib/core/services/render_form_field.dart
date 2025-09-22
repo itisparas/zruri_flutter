@@ -4,18 +4,36 @@ import 'package:zruri/models/dynamic-form-models/dynamic_form_model.dart';
 import 'package:zruri/models/dynamic-form-models/dynamic_form_validator_types.dart';
 
 class RenderFormField {
-  Widget renderFormField(DynamicModel formField) {
+  Widget renderFormField(
+    DynamicModel formField,
+    TextEditingController controller,
+    FocusNode focusNode,
+    VoidCallback onValueChanged,
+  ) {
     if (formField.formType == FormTypeValues.text ||
         formField.formType == FormTypeValues.number ||
         formField.formType == FormTypeValues.multiline) {
-      return _getTextFormFieldWidget(formField);
+      return _getTextFormFieldWidget(
+        formField,
+        controller,
+        focusNode,
+        onValueChanged,
+      );
     } else {
       return Container();
     }
   }
 
-  TextFormField _getTextFormFieldWidget(DynamicModel formField) {
+  TextFormField _getTextFormFieldWidget(
+    DynamicModel formField,
+    TextEditingController controller,
+    FocusNode focusNode,
+    VoidCallback onValueChanged,
+  ) {
     return TextFormField(
+      key: ValueKey(formField.controlName),
+      controller: controller,
+      focusNode: focusNode,
       decoration: InputDecoration(
         isDense: true,
         hintText: formField.fieldPlaceholder,
@@ -51,7 +69,9 @@ class RenderFormField {
         }
         return null;
       },
-      onChanged: (value) => formField.value = value,
+      onChanged: (value) {
+        formField.value = value;
+      },
     );
   }
 }

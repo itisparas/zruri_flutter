@@ -178,9 +178,11 @@ class PostAdFormPage extends StatelessWidget {
                   left: AppDefaults.padding,
                   right: AppDefaults.padding,
                 ),
-                child: RenderFormField().renderFormField(
-                  controller.formFields[index],
-                ),
+                child: SizedBox.shrink(),
+                // child: RenderFormField().renderFormField(
+                //   controller.formFields[index],
+                //   postAdController,
+                // ),
               ),
             ),
           );

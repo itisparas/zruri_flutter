@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zruri/core/constants/app_colors.dart';
 import 'package:zruri/views/entrypoint/controllers/navigation_controller.dart';
+import 'package:zruri/views/post_ad_page/category_selection_page.dart';
 
 class ModernBottomNavBar extends StatelessWidget {
   const ModernBottomNavBar({super.key});
@@ -187,7 +188,7 @@ class ModernBottomNavBar extends StatelessWidget {
 
   Widget _buildFloatingActionButton(NavigationController controller) {
     return GestureDetector(
-      onTap: () => controller.showPostAdOptions(),
+      onTap: () => Get.to(() => CategorySelectionPage()),
       child: Container(
         width: 52, // Slightly smaller
         height: 52,

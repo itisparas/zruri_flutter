@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:zruri/controllers/my_ads_controller.dart';
 import 'package:zruri/controllers/profile_controller.dart';
 import 'package:zruri/core/constants/app_colors.dart';
+import 'package:zruri/core/constants/constants.dart';
 import 'package:zruri/views/auth/controllers/auth_controller.dart';
 import 'package:zruri/views/entrypoint/controllers/navigation_controller.dart';
+import 'package:zruri/views/post_ad_page/category_selection_page.dart';
 import 'package:zruri/views/profile/components/my_ad_card.dart';
 import 'package:zruri/views/profile/components/profile_header.dart';
 import 'package:zruri/views/profile/components/profile_stats.dart';
@@ -92,16 +94,16 @@ class Profile extends StatelessWidget {
                 ],
               ),
             ),
-            const PopupMenuItem(
-              value: 'settings',
-              child: Row(
-                children: [
-                  Icon(Icons.settings_outlined),
-                  SizedBox(width: 8),
-                  Text('Settings'),
-                ],
-              ),
-            ),
+            // const PopupMenuItem(
+            //   value: 'settings',
+            //   child: Row(
+            //     children: [
+            //       Icon(Icons.settings_outlined),
+            //       SizedBox(width: 8),
+            //       Text('Settings'),
+            //     ],
+            //   ),
+            // ),
             const PopupMenuItem(
               value: 'logout',
               child: Row(
@@ -166,7 +168,12 @@ class Profile extends StatelessWidget {
   Widget _buildMyAdsSection(MyAdsController myAdsController) {
     return SliverToBoxAdapter(
       child: Container(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(
+          left: AppDefaults.margin,
+          right: AppDefaults.margin,
+          top: AppDefaults.margin * 2,
+          bottom: AppDefaults.margin * 2,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -191,7 +198,7 @@ class Profile extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppDefaults.padding),
             Obx(() => _buildMyAdsContent(myAdsController)),
           ],
         ),
@@ -242,6 +249,7 @@ class Profile extends StatelessWidget {
 
   Widget _buildEmptyAdsState() {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -270,7 +278,7 @@ class Profile extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: () {
               // Navigate to post ad page
-              Get.find<NavigationController>().showPostAdOptions();
+              Get.to(() => CategorySelectionPage());
             },
             icon: const Icon(Icons.add),
             label: const Text('Create Listing'),

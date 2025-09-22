@@ -26,18 +26,24 @@ class SearchPageController extends GetxController {
 
       final results = await FirebaseFirestore.instance
           .collection('ads') // Replace with your collection name
-          .orderBy('title')
+          .orderBy('title_lowercase')
           .where(
             Filter.and(
-              Filter('title', isGreaterThanOrEqualTo: searchController.text),
-              Filter('title', isLessThan: '${searchController.text}z'),
+              Filter(
+                'title_lowercase',
+                isGreaterThanOrEqualTo: searchController.text.toLowerCase(),
+              ),
+              Filter(
+                'title_lowercase',
+                isLessThan: '${searchController.text.toLowerCase()}\uf8ff',
+              ),
               Filter('active', isEqualTo: true),
+              Filter('soft_delete', isEqualTo: false),
             ),
           )
           .get();
 
       searchResults.value = results.docs;
-      print(results.docs.toString());
       isLoading.value = false;
     } else {
       searchResults.clear();

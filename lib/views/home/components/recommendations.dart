@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zruri/controllers/recommendations_controller.dart';
 import 'package:zruri/core/components/listing_item.dart';
+import 'package:zruri/core/constants/app_colors.dart';
 import 'package:zruri/core/constants/app_defaults.dart';
 import 'package:zruri/core/routes/app_route_names.dart';
 
@@ -17,12 +18,16 @@ class Recommendations extends StatelessWidget {
         Get.find<RecommendationsController>();
 
     return Padding(
-      padding: const EdgeInsets.all(AppDefaults.padding),
+      padding: const EdgeInsets.only(
+        left: AppDefaults.padding,
+        right: AppDefaults.padding,
+        bottom: AppDefaults.padding,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('For you', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(height: AppDefaults.padding / 4),
+          _buildSectionHeader(),
+          const SizedBox(height: AppDefaults.padding),
           Obx(
             () => recommendationsController.isLoading.value
                 ? const Center(child: CircularProgressIndicator())
@@ -53,6 +58,32 @@ class Recommendations extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSectionHeader() {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(Icons.recommend, color: AppColors.primary, size: 20),
+        ),
+        const SizedBox(width: 12),
+        const Expanded(
+          child: Text(
+            'For you',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

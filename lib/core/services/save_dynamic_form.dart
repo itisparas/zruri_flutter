@@ -96,11 +96,14 @@ class SaveDynamicForm extends GetxController {
         if (element.formType == FormTypeValues.multiline) {
           element.value = Uri.encodeComponent(element.value);
         }
+        if (element.controlName == 'title') {
+          formData['title_lowercase'] = element.value.trim().toLowerCase();
+        }
         formData[element.controlName] = element.value;
       }
       _firestore.collection('ads').doc(adId).set(formData).then((value) async {
-        await Future.delayed(const Duration(seconds: 1));
-        Get.offAndToNamed('${AppRouteNames.postAdSuccessPageMainRoute}$adId');
+        clearFormData();
+        Get.offNamed('${AppRouteNames.postAdSuccessPageMainRoute}$adId');
       }, onError: (e) => throw Exception(e));
     } catch (e) {
       Get.snackbar(

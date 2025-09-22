@@ -37,7 +37,7 @@ class ModernCategoriesPage extends StatelessWidget {
               slivers: [
                 _buildWelcomeHeader(controller),
                 _buildSearchSection(controller),
-                _buildQuickActions(),
+                _buildQuickActions(navigationController),
                 _buildFeaturedCategoriesSection(controller),
                 _buildAllCategoriesSection(controller),
               ],
@@ -45,7 +45,6 @@ class ModernCategoriesPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: _buildFloatingActionButton(),
     );
   }
 
@@ -310,7 +309,7 @@ class ModernCategoriesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickActions() {
+  Widget _buildQuickActions(NavigationController navigationController) {
     return SliverToBoxAdapter(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -332,7 +331,7 @@ class ModernCategoriesPage extends StatelessWidget {
                 'Manage listings',
                 Icons.list_alt_rounded,
                 Colors.blue,
-                () => Get.toNamed('/my-ads'),
+                () => navigationController.navigateToPage(3),
               ),
             ),
           ],
@@ -951,18 +950,6 @@ class ModernCategoriesPage extends StatelessWidget {
         ],
       ),
     ).animate().scale(delay: 200.ms, duration: 400.ms);
-  }
-
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton.extended(
-      onPressed: () => Get.toNamed('/post-ad'),
-      backgroundColor: AppColors.primary,
-      foregroundColor: Colors.white,
-      icon: const Icon(Icons.add_rounded),
-      label: const Text('Post Ad'),
-      elevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-    ).animate().scale(delay: 800.ms, duration: 300.ms);
   }
 
   IconData _getCategoryIcon(String categoryName) {

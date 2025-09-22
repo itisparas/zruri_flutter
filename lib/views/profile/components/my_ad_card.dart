@@ -8,8 +8,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:zruri/core/constants/app_colors.dart';
 import 'package:zruri/core/services/firebase_storage_service.dart';
+import 'package:zruri/core/services/spotlight_service.dart';
 import 'package:zruri/models/my_ads_model.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:zruri/views/auth/controllers/auth_controller.dart';
 
 class MyAdCard extends StatefulWidget {
   final MyAdsModel ad;
@@ -39,6 +41,7 @@ class _MyAdCardState extends State<MyAdCard> with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<Offset> _slideAnimation;
   late Animation<double> _fadeAnimation;
+  late AuthController authController = Get.find<AuthController>();
 
   @override
   void initState() {
@@ -450,6 +453,16 @@ class _MyAdCardState extends State<MyAdCard> with TickerProviderStateMixin {
                           ),
                           const SizedBox(width: 24),
                           _buildQuickAction(
+                            icon: Icons.rocket_launch,
+                            label: 'Spotlight',
+                            color: Colors.teal,
+                            onTap: () async {
+                              _hideActions();
+                              await _spotlightAd();
+                            },
+                          ),
+                          const SizedBox(width: 24),
+                          _buildQuickAction(
                             icon: Icons.delete_rounded,
                             label: 'Delete',
                             color: Colors.red,
@@ -524,11 +537,23 @@ class _MyAdCardState extends State<MyAdCard> with TickerProviderStateMixin {
     }
   }
 
+  Future<void> _spotlightAd() async {
+    await SpotlightService.createSpotlightRequest(
+      userId: authController.firebaseUser.value!.user.uid,
+      userName:
+          authController.firebaseUser.value!.user.displayName ?? 'Unknown',
+      userEmail:
+          authController.firebaseUser.value!.user.phoneNumber ?? 'Unknown',
+      adId: widget.ad.id,
+      adTitle: widget.ad.title,
+    );
+  }
+
   void _shareAd() async {
     try {
       HapticFeedback.lightImpact();
 
-      String shareUrl = 'https://app-zruri.web.app/listing/${widget.ad.id}';
+      String shareUrl = 'https://zruri.dzrv.digital/listing/${widget.ad.id}';
       String shareText =
           '''
 🏷️ Check out this amazing deal!

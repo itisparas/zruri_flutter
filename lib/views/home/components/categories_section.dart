@@ -100,11 +100,11 @@ class _CategoriesSectionState extends State<CategoriesSection>
 
   Widget _buildSectionHeader(NavigationController navigationController) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(AppDefaults.padding / 2),
             decoration: BoxDecoration(
               color: AppColors.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),

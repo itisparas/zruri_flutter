@@ -16,12 +16,12 @@ class ChatListPage extends StatelessWidget {
     permanent: true,
   );
 
+  final NavigationController navigationController =
+      Get.find<NavigationController>();
+
   @override
   Widget build(BuildContext context) {
     final ChatListController controller = Get.put(ChatListController());
-    final NavigationController navigationController =
-        Get.find<NavigationController>();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Chats'),
@@ -85,9 +85,7 @@ class ChatListPage extends StatelessWidget {
           const SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {
-              // Navigate to home or categories
-              Get.find<ScreenController>().goToHome();
-              Get.reload();
+              navigationController.navigateToPage(1);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,

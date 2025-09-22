@@ -64,31 +64,31 @@ class AdPage extends StatelessWidget {
           onPressed: () => _shareAd(context, adController),
           icon: const Icon(Icons.share_outlined),
         ),
-        PopupMenuButton<String>(
-          onSelected: (value) => _handleMenuAction(value, adController),
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'report',
-              child: Row(
-                children: [
-                  Icon(Icons.flag_outlined),
-                  SizedBox(width: 8),
-                  Text('Report Ad'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'save',
-              child: Row(
-                children: [
-                  Icon(Icons.bookmark_border),
-                  SizedBox(width: 8),
-                  Text('Save Ad'),
-                ],
-              ),
-            ),
-          ],
-        ),
+        // PopupMenuButton<String>(
+        //   onSelected: (value) => _handleMenuAction(value, adController),
+        //   itemBuilder: (context) => [
+        //     const PopupMenuItem(
+        //       value: 'report',
+        //       child: Row(
+        //         children: [
+        //           Icon(Icons.flag_outlined),
+        //           SizedBox(width: 8),
+        //           Text('Report Ad'),
+        //         ],
+        //       ),
+        //     ),
+        //     const PopupMenuItem(
+        //       value: 'save',
+        //       child: Row(
+        //         children: [
+        //           Icon(Icons.bookmark_border),
+        //           SizedBox(width: 8),
+        //           Text('Save Ad'),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
@@ -125,9 +125,8 @@ class AdPage extends StatelessWidget {
                             placeholder: (context, url) => Container(
                               color: Colors.grey[200],
                               child: const Center(
-                                child: SpinKitSpinningCircle(
+                                child: CircularProgressIndicator(
                                   color: AppColors.primary,
-                                  size: 40,
                                 ),
                               ),
                             ),
@@ -148,9 +147,8 @@ class AdPage extends StatelessWidget {
                       return Container(
                         color: Colors.grey[200],
                         child: const Center(
-                          child: SpinKitSpinningCircle(
+                          child: CircularProgressIndicator(
                             color: AppColors.primary,
-                            size: 40,
                           ),
                         ),
                       );
@@ -250,13 +248,13 @@ class AdPage extends StatelessWidget {
 
   Widget _buildTitleAndPrice(BuildContext context, AdController adController) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: AppDefaults.padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             adController.adDetails.value?['title'].toString() ?? 'Ad title',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               height: 1.2,
             ),
@@ -270,7 +268,7 @@ class AdPage extends StatelessWidget {
             ),
             child: Text(
               '$currency${adController.adDetails.value?['price']}',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
               ),
@@ -512,6 +510,7 @@ class AdPage extends StatelessWidget {
 
   void _shareAd(BuildContext context, AdController adController) {
     try {
+      final RenderBox? box = context.findRenderObject() as RenderBox?;
       final adData = adController.adDetails.value;
       final String shareText =
           '''
@@ -531,6 +530,7 @@ View details: https://zruri.dzrv.digital/listing/${Get.parameters['adId']}
         ShareParams(
           text: shareText,
           subject: adData?['title'] ?? 'Check out this deal!',
+          sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
         ),
       );
     } catch (e) {
