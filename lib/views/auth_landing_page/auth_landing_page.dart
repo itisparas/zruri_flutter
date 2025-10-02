@@ -118,32 +118,6 @@ class _WelcomeScreen extends StatelessWidget {
               .animate()
               .fadeIn(delay: 600.ms, duration: 500.ms)
               .slideY(begin: 0.5),
-
-          const SizedBox(height: 16),
-
-          OutlinedButton(
-                onPressed: () {
-                  // Navigate to your SignUpPage
-                  Get.toNamed(AppRouteNames.onboarding);
-                },
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                  side: const BorderSide(color: AppColors.primary),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Create an Account',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                ),
-              )
-              .animate()
-              .fadeIn(delay: 700.ms, duration: 500.ms)
-              .slideY(begin: 0.5),
-
-          const SizedBox(height: 24),
         ],
       ),
     );

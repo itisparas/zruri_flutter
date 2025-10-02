@@ -25,9 +25,6 @@ class AuthController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-
-    print('AuthController onReady');
-
     FirebaseAuth.instance.userChanges().listen((User? user) {
       firebaseUser.value = user != null
           ? AuthUser.fromFirebaseUser(user)
@@ -109,7 +106,6 @@ class AuthController extends GetxController {
   Future<void> updateUserLocation(Location location) async {
     firebaseUser.value?.location = location;
     firebaseUser.value?.address = location.formattedAddress;
-    print(location.latitude.runtimeType);
     await _usersCollection
         .doc(firebaseUser.value?.user.uid)
         .update({'location': location.toMap()})
@@ -155,9 +151,22 @@ class AuthController extends GetxController {
         phoneNumber: '+$phoneNumber',
         verificationCompleted: (_) {},
         verificationFailed: (FirebaseAuthException ex) {
+          String errorMessage =
+              AppMessages.enUs['snackbar']['auth']['error']['otpSendFailed'];
+
+          // Provide specific error messages
+          if (ex.code == 'internal-error') {
+            errorMessage =
+                'Something went wrong. Please try again or contact support.';
+          } else if (ex.code == 'invalid-phone-number') {
+            errorMessage = 'Invalid phone number format.';
+          } else if (ex.code == 'too-many-requests') {
+            errorMessage = 'Too many requests. Please try again later.';
+          }
+
           Get.snackbar(
             AppMessages.enUs['snackbar']['error.title'],
-            AppMessages.enUs['snackbar']['auth']['error']['otpSendFailed'],
+            errorMessage,
             snackPosition: AppDefaults.snackPosition,
             backgroundColor: AppDefaults.snackbarBackgroundColor,
             colorText: AppDefaults.snackbarColorText,
@@ -186,6 +195,7 @@ class AuthController extends GetxController {
         timeout: const Duration(seconds: 120),
       );
     } catch (e) {
+      isLoading.value = false;
       throw Exception(e);
     }
   }
@@ -217,6 +227,10 @@ class AuthController extends GetxController {
   signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
+
+      // Delete all controllers including permanent ones
+      Get.deleteAll(force: true);
+
       Get.snackbar(
         AppMessages.enUs['snackbar']['success.title'],
         AppMessages.enUs['snackbar']['auth']['success']['logout'],

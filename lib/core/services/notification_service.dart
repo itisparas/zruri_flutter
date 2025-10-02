@@ -46,7 +46,6 @@ class NotificationService {
 
         // Handle token refresh
         _firebaseMessaging.onTokenRefresh.listen((newToken) {
-          print('Refreshed FCM Token: $newToken');
           _saveTokenToFirestore(newToken);
         });
 

@@ -1,5 +1,6 @@
 // lib/views/profile/controllers/profile_controller.dart
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class ProfileController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxBool isUploadingImage = false.obs;
   final Rx<DateTime?> joinDate = Rx<DateTime?>(null);
+  final RxBool notificationsEnabled = true.obs;
 
   @override
   void onInit() {
@@ -217,5 +219,114 @@ class ProfileController extends GetxController {
       return '${words[0][0]}${words[1][0]}'.toUpperCase();
     }
     return name[0].toUpperCase();
+  }
+
+  // Toggle notifications
+  Future<void> toggleNotifications(bool value) async {
+    try {
+      notificationsEnabled.value = value;
+
+      // Update Firestore user document
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({'notificationsEnabled': value});
+
+        // Update the token document
+        await FirebaseFirestore.instance
+            .collection('user_tokens')
+            .doc(user.uid)
+            .update({'notificationsEnabled': value});
+      }
+    } catch (e) {
+      // Revert on error
+      notificationsEnabled.value = !value;
+      Get.snackbar(
+        'Error',
+        'Failed to update notification settings',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  // Delete account
+  Future<void> deleteAccount(String password) async {
+    try {
+      isLoading.value = true;
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) {
+        throw Exception('No user logged in');
+      }
+
+      // Re-authenticate user with phone number
+      // Note: For phone auth, we need to re-verify the phone number
+      // This is a simplified version - you may need to adjust based on your auth flow
+
+      // Delete user data from Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .delete();
+      await FirebaseFirestore.instance
+          .collection('user_tokens')
+          .doc(user.uid)
+          .delete();
+
+      // Delete all user's ads
+      final adsQuery = await FirebaseFirestore.instance
+          .collection('ads')
+          .where('userId', isEqualTo: user.uid)
+          .get();
+
+      for (var doc in adsQuery.docs) {
+        await doc.reference.delete();
+      }
+
+      // Delete Firebase Auth account
+      await user.delete();
+
+      // Delete all controllers including permanent ones
+      Get.deleteAll(force: true);
+
+      Get.offAllNamed('/authlanding');
+      Get.snackbar(
+        'Account Deleted',
+        'Your account has been permanently deleted',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        Get.snackbar(
+          'Error',
+          'Please log out and log in again before deleting your account',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } else {
+        Get.snackbar(
+          'Error',
+          'Failed to delete account: ${e.message}',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to delete account',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

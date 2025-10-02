@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,21 @@ import 'package:zruri/core/services/firebase_storage_service.dart';
 import 'package:zruri/core/utils/constants.dart';
 import 'package:zruri/main.dart';
 import 'package:zruri/views/auth/controllers/auth_controller.dart';
+
+// Report reasons enum
+enum ReportReason {
+  spam('Spam or Misleading', Icons.warning_amber),
+  inappropriate('Inappropriate Content', Icons.block),
+  scam('Suspected Scam', Icons.error_outline),
+  duplicate('Duplicate Listing', Icons.copy),
+  wrongCategory('Wrong Category', Icons.category_outlined),
+  soldItem('Item Already Sold', Icons.check_circle_outline),
+  other('Other', Icons.more_horiz);
+
+  final String label;
+  final IconData icon;
+  const ReportReason(this.label, this.icon);
+}
 
 class AdPage extends StatelessWidget {
   AdPage({super.key});
@@ -64,31 +80,21 @@ class AdPage extends StatelessWidget {
           onPressed: () => _shareAd(context, adController),
           icon: const Icon(Icons.share_outlined),
         ),
-        // PopupMenuButton<String>(
-        //   onSelected: (value) => _handleMenuAction(value, adController),
-        //   itemBuilder: (context) => [
-        //     const PopupMenuItem(
-        //       value: 'report',
-        //       child: Row(
-        //         children: [
-        //           Icon(Icons.flag_outlined),
-        //           SizedBox(width: 8),
-        //           Text('Report Ad'),
-        //         ],
-        //       ),
-        //     ),
-        //     const PopupMenuItem(
-        //       value: 'save',
-        //       child: Row(
-        //         children: [
-        //           Icon(Icons.bookmark_border),
-        //           SizedBox(width: 8),
-        //           Text('Save Ad'),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
+        PopupMenuButton<String>(
+          onSelected: (value) => _handleMenuAction(value, adController),
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'report',
+              child: Row(
+                children: [
+                  Icon(Icons.flag_outlined, color: Colors.red),
+                  SizedBox(width: 8),
+                  Text('Report Ad'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -580,46 +586,248 @@ View details: https://zruri.dzrv.digital/listing/${Get.parameters['adId']}
   void _handleMenuAction(String action, AdController adController) {
     switch (action) {
       case 'report':
-        _showReportDialog();
-        break;
-      case 'save':
-        _saveAd(adController);
+        _showReportDialog(adController);
         break;
     }
   }
 
-  void _showReportDialog() {
+  void _showReportDialog(AdController adController) {
+    final Rx<String?> selectedReason = Rx<String?>(null);
+    final TextEditingController additionalDetailsController =
+        TextEditingController();
+    final RxBool isSubmitting = false.obs;
+
     Get.dialog(
       AlertDialog(
-        title: const Text('Report Ad'),
-        content: const Text('Are you sure you want to report this ad?'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.red.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.flag, color: Colors.red, size: 20),
+            ),
+            const SizedBox(width: 12),
+            const Text('Report Ad'),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Why are you reporting this ad?',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 16),
+              ...ReportReason.values.map((reason) {
+                return Obx(
+                  () => RadioListTile<String>(
+                    value: reason.name,
+                    groupValue: selectedReason.value,
+                    onChanged: isSubmitting.value
+                        ? null
+                        : (value) => selectedReason.value = value,
+                    title: Row(
+                      children: [
+                        Icon(reason.icon, size: 20, color: Colors.grey[700]),
+                        const SizedBox(width: 8),
+                        Expanded(child: Text(reason.label)),
+                      ],
+                    ),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    activeColor: Colors.red,
+                  ),
+                );
+              }),
+              const SizedBox(height: 16),
+              TextField(
+                controller: additionalDetailsController,
+                enabled: !isSubmitting.value,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  labelText: 'Additional details (optional)',
+                  hintText: 'Please provide more information...',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.red, width: 2),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
         actions: [
           TextButton(
-            onPressed: () => Get.toNamed(previousRoute),
-            child: const Text('Cancel'),
+            onPressed: isSubmitting.value ? null : () => Get.back(),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey[600])),
           ),
-          TextButton(
-            onPressed: () {
-              Get.toNamed(previousRoute);
-              Get.snackbar(
-                'Reported',
-                'Thank you for your report. We will review it.',
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            },
-            child: const Text('Report'),
+          Obx(
+            () => ElevatedButton(
+              onPressed: selectedReason.value != null && !isSubmitting.value
+                  ? () async {
+                      isSubmitting.value = true;
+                      try {
+                        final success = await _submitReport(
+                          adController,
+                          selectedReason.value!,
+                          additionalDetailsController.text.trim(),
+                        );
+                        isSubmitting.value = false;
+
+                        if (success) {
+                          log('Attempting to close dialog...');
+                          // Close the dialog
+                          Navigator.of(Get.overlayContext!).pop();
+                          log('Dialog close attempted');
+                        }
+                      } catch (e) {
+                        log('Error in submit handler: $e');
+                        isSubmitting.value = false;
+                      }
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                disabledBackgroundColor: Colors.grey[300],
+              ),
+              child: isSubmitting.value
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Text('Submit Report'),
+            ),
           ),
         ],
       ),
     );
   }
 
-  void _saveAd(AdController adController) {
-    // Implement save functionality
-    Get.snackbar(
-      'Saved',
-      'Ad has been saved to your favorites',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+  Future<bool> _submitReport(
+    AdController adController,
+    String reason,
+    String additionalDetails,
+  ) async {
+    try {
+      log('Starting report submission...');
+      final currentUser = auth.currentUser;
+      if (currentUser == null) {
+        log('User not logged in');
+        Get.snackbar(
+          'Error',
+          'You must be logged in to report an ad',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return false;
+      }
+
+      final adId = Get.parameters['adId']!;
+      final adData = adController.adDetails.value;
+      final adOwnerId = adData?['user'];
+
+      log('Ad ID: $adId, Owner: $adOwnerId');
+
+      // Check if user already reported this ad
+      log('Checking for existing reports...');
+      final existingReport = await FirebaseFirestore.instance
+          .collection('ad_reports')
+          .where('adId', isEqualTo: adId)
+          .where('reportedBy', isEqualTo: currentUser.uid)
+          .limit(1)
+          .get();
+
+      if (existingReport.docs.isNotEmpty) {
+        log('User already reported this ad');
+        Get.snackbar(
+          'Already Reported',
+          'You have already reported this ad',
+          backgroundColor: Colors.orange,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        return true; // Return true to close dialog
+      }
+
+      // Create report document
+      log('Creating report document...');
+      final reportRef = FirebaseFirestore.instance
+          .collection('ad_reports')
+          .doc();
+      await reportRef.set({
+        'adId': adId,
+        'adTitle': adData?['title'],
+        'adOwnerId': adOwnerId,
+        'reportedBy': currentUser.uid,
+        'reporterName': currentUser.displayName ?? 'Anonymous',
+        'reason': reason,
+        'reasonLabel': ReportReason.values
+            .firstWhere((r) => r.name == reason)
+            .label,
+        'additionalDetails': additionalDetails,
+        'createdAt': FieldValue.serverTimestamp(),
+        'status': 'pending', // pending, reviewed, resolved
+      });
+
+      // Update ad spam count
+      log('Updating ad spam count...');
+      final adRef = FirebaseFirestore.instance.collection('ads').doc(adId);
+      await adRef.set({
+        'spamReportCount': FieldValue.increment(1),
+        'lastReportedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      // Update user spam count
+      log('Updating user spam count...');
+      final userRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(adOwnerId);
+      await userRef.set({
+        'adsReportedAsSpam': FieldValue.increment(1),
+      }, SetOptions(merge: true));
+
+      log('Report submitted successfully!');
+      Get.snackbar(
+        'Report Submitted',
+        'Thank you for your report. We will review it shortly.',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: const Duration(seconds: 3),
+      );
+      return true;
+    } catch (e) {
+      log('Error submitting report: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to submit report. Please try again.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
   }
 }

@@ -7,8 +7,10 @@ import 'package:zruri/core/constants/app_defaults.dart';
 import 'package:zruri/core/utils/constants.dart';
 // import 'package:zruri/views/auth/controllers/auth_controller.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zruri/views/auth/controllers/auth_controller.dart';
 
 class SelectedCountryController extends GetxController {
@@ -105,10 +107,40 @@ class IntroLoginPage extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Text(
-                  'By continuing, you agree to $title\'s Terms of Use and Privacy Policy.',
+                RichText(
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodySmall,
+                    children: [
+                      const TextSpan(text: 'By continuing, you agree to $title\'s '),
+                      TextSpan(
+                        text: 'Terms of Use',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => _launchUrl(
+                                'https://zruri.dzrv.digital/terms.html',
+                              ),
+                      ),
+                      const TextSpan(text: ' and '),
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => _launchUrl(
+                                'https://zruri.dzrv.digital/privacy.html',
+                              ),
+                      ),
+                      const TextSpan(text: '.'),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -134,6 +166,31 @@ class IntroLoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+      } else {
+        Get.snackbar(
+          'Error',
+          'Could not open the link',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Could not open the link',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }
 

@@ -504,16 +504,6 @@ class _ModernPostAdFormPageState extends State<ModernPostAdFormPage> {
         }).toList(),
         onChanged: (CategoriesModel? category) {
           if (category != null) {
-            // --- DEBUG: Add this print statement ---
-            print('Category selected: "${category.name}"');
-            print('Number of form fields: ${category.formFields.length}');
-            if (category.formFields.isNotEmpty) {
-              print(
-                'First field placeholder: ${category.formFields.first.fieldPlaceholder}',
-              );
-            }
-            // --- End of DEBUG ---
-
             postAdController.selectCategory(category);
           }
         },

@@ -298,7 +298,6 @@ class ChatListPage extends StatelessWidget {
                 leading: const Icon(Icons.visibility),
                 title: const Text('View Ad'),
                 onTap: () {
-                  print(chatRoom?.adId);
                   Get.toNamed(
                     '${AppRouteNames.adPageMainRoute}${chatRoom?.adId}',
                   );

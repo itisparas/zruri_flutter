@@ -11,6 +11,7 @@ import 'package:zruri/views/post_ad_page/category_selection_page.dart';
 import 'package:zruri/views/profile/components/my_ad_card.dart';
 import 'package:zruri/views/profile/components/profile_header.dart';
 import 'package:zruri/views/profile/components/profile_stats.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -80,41 +81,26 @@ class Profile extends StatelessWidget {
         ),
       ),
       actions: [
-        PopupMenuButton<String>(
-          onSelected: (value) => _handleMenuAction(value, profileController),
-          icon: Icon(Icons.more_vert, color: Colors.grey[700]),
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'edit',
-              child: Row(
-                children: [
-                  Icon(Icons.edit_outlined),
-                  SizedBox(width: 8),
-                  Text('Edit Profile'),
-                ],
+        // Settings Menu Button
+        Padding(
+          padding: const EdgeInsets.only(right: AppDefaults.padding / 2),
+          child: IconButton(
+            onPressed: () =>
+                _showSettingsBottomSheet(context, profileController),
+            icon: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                Icons.settings_outlined,
+                color: Colors.grey[700],
+                size: 20,
               ),
             ),
-            // const PopupMenuItem(
-            //   value: 'settings',
-            //   child: Row(
-            //     children: [
-            //       Icon(Icons.settings_outlined),
-            //       SizedBox(width: 8),
-            //       Text('Settings'),
-            //     ],
-            //   ),
-            // ),
-            const PopupMenuItem(
-              value: 'logout',
-              child: Row(
-                children: [
-                  Icon(Icons.logout, color: Colors.red),
-                  SizedBox(width: 8),
-                  Text('Logout', style: TextStyle(color: Colors.red)),
-                ],
-              ),
-            ),
-          ],
+            tooltip: 'Settings',
+          ),
         ),
       ],
     );
@@ -277,7 +263,6 @@ class Profile extends StatelessWidget {
           const SizedBox(height: 24),
           ElevatedButton.icon(
             onPressed: () {
-              // Navigate to post ad page
               Get.to(() => CategorySelectionPage());
             },
             icon: const Icon(Icons.add),
@@ -293,6 +278,216 @@ class Profile extends StatelessWidget {
     );
   }
 
+  void _showSettingsBottomSheet(
+    BuildContext context,
+    ProfileController profileController,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Title
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: [
+                  Icon(Icons.settings, color: AppColors.primary),
+                  const SizedBox(width: 12),
+                  const Text(
+                    'Account Settings',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: AppDefaults.margin),
+            const Divider(height: 1),
+            // Settings options
+            _buildNotificationToggle(profileController),
+            _buildSettingsOption(
+              icon: Icons.privacy_tip_outlined,
+              title: 'Privacy',
+              subtitle: 'View our privacy policy',
+              color: Colors.purple,
+              onTap: () {
+                Get.back();
+                _launchPrivacyPolicy();
+              },
+            ),
+            const Divider(height: 1),
+            // Danger zone
+            _buildSettingsOption(
+              icon: Icons.logout,
+              title: 'Logout',
+              subtitle: 'Sign out of your account',
+              color: Colors.orange[700]!,
+              onTap: () {
+                Get.back();
+                _showLogoutDialog();
+              },
+            ),
+            _buildSettingsOption(
+              icon: Icons.delete_forever_outlined,
+              title: 'Delete Account',
+              subtitle: 'Permanently delete your account',
+              color: Colors.red,
+              onTap: () {
+                Get.back();
+                _showDeleteAccountDialog(profileController);
+              },
+              isDangerous: true,
+            ),
+            SizedBox(height: MediaQuery.of(context).padding.bottom),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingsOption({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+    bool isDangerous = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: isDangerous ? Colors.red : Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right, color: Colors.grey[400]),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNotificationToggle(ProfileController profileController) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.orange.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(
+              Icons.notifications_outlined,
+              color: Colors.orange,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Notifications',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Receive push notifications',
+                  style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                ),
+              ],
+            ),
+          ),
+          Obx(
+            () => Switch(
+              value: profileController.notificationsEnabled.value,
+              onChanged: (value) async {
+                await profileController.toggleNotifications(value);
+                Get.snackbar(
+                  'Notifications',
+                  value ? 'Notifications enabled' : 'Notifications disabled',
+                  snackPosition: SnackPosition.BOTTOM,
+                );
+              },
+              activeThumbColor: Colors.orange,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _launchPrivacyPolicy() async {
+    final Uri url = Uri.parse('https://zruri.dzrv.digital/privacy.html');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      Get.snackbar(
+        'Error',
+        'Could not open privacy policy',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
   Future<void> _handleRefresh(
     ProfileController profileController,
     MyAdsController myAdsController,
@@ -303,21 +498,6 @@ class Profile extends StatelessWidget {
     ]);
   }
 
-  void _handleMenuAction(String action, ProfileController profileController) {
-    switch (action) {
-      case 'edit':
-        _showEditProfileDialog(profileController);
-        break;
-      case 'settings':
-        // Navigate to settings
-        Get.toNamed('/settings');
-        break;
-      case 'logout':
-        _showLogoutDialog();
-        break;
-    }
-  }
-
   void _showEditProfileDialog(ProfileController profileController) {
     final displayNameController = TextEditingController(
       text: profileController.displayName.value,
@@ -325,22 +505,44 @@ class Profile extends StatelessWidget {
 
     Get.dialog(
       AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Edit Profile'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(Icons.edit, color: AppColors.primary, size: 20),
+            ),
+            const SizedBox(width: 12),
+            const Text('Edit Profile'),
+          ],
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: displayNameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Display Name',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: AppColors.primary, width: 2),
+                ),
               ),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey[600])),
+          ),
           ElevatedButton(
             onPressed: () async {
               await profileController.updateDisplayName(
@@ -351,6 +553,10 @@ class Profile extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
             child: const Text('Save'),
           ),
@@ -360,23 +566,190 @@ class Profile extends StatelessWidget {
   }
 
   void _showLogoutDialog() {
+    final RxBool isLoggingOut = false.obs;
+
     Get.dialog(
       AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Logout'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.orange.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.logout, color: Colors.orange, size: 20),
+            ),
+            const SizedBox(width: 12),
+            const Text('Logout'),
+          ],
+        ),
         content: const Text('Are you sure you want to logout?'),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-              Get.find<AuthController>().signOut();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+          TextButton(
+            onPressed: () => Get.back(),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey[600])),
+          ),
+          Obx(
+            () => ElevatedButton(
+              onPressed: isLoggingOut.value
+                  ? null
+                  : () async {
+                      isLoggingOut.value = true;
+                      await Get.find<AuthController>().signOut();
+                      Get.back();
+                    },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange[700],
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                disabledBackgroundColor: Colors.grey[300],
+              ),
+              child: isLoggingOut.value
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Text('Logout'),
             ),
-            child: const Text('Logout'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteAccountDialog(ProfileController profileController) {
+    final RxBool isConfirmed = false.obs;
+    final RxBool isDeleting = false.obs;
+
+    Get.dialog(
+      AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.red.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.warning_amber,
+                color: Colors.red,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: 12),
+            const Text('Delete Account', style: TextStyle(color: Colors.red)),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'This action cannot be undone. All your data will be permanently deleted:',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 12),
+            _buildDeleteWarningItem('All your listings will be removed'),
+            _buildDeleteWarningItem('Your profile will be deleted'),
+            _buildDeleteWarningItem('All your messages will be lost'),
+            const SizedBox(height: AppDefaults.margin),
+            const Text(
+              "Your listings may take some time to be removed from the app because of indexing.",
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 16),
+            Obx(
+              () => CheckboxListTile(
+                value: isConfirmed.value,
+                onChanged: isDeleting.value
+                    ? null
+                    : (value) => isConfirmed.value = value ?? false,
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                title: const Text(
+                  'I understand this action is permanent',
+                  style: TextStyle(fontSize: 14),
+                ),
+                activeColor: Colors.red,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Obx(
+            () => TextButton(
+              onPressed: isDeleting.value ? null : () => Get.back(),
+              child: Text('Cancel', style: TextStyle(color: Colors.grey[600])),
+            ),
+          ),
+          Obx(
+            () => ElevatedButton(
+              onPressed: isConfirmed.value && !isDeleting.value
+                  ? () async {
+                      isDeleting.value = true;
+                      try {
+                        await profileController.deleteAccount('');
+                        Get.back(); // Close dialog
+                      } catch (e) {
+                        isDeleting.value = false;
+                      }
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+                disabledBackgroundColor: Colors.grey[300],
+              ),
+              child: isDeleting.value
+                  ? const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Text('Delete Account'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDeleteWarningItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          const Icon(Icons.close, color: Colors.red, size: 16),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 13, color: Colors.grey[700]),
+            ),
           ),
         ],
       ),
@@ -403,21 +776,38 @@ class Profile extends StatelessWidget {
   Future<void> _deleteAd(String id, MyAdsController controller) async {
     final result = await Get.dialog<bool>(
       AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Delete Listing'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.delete, color: Colors.red, size: 20),
+            ),
+            const SizedBox(width: 12),
+            const Text('Delete Listing'),
+          ],
+        ),
         content: const Text(
           'Are you sure you want to delete this listing? This action cannot be undone.',
         ),
         actions: [
           TextButton(
             onPressed: () => Get.back(result: false),
-            child: const Text('Cancel'),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey[600])),
           ),
           ElevatedButton(
             onPressed: () => Get.back(result: true),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             ),
             child: const Text('Delete'),
           ),
